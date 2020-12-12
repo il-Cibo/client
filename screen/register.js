@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text,Image, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { View, Text,Image, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
@@ -7,6 +7,8 @@ import SocialButton from '../components/SocialButton';
 const register = ({ navigation }) => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [userName, setUserName] = useState();
+    const [gender, setGender] = useState();
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Create an account</Text>
@@ -14,16 +16,30 @@ const register = ({ navigation }) => {
                 source={require('../assets/three-female-friends-sitting-cafe-lunch-talking_74855-5295.jpg')}
                 style={styles.logo}
             />
-
+            <ScrollView>
+            <FormInput
+                labelValue={userName}
+                onChangeText={(name) => setUserName(name)}
+                placeholderText="Name"
+                iconType="user"
+                autoCapitalize="none"
+            />
+            <FormInput
+                labelValue={gender}
+                onChangeText={(userGender) => setGender(userGender)}
+                placeholderText="Gender"
+                iconType="man"
+                autoCapitalize="none"
+            />
+            
             <FormInput
                 labelValue={email}
                 onChangeText={(userEmail) => setEmail(userEmail)}
                 placeholderText="Email"
-                iconType="user"
+                iconType="mail"
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-
             <FormInput
                 labelValue={password}
                 onChangeText={(userPassword) => setPassword(userPassword)}
@@ -59,6 +75,7 @@ const register = ({ navigation }) => {
                 </View>
             ) : null}
 
+            </ScrollView>
             <TouchableOpacity
                 style={styles.navButton}
                 onPress={() => navigation.navigate('Login')}>
