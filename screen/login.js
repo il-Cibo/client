@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,} from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
     Image,
     StyleSheet,
+    ScrollView
 } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
@@ -15,6 +16,7 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState();
 
     return (
+        // <ImageBackground source={require('../assets/foad-roshan-9JbvVFJ1eLk-unsplash.jpg')}>
         <View style={styles.container}>
             <Text style={styles.text}>Mealo App </Text>
             <Text>Please login to continue</Text>
