@@ -17,7 +17,7 @@ function RecipeCard({recipe}) {
 					/>
 					<Text style={styles.usernameStyle}>username</Text>
 				</View>
-				<MaterialIcons name="keyboard-arrow-down" size={20} color="black" />
+				<MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094'}} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />

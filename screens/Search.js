@@ -1,38 +1,25 @@
 import React from 'react'
-import { useQuery } from '@apollo/client'
 import { StyleSheet, Text, View } from 'react-native'
-import { RecipeCard } from '../components'
+import { SearchBox, RecipeSmallCard } from '../components'
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
-// import { GET_ALL_RECIPES } from '../config/queries'
-import { Octicons } from '@expo/vector-icons'
 
-function Home({ navigation }) {
-	// const { loading, error, data } =useQuery(GET_ALL_RECIPES)
-
-	// if (loading) {
-	// 	return <div>Loading..</div>
-	// }
-
-	// if (error) {
-	// 	return <div>{error.message}</div>
-	// }
-
-	function goToSearch() {
-		navigation.navigate('Search')
-	}
-
+function Search() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.headerText}>Mealo</Text>
-				<Octicons name="search" size={24} color="black" onPress={goToSearch} />
 			</View>
-			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
+			<SearchBox
+			/>
 			<ScrollView>
-				{/* {data.recipes.map((recipePost) => (
-					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))} */}
+				<RecipeSmallCard />
+				<RecipeSmallCard />
+				<RecipeSmallCard />
+				<RecipeSmallCard />
+				<RecipeSmallCard />
+				<RecipeSmallCard />
+				<RecipeSmallCard />
 			</ScrollView>
 		</View>
 	)
@@ -62,4 +49,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Home
+export default Search

@@ -12,8 +12,8 @@ function Favorite() {
 					<Text style={styles.headerText}>Username's Favorites</Text>
 				</View>
 			</View>
-			<Divider style={{ backgroundColor: '#f5f6fa' }} />
-			<ScrollView>
+			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
+			<ScrollView style={styles.content}>
 				<RecipeCard />
 				<RecipeCard />
 				<RecipeCard />
@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: 'black',
 		letterSpacing: 1
+	}, 
+	content: {
+		marginBottom: 20,
+		marginTop: 20
 	}
 });
 
