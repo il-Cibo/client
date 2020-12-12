@@ -4,18 +4,18 @@ import { StyleSheet, Text, View } from 'react-native'
 import { RecipeCard } from '../components'
 import { Divider, Header } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
-import { GET_ALL_RECIPES } from '../config/queries'
+// import { GET_ALL_RECIPES } from '../config/queries'
 
 function Home() {
-	const { loading, error, data } =useQuery(GET_ALL_RECIPES)
+	// const { loading, error, data } =useQuery(GET_ALL_RECIPES)
 
-	if (loading) {
-		return <div>Loading..</div>
-	}
+	// if (loading) {
+	// 	return <div>Loading..</div>
+	// }
 
-	if (error) {
-		return <div>{error.message}</div>
-	}
+	// if (error) {
+	// 	return <div>{error.message}</div>
+	// }
 
 	return (
 		<View style={styles.container}>
@@ -25,9 +25,9 @@ function Home() {
 			/>
 			<Divider style={{ backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
-				{data.recipes.map((recipePost) => (
+				{/* {data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))}
+				))} */}
 			</ScrollView>
 		</View>
 	)

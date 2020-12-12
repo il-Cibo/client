@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Button } from 'react-native'
 import { Card } from 'react-native-elements'
-import { SimpleLineIcons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
@@ -16,24 +15,24 @@ function RecipeCard({recipe}) {
 						style={styles.userPic}
 						source={require('../assets/woman.svg')}
 					/>
-					<Text>username</Text>
+					<Text style={styles.usernameStyle}>username</Text>
 				</View>
-				<SimpleLineIcons name="options" size={20} color="black" />
+				<MaterialIcons name="keyboard-arrow-down" size={20} color="black" />
 			</View>
 			<Card.Image source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094'}} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
-			<Text style={styles.recipeTitle}>{recipe.title}</Text>
+			<Text style={styles.recipeTitle}>Ayam Goreng</Text>
 			<Text style={styles.recipeDescription}>
-				{recipe.description}
+				Enak dan bergizi
   		</Text>
 			<View style={styles.cookInfo}>
 				<View style={styles.row}>
 					<MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
-					<Text style={styles.info}>Serving: {recipe.serving}</Text>
+					<Text style={styles.info}>Serving: 6</Text>
 				</View>
 				<View style={styles.row}>
 					<Ionicons name="timer-outline" size={16} color="#747d8c" />
-					<Text style={styles.info}>Time Cook: {recipe.time}mins</Text>
+					<Text style={styles.info}>Time Cook: 90 mins</Text>
 				</View>
 				<View style={styles.row}>
 					<AntDesign name="tago" size={16} color="#747d8c" />
@@ -53,20 +52,24 @@ const styles = StyleSheet.create({
 	cardHeader: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 	},
 	userPic: {
-		width: 35,
-		height: 35,
+		width: 30,
+		height: 30,
 		borderRadius: 50
 	},
 	userInfo: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-around',
-		width: 130,
+		justifyContent: 'space-between',
+		width: 90,
 		marginTop: -5,
-		marginBottom: 5
+		marginBottom: 5,
+		marginLeft: 10
+	},
+	usernameStyle: {
+		fontSize: 12
 	},
 	favoriteButton: {
 		marginTop: 5,
