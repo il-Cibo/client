@@ -16,12 +16,25 @@ const UserProfile = () => {
     totalLikes: 177
   }
 
+  const photos = [
+    { key: 'A' }, 
+    { key: 'B' }, 
+    { key: 'C' }, 
+    { key: 'D' }, 
+    { key: 'E' }, 
+    { key: 'F' }, 
+    { key: 'G' }, 
+    { key: 'H' }, 
+    { key: 'I' }, 
+    { key: 'J' }
+  ]
+
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <Card containerStyle={styles.cardContainer}>
           <ProfileHeader data={profile} />
-          <ProfileCollection />
+          <ProfileCollection data={photos} />
         </Card>
       </View>
     </ScrollView>
