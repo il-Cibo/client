@@ -3,12 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Home, Favorite, Search } from './screens'
+import { Login, Register, Home, Favorite, Search } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import LoginScreen from './screen/login';
-import register from './screen/register';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -20,8 +18,8 @@ const Tab = createBottomTabNavigator();
 function HomeStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
@@ -50,7 +48,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeStack} />
-        {/* <Tab.Screen name="Favorite" component={Favorite} /> */}
+        <Tab.Screen name="Favorite" component={Favorite} />
       </Tab.Navigator>
     </NavigationContainer>
     // </ApolloProvider>

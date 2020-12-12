@@ -1,3 +1,7 @@
 export { default as RecipeCard } from './RecipeCard'
 export { default as SearchBox } from './SearchBox'
 export { default as RecipeSmallCard } from './RecipeSmallCard'
+export { default as FormButton } from './FormButton'
+export { default as FormInput } from './FormInput'
+export { default as GridItem } from './GridItem'
+export { default as SocialButton } from './SocialButton'
