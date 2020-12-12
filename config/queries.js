@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+//Recipes Queries
 export const GET_ALL_RECIPES = gql`
 	query GetRecipes {
 		recipes {
@@ -11,6 +12,15 @@ export const GET_ALL_RECIPES = gql`
 			step
 			serving
 			time
+		}
+	}
+`
+
+//Users Queries
+export const LOGIN_USER = gql`
+	query LoginUser($user: Login) {
+		login(user: $user) {
+			token
 		}
 	}
 `

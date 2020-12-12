@@ -21,18 +21,18 @@ function RecipeCard({recipe}) {
 			</View>
 			<Card.Image source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094'}} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
-			<Text style={styles.recipeTitle}>Ayam Goreng</Text>
+			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
-				Enak dan bergizi
+				{recipe.description}
   		</Text>
 			<View style={styles.cookInfo}>
 				<View style={styles.row}>
 					<MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
-					<Text style={styles.info}>Serving: 6</Text>
+					<Text style={styles.info}>Serving: {recipe.serving}</Text>
 				</View>
 				<View style={styles.row}>
 					<Ionicons name="timer-outline" size={16} color="#747d8c" />
-					<Text style={styles.info}>Time Cook: 90 mins</Text>
+					<Text style={styles.info}>Time Cook: {recipe.time} mins</Text>
 				</View>
 				<View style={styles.row}>
 					<AntDesign name="tago" size={16} color="#747d8c" />

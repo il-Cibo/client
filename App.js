@@ -6,52 +6,62 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Login, Register, Home, Favorite, Search } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
+import client from './config/client'
 
 const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-// const client = new ApolloClient({
-//   uri: 'http://localhost:4000/graphql',
-//   cache: new InMemoryCache()
-// })
 
-function HomeStack() {
+
+
+function HomeStackScreen() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
-    </Stack.Navigator>
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
+  )
+}
+
+function HomeTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home-outline' : 'ios-home-outline'
+          } else if (route.name === 'Favorite') {
+            iconName = focused ? 'heart-outline' : 'heart-outline'
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />
+        }
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray'
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen name="Favorite" component={Favorite} />
+    </Tab.Navigator>
   )
 }
 
 export default function App() {
   return (
-    // <ApolloProvider client={client}>
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? 'home-outline' : 'ios-home-outline'
-            } else if (route.name === 'Favorite') {
-              iconName = focused ? 'heart-outline' : 'heart-outline'
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />
-          }
-        })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray'
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Favorite" component={Favorite} />
-      </Tab.Navigator>
-    </NavigationContainer>
-    // </ApolloProvider>
+    <ApolloProvider client={client}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ApolloProvider>
   );
 }
 

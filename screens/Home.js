@@ -4,19 +4,25 @@ import { StyleSheet, Text, View } from 'react-native'
 import { RecipeCard } from '../components'
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
-// import { GET_ALL_RECIPES } from '../config/queries'
+import { GET_ALL_RECIPES } from '../config/queries'
 import { Octicons } from '@expo/vector-icons'
 
 function Home({ navigation }) {
-	// const { loading, error, data } =useQuery(GET_ALL_RECIPES)
+	const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
+		context: {
+			headers: {
+				token: localStorage.getItem('token')
+			}
+		}
+	})
 
-	// if (loading) {
-	// 	return <div>Loading..</div>
-	// }
+	if (loading) {
+		return <div>Loading..</div>
+	}
 
-	// if (error) {
-	// 	return <div>{error.message}</div>
-	// }
+	if (error) {
+		return <div>{JSON.stringify(error)}</div>
+	}
 
 	function goToSearch() {
 		navigation.navigate('Search')
@@ -30,9 +36,9 @@ function Home({ navigation }) {
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
-				{/* {data.recipes.map((recipePost) => (
+				{data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))} */}
+				))}
 			</ScrollView>
 		</View>
 	)
