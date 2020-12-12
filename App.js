@@ -7,6 +7,8 @@ import { Home, Favorite, Search } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import LoginScreen from './screen/login';
+import register from './screen/register';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,5 +58,3 @@ export default function App() {
 }
 
 AppRegistry.registerComponent('MyApplication', () => App)
-
-
