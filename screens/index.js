@@ -1,3 +1,6 @@
+export {default as AddRecipe} from './AddRecipe.js'
+export {default as EditRecipe} from './EditRecipe.js'
+export {default as UserProfile} from './UserProfile.js'
 export { default as Home } from './Home.js'
 export { default as Favorite } from './Favorite.js'
 export { default as Search } from './Search.js'
