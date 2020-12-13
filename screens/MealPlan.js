@@ -3,22 +3,34 @@ import { StyleSheet, View, ScrollView, SafeAreaView, Text } from 'react-native'
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import CalendarStrip from 'react-native-calendar-strip';
 // import CalendarStrip from 'react-native-slideable-calendar-strip';
-import { RecipeCard } from '../components'
+import { MealPlanCard } from '../components'
+import { GET_MEALPLAN } from '../config/queries'
+import { useQuery } from '@apollo/client'
 
 const MealPlan = () => {
   const [dateNow, setDateNow] = useState()
   const [selectedDate, setSelectedDate] = useState()
-  const [recipes, setRecipes] = useState()
+  const [allPlans, setAllPlans] = useState()
+  const [todayPlan, setTodayPlan] = useState()
+  // const { loading, error, data } = useQuery(GET_MEALPLAN)
 
   useEffect(() => {
     const date = new Date ()
-    console.log(date);
     setDateNow(date)
+    // setAllPlans(data)
+    // const today = allPlans.filter(el => el.date === date)
+    // setTodayPlan(today)
   }, [])
 
-  const test = (date) => {
-    console.log(date);
-    setSelectedDate(date)
+  const getTodayRecipe = (value) => {
+    console.log(value);
+    // setSelectedDate(date)
+    // const todayRecipe = allPlans.filter(el => el.date === selectedDate)
+    // setTodayPlan(todayRecipe)
+  }
+  
+  const test = (value) => {
+    console.log(value);
   }
 
   const recipe = {
@@ -37,16 +49,22 @@ const MealPlan = () => {
           scrollable={true}
           startingDate={dateNow}
           onDateSelected={(date) => test(date)}
-          selectedDate={selectedDate}
+          // onDateSelected={(date) => getTodayRecipe(date)}
+          selectedDate={dateNow}
         />
       </View>
 
       <ScrollView style={style.planBody}>
-        <RecipeCard recipe={recipe} />
-        <RecipeCard recipe={recipe} />
-        <RecipeCard recipe={recipe} />
-        <RecipeCard recipe={recipe} />
-        <RecipeCard recipe={recipe} />
+        {/* {
+          todayPlan.recipe.map((recipe) => {
+            <MealPlanCard key={recipe.id} recipe={recipe} />
+          })
+        } */}
+        {/* <MealPlanCard recipe={recipe} />
+        <MealPlanCard recipe={recipe} />
+        <MealPlanCard recipe={recipe} />
+        <MealPlanCard recipe={recipe} />
+        <MealPlanCard recipe={recipe} /> */}
       </ScrollView>
     </SafeAreaView>
   )
