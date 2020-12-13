@@ -10,24 +10,68 @@ import {
 	StyleSheet,
 	ScrollView
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store'
 
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER)
+	const dispatch = useDispatch()
+	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER, {
+		context: {
+			headers: {}
+		},
+		onCompleted: ((data) => {
+			dispatch(setToken(data.login.token))
+			navigation.navigate('Home')
+		})
+	})
 
-	if (data) {
-		localStorage.setItem('token', data.login.token)
-		navigation.navigate('Home')
-		return <Loading />
-	}
+	// const storeData = async (value) => {
+	// 	try {
+	// 		await AsyncStorage.setItem('token', value)
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 	}
+	// }
+
+	console.log(data);
+	// if (data) {
+	// 	storeData(data.login.token)
+	// 		.then(res => {
+	// 			console.log(res);
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		})
+	// 	// console.log(data);
+	// 	// const storeData = async (data) => {
+	// 	// 	try {
+	// 	// 		await AsyncStorage.setItem('token', data)
+	// 	// 	} catch (e) {
+	// 	// 		console.log(e);
+	// 	// 	}
+	// 	// }
+	// 	// await storeData(data.login.token)
+	// 	// AsyncStorage.setItem('token', data.login.token)
+	// 	// localStorage.setItem('token', data.login.token)
+	// 	navigation.navigate('Home')
+	// 	return <Text>Loading ...</Text>
+	// 	// return <Loading />
+	// }
 
 	if (loading) {
-		return <Loading />
+		return <Text>Loading ...</Text>
+		// return <Loading />
 	}
 
 	if (error) {
-		return <div>{error.message}</div>
+		return (
+			<View style={styles.container}>
+				<Text>{error.message}</Text>
+			</View>
+		)
+		// return <div>{error.message}</div>
 	}
 
 	function login(username, password) {
@@ -91,7 +135,7 @@ const Login = ({ navigation }) => {
 				onPress={() => navigation.navigate('Register')}>
 				<Text style={styles.navButtonText}>
 					Don't have an acount? Create here
-                 </Text>
+        </Text>
 			</TouchableOpacity>
 		</View>
 	);

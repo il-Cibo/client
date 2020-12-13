@@ -1,27 +1,32 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { useQuery, useLazyQuery } from '@apollo/client'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import { GET_ALL_RECIPES } from '../config/queries'
 import { Octicons } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux'
 
 function Home({ navigation }) {
+	const token = useSelector((state) => state.token)
 	const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
-				token: localStorage.getItem('token')
+				token: token
 			}
 		}
 	})
-
+	 
 	if (loading) {
-		return <Loading />
+		return <Text>Loading ...</Text>
+		// return <Loading />
 	}
 
 	if (error) {
-		return <div>{JSON.stringify(error)}</div>
+		return <Text>{JSON.stringify(error.message)}</Text>
+		// return <div>{JSON.stringify(error)}</div>
 	}
 
 	function goToSearch() {
@@ -33,12 +38,14 @@ function Home({ navigation }) {
 			<View style={styles.header}>
 				<Text style={styles.headerText}>Mealo</Text>
 				<Octicons name="search" size={24} color="black" onPress={goToSearch} />
+				
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
-				{data.recipes.map((recipePost) => (
+				<Text>{JSON.stringify(data)}</Text>
+				{/* {data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))}
+				))} */}
 			</ScrollView>
 		</View>
 	)

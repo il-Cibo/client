@@ -6,7 +6,7 @@ import { AddForm } from '../components'
 
 const AddRecipe = () => {
   const [image, setImage] = useState(null)
-  const [title, setTitle] = useState()
+  const [title, setTitle] = useState()``
   const [description, setDescription] = useState()
   const [serving, setServing] = useState()
   const [cookingTime, setCookingTime] = useState()

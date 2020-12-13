@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { ProfileHeader, ProfileCollection } from '../components'
 
 import { Card } from 'react-native-elements'
@@ -8,8 +8,18 @@ import {
   View,
 } from 'react-native'
 
+import { useQuery } from '@apollo/client'
+import { GET_PROFILE } from '../config/queries'
+
 const UserProfile = () => {
-  const profile = {
+  const [userProfile, setUserProfile] = useState()
+  const { loading, error, data } = useQuery(GET_PROFILE)
+
+  useEffect(() => {
+    setUserProfile(data)
+  })
+
+  const profiles = {
     name: 'Bruce Wayne',
     username: 'thedarknight',
     userImage: 'https://image.flaticon.com/icons/png/512/1674/1674291.png',
@@ -29,11 +39,24 @@ const UserProfile = () => {
     { key: 'J' }
   ]
 
+  const checkCollection = () => {
+    if (userProfile.Recipe.length > 0) {
+      return (
+        <ProfileCollection data={userProfile.Recipe}/>
+      )
+    } else {
+      return (
+        <Text>No Recipes Collection</Text>
+      )
+    }
+  }
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <Card containerStyle={styles.cardContainer}>
-          <ProfileHeader data={profile} />
+          {/* <ProfileHeader data={userProfile}/>
+          {checkCollection()} */}
+          <ProfileHeader data={profiles} />
           <ProfileCollection data={photos} />
         </Card>
       </View>
