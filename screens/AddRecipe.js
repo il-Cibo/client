@@ -3,10 +3,14 @@ import { Button, Image, View, Platform, StyleSheet, Text, SafeAreaView, ScrollVi
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { AddForm } from '../components'
+import { UPLOAD_RECIPE } from '../config/queries'
+import { useMutation } from '@apollo/client'
+import { ReactNativeFile } from 'apollo-upload-client';
+import * as mime from 'react-native-mime-types';
 
 const AddRecipe = () => {
   const [image, setImage] = useState(null)
-  const [title, setTitle] = useState()``
+  const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [serving, setServing] = useState()
   const [cookingTime, setCookingTime] = useState()
@@ -27,9 +31,9 @@ const AddRecipe = () => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      // allowsEditing: true,
+      // aspect: [4, 3],
       quality: 1,
     });
 
@@ -57,18 +61,50 @@ const AddRecipe = () => {
       )
     }
   }
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+  
+  const [uploadRecipe] = useMutation(UPLOAD_RECIPE, {
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
 
-  const addNewRecipe = () => {
+  const generateRNFile = (uri, name) => {
+    return uri ? new ReactNativeFile({
+      uri,
+      type: mime.lookup(uri) || 'image',
+      name,
+    }) : null;
+  }
+
+  const addNewRecipe = async () => {
+
+    const file = generateRNFile(image, `picture-${Date.now()}`)
+
     const recipe = {
       title: title,
       description: description,
-      serving: serving,
-      cookingTime: cookingTime,
-
-      image_path: image
+      image: file,
+      serving: +serving,
+      time: +cookingTime,
+      step: cookingSteps.split('\n'),
+      ingredients: ingredients.split('\n')
     }
 
+    const tagData = tags.split('\n')
+
     console.log(recipe);
+    console.log(tagData);
+
+    uploadRecipe({
+      variables: {
+        recipe: recipe,
+        tags: tagData
+      }
+    })
+    // console.log(`${recipe}\n${tagData}`);
   }
   return (
     <SafeAreaView>

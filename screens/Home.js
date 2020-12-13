@@ -25,7 +25,11 @@ function Home({ navigation }) {
 	}
 
 	if (error) {
-		return <Text>{JSON.stringify(error.message)}</Text>
+		return (
+			<View>
+				<Text>{JSON.stringify(error.message)}</Text>
+			</View>
+		)
 		// return <div>{JSON.stringify(error)}</div>
 	}
 
@@ -33,6 +37,7 @@ function Home({ navigation }) {
 		navigation.navigate('Search')
 	}
 
+	console.log(data);
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -43,9 +48,9 @@ function Home({ navigation }) {
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
 				<Text>{JSON.stringify(data)}</Text>
-				{/* {data.recipes.map((recipePost) => (
+				{data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))} */}
+				))}
 			</ScrollView>
 		</View>
 	)

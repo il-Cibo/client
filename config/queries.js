@@ -13,6 +13,22 @@ export const GET_PROFILE = gql `
   }
 `
 
+export const UPLOAD_RECIPE = gql `
+	mutation addNewRecipe ($recipe: NewRecipe, $tags: [String!]) {
+		addRecipe (recipe: $recipe, tags: $tags) {
+			id
+		}
+	}
+`
+
+// export const UPLOAD_RECIPE = gql `
+// 	mutation addNewRecipe ($file: Upload!, $recipe: NewRecipe, $tags: [String!]) {
+// 		addRecipe (recipe: $recipe, tags: $tags) {
+// 			id
+// 		}
+// 	}
+// `
+
 // masih gak yakin sama querynya
 export const GET_MEALPLAN = gql `
   query getUserMealPlan {
@@ -36,6 +52,10 @@ export const GET_ALL_RECIPES = gql`
 			step
 			serving
 			time
+		}
+		user {
+			id
+			username
 		}
 	}
 `
