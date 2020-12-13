@@ -8,10 +8,38 @@ export const GET_PROFILE = gql `
       gender
       name
 			avatar,
-			Recipes
-    }
+			Recipes {
+				id
+				title
+				image
+			}
+		}
   }
 `
+
+// export const GET_PROFILE = gql `
+//   query getUserProfile {
+//     user {
+//       username
+//       email
+//       gender
+//       name
+// 			avatar,
+// 			Recipes {
+// 				id
+// 				title
+// 				image
+// 				serving
+// 				time
+// 				ingredients
+// 				step
+// 				Tags {
+// 					name
+// 				}
+// 			}
+// 		}
+//   }
+// `
 
 export const UPLOAD_RECIPE = gql `
 	mutation addNewRecipe ($recipe: NewRecipe, $tags: [String!]) {
@@ -20,14 +48,6 @@ export const UPLOAD_RECIPE = gql `
 		}
 	}
 `
-
-// export const UPLOAD_RECIPE = gql `
-// 	mutation addNewRecipe ($file: Upload!, $recipe: NewRecipe, $tags: [String!]) {
-// 		addRecipe (recipe: $recipe, tags: $tags) {
-// 			id
-// 		}
-// 	}
-// `
 
 // masih gak yakin sama querynya
 export const GET_MEALPLAN = gql `
@@ -60,6 +80,21 @@ export const GET_ALL_RECIPES = gql`
 	}
 `
 
+export const GET_RECIPE = gql`
+	query GetRecipe($id: Int!) {
+		recipe(id: $id) {
+			id
+			title
+			description
+			image
+			ingredients
+			step
+			serving
+			time
+		}
+	}
+`
+
 //Users Queries
 export const LOGIN_USER = gql`
 	query LoginUser($user: Login) {
@@ -68,3 +103,11 @@ export const LOGIN_USER = gql`
 		}
 	}
 `
+
+export const REGISTER_USER = gql`
+	mutation Register ($user : Register) {
+		register(user: $user){
+			username
+		}
+	}
+`;

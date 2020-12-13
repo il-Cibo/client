@@ -7,8 +7,12 @@ import { UPLOAD_RECIPE } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
+import { useSelector } from 'react-redux'
 
 const AddRecipe = () => {
+  // const token = useSelector((token) => state.token)
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+  
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
@@ -16,8 +20,9 @@ const AddRecipe = () => {
   const [cookingTime, setCookingTime] = useState()
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
-  const [tags, setTags] = useState()
-
+  const [tag, setTags] = useState()
+  
+  
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -32,8 +37,6 @@ const AddRecipe = () => {
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      // allowsEditing: true,
-      // aspect: [4, 3],
       quality: 1,
     });
 
@@ -48,21 +51,20 @@ const AddRecipe = () => {
     if (!image) {
       return (
         <View style={styles.camera}>
-          <Ionicons style={styles.cameraIcon} name='camera' onPress={pickImage}/>
-          <Text style={{fontWeight: 'bold'}}>Add Photo</Text>
+          <Ionicons style={styles.cameraIcon} name='camera' onPress={pickImage} />
+          <Text style={{ fontWeight: 'bold' }}>Add Photo</Text>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
-          <Image source={{uri: image}} style={{width: 20, height: 20}} onPress={pickImage}/>
-          <Text style={{fontWeight: 'bold'}}>Change Photo</Text>
+          <Image source={{ uri: image }} style={{ width: 20, height: 20 }} onPress={pickImage} />
+          <Text style={{ fontWeight: 'bold' }}>Change Photo</Text>
         </View>
       )
     }
   }
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-  
+
   const [uploadRecipe] = useMutation(UPLOAD_RECIPE, {
 		context: {
 			headers: {
@@ -80,7 +82,6 @@ const AddRecipe = () => {
   }
 
   const addNewRecipe = async () => {
-
     const file = generateRNFile(image, `picture-${Date.now()}`)
 
     const recipe = {
@@ -104,87 +105,86 @@ const AddRecipe = () => {
         tags: tagData
       }
     })
-    // console.log(`${recipe}\n${tagData}`);
   }
   return (
     <SafeAreaView>
       <ScrollView>
-          <View style={styles.container}>
-            <View>
-              <Text style={styles.title}>Add New Recipe</Text>
-            </View>
-            {checkImage()}
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.title}>Add New Recipe</Text>
           </View>
+          {checkImage()}
+        </View>
 
-          <View style={styles.inputForm}>
-            <View>
-              <Text style={styles.inputLabel}>Title</Text>
-              <AddForm
-                labelValue={title}
-                onChangeText={(title) => setTitle(title)}
-                placeholderText="Recipe title"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+        <View style={styles.inputForm}>
+          <View>
+            <Text style={styles.inputLabel}>Title</Text>
+            <AddForm
+              labelValue={title}
+              onChangeText={(title) => setTitle(title)}
+              placeholderText="Recipe's title"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Description</Text>
-              <AddForm
-                labelValue={description}
-                onChangeText={(description) => setDescription(description)}
-                placeholderText="Description"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Description</Text>
+            <AddForm
+              labelValue={description}
+              onChangeText={(description) => setDescription(description)}
+              placeholderText="Recipe's description"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Serving</Text>
-              <AddForm
-                labelValue={serving}
-                onChangeText={(serving) => setServing(serving)}
-                placeholderText="Serving size"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Serving</Text>
+            <AddForm
+              labelValue={serving}
+              onChangeText={(serving) => setServing(serving)}
+              placeholderText="Serving size"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Cooking Time</Text>
-              <AddForm
-                labelValue={cookingTime}
-                onChangeText={(cookingTime) => setCookingTime(cookingTime)}
-                placeholderText="Cooking time"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Cooking Time</Text>
+            <AddForm
+              labelValue={cookingTime}
+              onChangeText={(cookingTime) => setCookingTime(cookingTime)}
+              placeholderText="Recipe's cooking time"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Ingredients</Text>
-              <AddForm
-                labelValue={ingredients}
-                onChangeText={(ingredients) => setIngredients(ingredients)}
-                placeholderText="Ingredients"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Ingredients</Text>
+            <AddForm
+              labelValue={ingredients}
+              onChangeText={(ingredients) => setIngredients(ingredients)}
+              placeholderText="Recipe's ingredients"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Cooking steps</Text>
-              <AddForm
-                labelValue={cookingSteps}
-                onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
-                placeholderText="Ingredients"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Cooking steps</Text>
+            <AddForm
+              labelValue={cookingSteps}
+              onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
+              placeholderText="Steps of how to cook"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-              <Text style={styles.inputLabel}>Tags</Text>
-              <AddForm
-                labelValue={tags}
-                onChangeText={(tags) => setTags(tags)}
-                placeholderText="Ingredients"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Text style={styles.inputLabel}>Tags</Text>
+            <AddForm
+              labelValue={tag}
+              onChangeText={(tag) => setTags(tag)}
+              placeholderText="Input recipe's tags here"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-            </View>
-            <Button title='Add new recipe' style={styles.submit} onPress={addNewRecipe}/>
           </View>
-        
+          <Button title='Add new recipe' style={styles.submit} onPress={addNewRecipe} />
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   )
@@ -199,15 +199,16 @@ const styles = StyleSheet.create({
   },
   inputForm: {
     // paddingTop: 100,
-    paddingLeft: 24,
+    paddingLeft: 20,
     paddingRight: 20,
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFF'
   },
   inputLabel: {
-    fontSize: 20
+    fontSize: 14
   },
   input: {
     padding: 10,
@@ -219,9 +220,10 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: 20,
-    flex: 1, 
-    flexDirection: 'row',  
-    justifyContent: 'space-between'
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFF'
   },
   textStyle: {
     color: 'black',
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
   },
   title: {
     margin: 24,
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'left',
     color: '#000000'

@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList, Dimensions, TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Dimensions, TouchableHighlight, ImageBackground } from 'react-native'
 
 const numColumns = 3;
 
-const ProfileCollection = ({ data }) => {
-  console.log(data);
+const ProfileCollection = ({ data, user }) => {
+  console.log(user);
 
   const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -21,10 +21,12 @@ const ProfileCollection = ({ data }) => {
   const checkPicture = (value) => {
     console.log(value);
   }
+  
   const renderItem = ({ item, index }) => {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
+    // console.log(item);
     return (
       <View style={styles.item}>
         <TouchableHighlight onPress={(item) => {checkPicture(item)}}>
@@ -36,13 +38,19 @@ const ProfileCollection = ({ data }) => {
 
   return (
     <View>
-      <Text style={styles.username}>thedarknight Collection's</Text>
+      <Text style={styles.username}>{user.username} Collection's</Text>
       <FlatList
-        data={formatData(data, numColumns)}
+        data={formatData(user.recipes, numColumns)}
         style={styles.container}
         renderItem={renderItem}
         numColumns={numColumns}
       />
+      {/* <FlatList
+        data={formatData(data, numColumns)}
+        style={styles.container}
+        renderItem={renderItem}
+        numColumns={numColumns}
+      /> */}
     </View>
   )
 }

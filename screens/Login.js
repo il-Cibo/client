@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
 	// 	}
 	// }
 
-	console.log(data);
 	// if (data) {
 	// 	storeData(data.login.token)
 	// 		.then(res => {
@@ -117,10 +116,6 @@ const Login = ({ navigation }) => {
 				buttonTitle="Login"
 				onPress={() => login(username, password)}
 			/>
-
-			<TouchableOpacity style={styles.forgotButton} >
-				<Text style={styles.navButtonText}>Forgot Password? {"\n"}</Text>
-			</TouchableOpacity>
 
 			<View>
 				<SocialButton

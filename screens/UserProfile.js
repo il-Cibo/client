@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from 'react'
 import { ProfileHeader, ProfileCollection } from '../components'
-
 import { Card } from 'react-native-elements'
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
+  Text
 } from 'react-native'
 
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
+import { useSelector } from 'react-redux'
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState()
-  const { loading, error, data } = useQuery(GET_PROFILE)
+  const [userRecipe, setUserRecipe] = useState()
+  // const token = useSelector((token) => state.token)
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+
+  const { loading, error, data } = useQuery(GET_PROFILE, {
+    context: {
+      headers: {
+        token: token
+      }
+    }
+  }, [])
 
   useEffect(() => {
-    setUserProfile(data)
-  })
+    setUserProfile({
+      name: data.user.name,
+      username: data.user.username,
+      avatar: data.user.avatar
+    })
 
-  const profiles = {
-    name: 'Bruce Wayne',
-    username: 'thedarknight',
-    userImage: 'https://image.flaticon.com/icons/png/512/1674/1674291.png',
-    totalLikes: 177
-  }
+    setUserRecipe({
+      username: data.user.username,
+      recipes: data.user.Recipes
+    })
+  }, [])
 
   const photos = [
     { key: 'A' }, 
@@ -50,14 +64,34 @@ const UserProfile = () => {
       )
     }
   }
+  
+  if(loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading ...</Text>
+      </View>
+    )
+  }
+
+  if(error) {
+    console.log(error);
+    return (
+      <View style={styles.container}>
+        <Text>{JSON.stringify(error.message)}</Text>
+      </View>
+    )
+  }
+
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <Card containerStyle={styles.cardContainer}>
-          {/* <ProfileHeader data={userProfile}/>
-          {checkCollection()} */}
-          <ProfileHeader data={profiles} />
-          <ProfileCollection data={photos} />
+          <ProfileHeader data={userProfile}/>
+          {/* {checkCollection()} */}
+          {/* <ProfileHeader data={profiles} /> */}
+          <SafeAreaView>
+            <ProfileCollection data={photos} user={userRecipe} />
+          </SafeAreaView>
         </Card>
       </View>
     </ScrollView>
