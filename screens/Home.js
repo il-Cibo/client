@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/client'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import { StyleSheet, Text, View } from 'react-native'
 import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import { GET_ALL_RECIPES } from '../config/queries'
 import { Octicons } from '@expo/vector-icons'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux'
 
 function Home({ navigation }) {
@@ -26,7 +25,6 @@ function Home({ navigation }) {
 
 	if (error) {
 		return <Text>{JSON.stringify(error.message)}</Text>
-		// return <div>{JSON.stringify(error)}</div>
 	}
 
 	function goToSearch() {
@@ -42,10 +40,9 @@ function Home({ navigation }) {
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
-				<Text>{JSON.stringify(data)}</Text>
-				{/* {data.recipes.map((recipePost) => (
-					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))} */}
+				{data.recipes.map((recipePost) => (
+					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
+				))}
 			</ScrollView>
 		</View>
 	)

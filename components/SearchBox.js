@@ -16,7 +16,7 @@ function SearchBox() {
 			round={true}
 			containerStyle={{
 				backgroundColor: '#FFF',
-				border: 'none',
+				borderColor: '#FFF',
 			}}
 			inputContainerStyle={{
 				backgroundColor: '#f5f6fa',
