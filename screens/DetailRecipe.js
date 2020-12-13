@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Image, ScrollView } from 'react-native'
-import { Accordion, Header, Tab, Tabs, Container, H1, H2, H3, Content, Card, CardItem, Title, Segment, Text, Button, Icon, Left, Body, Right } from 'native-base'
+// import { Accordion, Header, Tab, Tabs, Container, H1, H2, H3, Content, Card, CardItem, Title, Segment, Text, Button, Icon, Left, Body, Right } from 'native-base'
 import Ingerdients from '../components/DetailRecipe/ingredients'
 import CookingStep from '../components/DetailRecipe/CookingStep'
 

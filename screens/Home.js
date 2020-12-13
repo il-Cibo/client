@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 import { StyleSheet, Text, View } from 'react-native'
-import { RecipeCard } from '../components'
+import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import { GET_ALL_RECIPES } from '../config/queries'
@@ -17,7 +17,7 @@ function Home({ navigation }) {
 	})
 
 	if (loading) {
-		return <div>Loading..</div>
+		return <Loading />
 	}
 
 	if (error) {

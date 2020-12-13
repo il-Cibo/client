@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FormInput, FormButton, SocialButton } from '../components'
+import { FormInput, FormButton, SocialButton, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
 import {
@@ -19,11 +19,11 @@ const Login = ({ navigation }) => {
 	if (data) {
 		localStorage.setItem('token', data.login.token)
 		navigation.navigate('Home')
-		return <div>Loading...</div>
+		return <Loading />
 	}
 
 	if (loading) {
-		return <div>Loading...</div>
+		return <Loading />
 	}
 
 	if (error) {
@@ -40,13 +40,6 @@ const Login = ({ navigation }) => {
 			}
 		})
 	}
-	console.log(data)
-
-	// console.log(username, '<< username')
-	// console.log(password, '<< password')
-	// if (data) {
-	// 	console.log(data.login.token)
-	// }
 
 	return (
 		// <ImageBackground source={require('../assets/foad-roshan-9JbvVFJ1eLk-unsplash.jpg')}>
@@ -63,7 +56,7 @@ const Login = ({ navigation }) => {
 				onChangeText={(inputUsername) => setUsername(inputUsername)}
 				placeholderText="Username"
 				iconType="user"
-				keyboardType="username"
+				keyboardType="default"
 				autoCapitalize="none"
 				autoCorrect={false}
 			/>

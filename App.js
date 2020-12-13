@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Login, Register, Home, Favorite, Search } from './screens'
+import { Login, Register, Home, Favorite, Search, AddRecipe } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
 import { ApolloProvider } from '@apollo/client'
@@ -13,13 +13,12 @@ const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <HomeStack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+      {/* <HomeStack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }} /> */}
     </HomeStack.Navigator>
   )
 }
@@ -56,6 +55,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
