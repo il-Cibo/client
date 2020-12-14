@@ -10,24 +10,24 @@ import { RadioButton } from 'react-native-paper'
 const register = ({ navigation }) => {
 
     const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
-    // console.log(data)
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
     const [gender, setGender] = useState('');
     const [avatar, setAvatar] = useState('');
-    // const [addUser, setAddUser] = useState({
-    //     username: '',
-    //     email: '',
-    //     password: '',
-    //     gender: '',
-    //     name: '',
-    //     avatar: ''
-    // })
+
     
     const onsubmit = (event) => {
         event.preventDefault()
+
+        if(gender === 'male'){
+            setAvatar('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png')
+        } else if(gender === 'male'){
+            setAvatar('https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png')
+        } else {
+            setAvatar('https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png')
+        }
 
         newUser({
             variables: {
@@ -42,7 +42,6 @@ const register = ({ navigation }) => {
             }
         })
     }
-    console.log(newUser)
     // if (loading) {
     //     return  <Spinner color='blue' />
     // }
@@ -113,10 +112,10 @@ const register = ({ navigation }) => {
                     secureTextEntry={true}
                 />
                 <FormInput
-                    name="avatar"
-                    labelValue={avatar}
-                    onChangeText={(userAvatar) => setAvatar(userAvatar)}
-                    placeholderText="avatar"
+                    name="gender"
+                    labelValue={gender}
+                    onChangeText={(userGender) => setGender(userGender)}
+                    placeholderText="gender"
                     iconType="user"
                     secureTextEntry={true}
                 />

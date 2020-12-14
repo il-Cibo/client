@@ -97,16 +97,48 @@ export const GET_RECIPE = gql`
 
 //Users Queries
 export const LOGIN_USER = gql`
-	query LoginUser($user: Login) {
+	query LoginUser($user: Login!) {
 		login(user: $user) {
 			token
 		}
 	}
 `
 export const REGISTER_USER = gql`
-	mutation Register ($user : Register) {
+	mutation Register ($user : Register!) {
 		register(user: $user){
 			username
+		}
+	}
+`;
+//====== ini ====
+export const ADD_TO_FAVORITE_RECIPE = gql`
+	mutation userRecipe ($favRecipe : User) {
+		register(findFav: $favRecipe){
+			UserId
+			RecipeId
+		}
+	}
+`;
+
+export const DELETE_RECIPE_FAV = gql`
+	mutation userRecipe ($id: Int!) {
+		deleteFav(id: $id){
+			fa
+		}
+	}
+`;
+
+export const LIST_FAV_USER_RECIPE = gql`
+	query ListFavorit($id: String) {
+		movieInfo(id: $id) {
+			title
+			overview
+			poster_path
+			genres
+			release_date
+			vote_average
+			runtime
+			production_companies
 		}
 	}
 `;
