@@ -117,7 +117,12 @@ const Login = ({ navigation }) => {
 				onPress={() => login(username, password)}
 			/>
 
+			{/* <TouchableOpacity style={styles.forgotButton} >
+				<Text style={styles.navButtonText}>Forgot Password? </Text>
+			</TouchableOpacity> */}
+
 			<View>
+				
 				<SocialButton
 					buttonTitle="Sign In with Google"
 					btnType="google"
@@ -129,8 +134,8 @@ const Login = ({ navigation }) => {
 				style={styles.forgotButton}
 				onPress={() => navigation.navigate('Register')}>
 				<Text style={styles.navButtonText}>
-					Don't have an acount? Create here
-        </Text>
+				{"\n"}Don't have an acount? Create here
+                 </Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
 		paddingTop: 5,
 	},
 	text: {
-		fontFamily: 'Kufam-SemiBoldItalic',
+		// fontFamily: 'Kufam-SemiBoldItalic',
 		fontSize: 28,
 		marginBottom: 10,
 		color: '#051d5f',
