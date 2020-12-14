@@ -56,7 +56,7 @@ function RecipeCard({ navigation, recipe }) {
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
-				source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094' }} />
+				source={{ uri: recipe.image }} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>

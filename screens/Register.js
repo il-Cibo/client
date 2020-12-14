@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image, Form, Picker,Item, Spinner, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Form, Item, Spinner, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
@@ -82,7 +82,7 @@ const register = ({ navigation }) => {
                     name="username"
                     value={userName}
                     onChangeText={(userName) => setUserName(userName)}
-                    placeholderText="username"
+                    placeholderText="Username"
                     iconType="user"
                     autoCapitalize="none"
                 />
@@ -99,7 +99,7 @@ const register = ({ navigation }) => {
                     name="email"
                     labelValue={email}
                     onChangeText={(userEmail) => setEmail(userEmail)}
-                    placeholderText="email"
+                    placeholderText="E-mail"
                     iconType="mail"
                     keyboardType="email-address"
                     autoCapitalize="none"
@@ -108,16 +108,8 @@ const register = ({ navigation }) => {
                     name="password"
                     labelValue={password}
                     onChangeText={(userPassword) => setPassword(userPassword)}
-                    placeholderText="password"
+                    placeholderText="Password"
                     iconType="lock"
-                    secureTextEntry={true}
-                />
-                <FormInput
-                    name="avatar"
-                    labelValue={avatar}
-                    onChangeText={(userAvatar) => setAvatar(userAvatar)}
-                    placeholderText="avatar"
-                    iconType="user"
                     secureTextEntry={true}
                 />
                 {/* <RadioButton
@@ -146,7 +138,7 @@ const register = ({ navigation }) => {
                 </Form> */}
 
                 <FormButton
-                    buttonTitle="register"
+                    buttonTitle="Register"
                     onPress={onsubmit}
                     // onPress={() => navigation.navigate('Register')}
                 />

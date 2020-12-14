@@ -118,7 +118,7 @@ export const DELETE_RECIPE = gql`
 
 //Users Queries
 export const LOGIN_USER = gql`
-	query LoginUser($user: Login) {
+	query LoginUser($user: Login!) {
 		login(user: $user) {
 			token
 		}
