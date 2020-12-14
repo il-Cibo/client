@@ -3,8 +3,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import { RecipeCard } from '../components'
+import { LIST_FAV_USER_RECIPE } from '../config/queries'
 
 function Favorite() {
+	const UserId = data?.user?.id
+
+	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
+		variables: {
+			UserId
+		},
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -17,6 +31,7 @@ function Favorite() {
 				{/* {data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} />
 				))} */}
+				<Text>{JSON.stringify(data)}</Text>
 			</ScrollView>
 		</View>
 	)

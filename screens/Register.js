@@ -8,23 +8,55 @@ import { REGISTER_USER } from '../config/queries'
 import { RadioButton } from 'react-native-paper'
 
 const register = ({ navigation }) => {
+    const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [userName, setUserName] = useState('');
+    const [gender, setGender] = useState('');
 
-  const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
-  // console.log(data)
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState('');
-  const [gender, setGender] = useState('');
-  const [avatar, setAvatar] = useState('');
-  // const [addUser, setAddUser] = useState({
-  //     username: '',
-  //     email: '',
-  //     password: '',
-  //     gender: '',
-  //     name: '',
-  //     avatar: ''
-  // })
+    const onsubmit = (event) => {
+        event.preventDefault()
+        let avatar = ''
+        
+
+        if(gender === 'male'){
+            avatar = 'https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png'
+        } else if(gender === 'female'){
+            avatar = 'https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png'
+        } else {
+            avatar = 'https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png'
+        }
+        
+        newUser({
+            variables: {
+                user: {
+                    username: userName,
+                    email: email,
+                    password: password,
+                    gender: gender,
+                    name: name,
+                    avatar: avatar
+                }
+            }
+        })
+    }
+    // if (loading) {
+    //     return  <Spinner color='blue' />
+    // }
+
+    // if (error) {
+	// 	return (
+	// 	<Item error>
+    //         <Input placeholder={error}/>
+    //         <Icon name='close-circle' />
+    //       </Item>
+    //     )
+    // }
+    if (loading) {
+		return <Text>Loading ...</Text>
+		// return <Loading />
+	}
 
   const onsubmit = (event) => {
     event.preventDefault()
@@ -70,7 +102,6 @@ const register = ({ navigation }) => {
   }
 
   return (
-
     <View style={styles.container}>
       <Text style={styles.title}>Create an Account</Text>
       <Image
@@ -112,6 +143,14 @@ const register = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
+        <FormInput
+                    name="gender"
+                    labelValue={gender}
+                    onChangeText={(userGender) => setGender(userGender)}
+                    placeholderText="gender"
+                    iconType="user"
+                    secureTextEntry={true}
+                />
         {/* <RadioButton
                     value="Male"
                     status={gender === 'Male' ? 'checked' : 'unchecked'}
