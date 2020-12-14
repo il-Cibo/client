@@ -6,8 +6,10 @@ import SocialButton from '../components/SocialButton';
 import { useMutation } from '@apollo/client'
 import { REGISTER_USER } from '../config/queries'
 import { RadioButton } from 'react-native-paper'
+import { AuthContext } from '../navigation/AuthProvider.android';
 
 const register = ({ navigation }) => {
+    const { login, googleLogin, fbLogin } = useContext(AuthContext);
 
     const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
     // console.log(data)
@@ -26,20 +28,6 @@ const register = ({ navigation }) => {
         avatar: ''
     })
 
-    // const onChange = (event) => {
-    //     let key = event.target.placeholderText
-    //     let value = event.target.labelValue
-
-    //     setAddUser({
-    //         ...addUser,
-    //         [key]: value
-    //     })
-    //     console.log({
-    //         ...addUser,
-    //         [key]: value
-    //     })
-    // }
-
     const onsubmit = (event) => {
         event.preventDefault()
 
@@ -56,9 +44,7 @@ const register = ({ navigation }) => {
             }
         })
     }
-    // if (error) {
-    //     return <View>{error.message}</View>
-    // }
+
     return (
 
         <View style={styles.container}>
@@ -110,7 +96,7 @@ const register = ({ navigation }) => {
                     iconType="user"
                     secureTextEntry={true}
                 />
-                <RadioButton
+                {/* <RadioButton
                     value="Male"
                     status={gender === 'Male' ? 'checked' : 'unchecked'}
                     onPress={() => setGender('Male')}
@@ -119,7 +105,21 @@ const register = ({ navigation }) => {
                     value="Female"
                     status={gender === 'Female' ? 'checked' : 'unchecked'}
                     onPress={() => setGender('Female')}
-                />
+                /> */}
+                <ListItem>
+                    <CheckBox 
+                    checked={gender === 'Male' ? true : false} 
+                    onPress={() => setGender('Male')}/>
+                    <Body>
+                        <Text>Male</Text>
+                    </Body>
+                    <CheckBox 
+                    checked={gender === 'Female' ? true : false} 
+                    onPress={() => setGender('Female')}/>
+                    <Body>
+                        <Text>Female</Text>
+                    </Body>
+                </ListItem>
 
                 <FormButton
                     buttonTitle="register"

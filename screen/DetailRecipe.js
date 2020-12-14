@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Image, ScrollView } from 'react-native'
-import { Accordion, Header, Tab, Tabs, Container, H1, H2, H3, Content, Card, CardItem, Title, Segment, Text, Button, Icon, Left, Body, Right } from 'native-base'
+import { Tab, Tabs, Container, H3, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base'
 import Ingerdients from '../components/DetailRecipe/ingredients'
 import CookingStep from '../components/DetailRecipe/CookingStep'
 
@@ -9,11 +9,10 @@ export default function Description() {
   return (
     <View style={styles.container}>
       <Container>
-        <Header hasTabs />
+        <Icon name='arrow-back' style={{ margin: 10 }} />
         <Tabs >
           <Tab heading="Description">
             <Content>
-            {/* <Icon name='arrow-back' style={{ margin: 10 }} /> */}
               <Card>
                 <CardItem>
                   <Left>
@@ -40,14 +39,14 @@ export default function Description() {
                   </Left>
                 </CardItem>
               </Card>
-              <H3 style={{marginRight: 10, marginLeft: 10, fontFamily:''}}>{"\n"} thank you , it almost solved my problem .. I edited my question so can you please double check for me .. In fact i need to make all red , not just when it's active </H3>
+              <H3 style={{ marginRight: 10, marginLeft: 10, fontFamily: '' }}>{"\n"} thank you , it almost solved my problem .. I edited my question so can you please double check for me .. In fact i need to make all red , not just when it's active </H3>
             </Content>
           </Tab>
           <Tab heading="Ingerdients">
             <Ingerdients />
           </Tab>
           <Tab heading="Coking Steps">
-          <CookingStep />
+            <CookingStep />
           </Tab>
         </Tabs>
       </Container>
