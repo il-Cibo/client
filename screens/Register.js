@@ -1,15 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image,ListItem, Body, CheckBox, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 import { useMutation } from '@apollo/client'
 import { REGISTER_USER } from '../config/queries'
 import { RadioButton } from 'react-native-paper'
-import { AuthContext } from '../navigation/AuthProvider.android';
 
 const register = ({ navigation }) => {
-    const { login, googleLogin, fbLogin } = useContext(AuthContext);
 
     const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
     // console.log(data)
@@ -106,20 +104,22 @@ const register = ({ navigation }) => {
                     status={gender === 'Female' ? 'checked' : 'unchecked'}
                     onPress={() => setGender('Female')}
                 /> */}
-                <ListItem>
+                {/* <ListItem>
                     <CheckBox 
-                    checked={gender === 'Male' ? true : false} 
-                    onPress={() => setGender('Male')}/>
+                    checked={true} 
+                    // onPress={() => setGender('Male')}
+                    />                    
                     <Body>
                         <Text>Male</Text>
                     </Body>
-                    <CheckBox 
+                    {/* <CheckBox 
                     checked={gender === 'Female' ? true : false} 
-                    onPress={() => setGender('Female')}/>
+                    // onPress={() => setGender('Female')}
+                    />
                     <Body>
                         <Text>Female</Text>
-                    </Body>
-                </ListItem>
+                    </Body> */}
+                {/* </ListItem> */} 
 
                 <FormButton
                     buttonTitle="register"
