@@ -14,12 +14,12 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../store'
 import { Button } from 'react-native-paper'
 import { useFonts } from 'expo-font'
-import { Oswald_400Regular } from '@expo-google-fonts/oswald'
+// import { Oswald_400Regular } from '@expo-google-fonts/oswald'
 import AppLoading from 'expo-app-loading'
 
 const Login = ({ navigation }) => {
-	const [fontsLoaded] = useFonts({
-		Oswald_400Regular
+	const [loaded] = useFonts({
+		Oswald: require('../assets/fonts/Oswald-VariableFont_wght.ttf')
 	})
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -34,7 +34,7 @@ const Login = ({ navigation }) => {
 		})
 	})
 
-	if (!fontsLoaded) {
+	if (!loaded) {
 		return <AppLoading />
 	}
 	// const storeData = async (value) => {
@@ -149,7 +149,7 @@ const Login = ({ navigation }) => {
 				style={styles.forgotButton}
 				onPress={() => navigation.navigate('Register')}>
 				<Text style={styles.navButtonText}>
-				{"\n"}Don't have an acount? Create here
+				{"\n"}Don't have an acount? Create here!
                  </Text>
 			</TouchableOpacity>
 		</View>
@@ -165,10 +165,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 20,
-		paddingTop: 20,
+		paddingTop: 10,
 	},
 	title: {
-		fontFamily: 'Oswald_400Regular',
+		fontFamily: 'Oswald',
 		fontSize: 40,
 		marginBottom: 10,
 		color: 'black',
@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
 	h2: {
 		color: '#bdc3c7',
 		alignSelf: 'flex-start',
-		marginLeft: 20
+		marginLeft: 20,
+		fontFamily: 'Oswald',
 	},
 	logo: {
 		alignSelf: 'flex-end',
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontWeight: '500',
 		color: '#FF9494',
+		fontFamily: 'Oswald',
 	},
 	textPrivate: {
 		flexDirection: 'row',
@@ -204,7 +206,8 @@ const styles = StyleSheet.create({
 		color: '#EEE6E6',
 		letterSpacing: 3,
 		fontWeight: 'bold',
-		fontSize: 16
+		fontSize: 16,
+		fontFamily: 'Oswald'
 	}
 });
 

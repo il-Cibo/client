@@ -10,6 +10,8 @@ import { ApolloProvider } from '@apollo/client'
 import client from './config/client'
 import { Provider } from 'react-redux'
 import store from './store'
+import { useFonts } from 'expo-font'
+import AppLoading from 'expo-app-loading'
 
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -65,15 +67,20 @@ function HomeTabs() {
 }
 
 export default function App() {
-
+  const [loaded] = useFonts({
+		Oswald: require('./assets/fonts/Oswald-VariableFont_wght.ttf')
+  })
+  if (!loaded) {
+		return <AppLoading />
+	}
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

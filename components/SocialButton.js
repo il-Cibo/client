@@ -51,7 +51,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Oswald',
+    letterSpacing: 2
   },
 });
