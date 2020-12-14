@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 const ProfileHeader = ({data}) => {
-  // console.log(data);
+  console.log(data, 'di header');
   return (
     <View>
       <ImageBackground 
@@ -18,7 +18,7 @@ const ProfileHeader = ({data}) => {
         <View style={styles.headerContainer}> 
           <Image
             style={styles.userImage}
-            source={{ uri: data.userImage }}
+            source={{ uri: data.avatar }}
           />
           <Text style={styles.fullName}>{data.name}</Text>
           <Text style={styles.username}>{data.username}</Text>
@@ -30,7 +30,7 @@ const ProfileHeader = ({data}) => {
 
             <View style={styles.likeRows}>
               <Text style={styles.likeCounts}>
-                {data.totalLikes}
+                {/* {data.totalLikes} */}
               </Text>
             </View>
 

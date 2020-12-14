@@ -9,7 +9,8 @@ import { Octicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 
 function Home({ navigation }) {
-	const token = useSelector((state) => state.token)
+	const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+	// const token = useSelector((state) => state.token)
 	const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -24,13 +25,18 @@ function Home({ navigation }) {
 	}
 
 	if (error) {
-		return <Text>{JSON.stringify(error.message)}</Text>
+		return (
+			<View style={styles.container}>
+				<Text>{JSON.stringify(error.message)}</Text>
+			</View>
+		)
 	}
 
 	function goToSearch() {
 		navigation.navigate('Search')
 	}
 
+	console.log(data);
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -40,6 +46,7 @@ function Home({ navigation }) {
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView>
+				<Text>{JSON.stringify(data)}</Text>
 				{data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
 				))}

@@ -64,15 +64,17 @@ function HomeTabs() {
 }
 
 export default function App() {
+  
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            {/* <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }}></Stack.Screen> */}
+             <Stack.Screen name="Login" component={UserProfile} options={{ headerShown: false }}></Stack.Screen>
             {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen> */}
-            <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
+            {/* <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen> */}
+            {/* <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }}></Stack.Screen> */}
+            {/* <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen> */}
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
