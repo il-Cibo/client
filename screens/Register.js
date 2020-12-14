@@ -15,9 +15,7 @@ const register = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
     const [gender, setGender] = useState('');
-    const [avatar, setAvatar] = useState('');
 
-    console.log("avatarr angg", avatar);
     const onsubmit = (event) => {
         event.preventDefault()
         let avatar = ''
