@@ -17,18 +17,20 @@ const register = ({ navigation }) => {
     const [gender, setGender] = useState('');
     const [avatar, setAvatar] = useState('');
 
-    
+    console.log("avatarr angg", avatar);
     const onsubmit = (event) => {
         event.preventDefault()
+        let avatar = ''
+        
 
         if(gender === 'male'){
-            setAvatar('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png')
-        } else if(gender === 'male'){
-            setAvatar('https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png')
+            avatar = 'https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png'
+        } else if(gender === 'female'){
+            avatar = 'https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png'
         } else {
-            setAvatar('https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png')
+            avatar = 'https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png'
         }
-
+        
         newUser({
             variables: {
                 user: {
