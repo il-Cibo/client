@@ -6,7 +6,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
-function RecipeCard({recipe}) {
+function RecipeCard({ navigation, recipe }) {
+	function goToRecipeDetail() {
+		console.log(navigation, '<< console')
+		navigation.navigate('DetailRecipe', {
+			recipeId: recipe.id
+		})
+	}
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -19,12 +25,14 @@ function RecipeCard({recipe}) {
 				</View>
 				<MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
 			</View>
-			<Card.Image source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094'}} />
+			<Card.Image
+				onPress={goToRecipeDetail}
+				source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094' }} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
-  		</Text>
+			</Text>
 			<View style={styles.cookInfo}>
 				<View style={styles.row}>
 					<MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />

@@ -14,10 +14,9 @@ function Favorite() {
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView style={styles.content}>
-				<RecipeCard />
-				<RecipeCard />
-				<RecipeCard />
-				<RecipeCard />
+				{/* {data.recipes.map((recipePost) => (
+					<RecipeCard key={recipePost.id} recipe={recipePost} />
+				))} */}
 			</ScrollView>
 		</View>
 	)

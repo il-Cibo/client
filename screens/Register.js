@@ -42,10 +42,19 @@ const register = ({ navigation }) => {
             }
         })
     }
+    if (loading) {
+        return  <Spinner color='blue' />
+    }
 
-    const onValueChange = (value) => {
-        setGender(value);
-      }
+    if (error) {
+		return (
+		<Item error>
+            <Input placeholder={error}/>
+            <Icon name='close-circle' />
+          </Item>
+        )
+    }
+    
     return (
 
         <View style={styles.container}>

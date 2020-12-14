@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FormInput, FormButton, SocialButton } from '../components'
+import { FormInput, FormButton, SocialButton, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
 import {
@@ -10,24 +10,67 @@ import {
 	StyleSheet,
 	ScrollView
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store'
 
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER)
+	const dispatch = useDispatch()
+	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER, {
+		context: {
+			headers: {}
+		},
+		onCompleted: ((data) => {
+			dispatch(setToken(data.login.token))
+			navigation.navigate('Home')
+		})
+	})
 
-	if (data) {
-		localStorage.setItem('token', data.login.token)
-		navigation.navigate('Home')
-		return <div>Loading...</div>
-	}
+	// const storeData = async (value) => {
+	// 	try {
+	// 		await AsyncStorage.setItem('token', value)
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 	}
+	// }
+
+	// if (data) {
+	// 	storeData(data.login.token)
+	// 		.then(res => {
+	// 			console.log(res);
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err);
+	// 		})
+	// 	// console.log(data);
+	// 	// const storeData = async (data) => {
+	// 	// 	try {
+	// 	// 		await AsyncStorage.setItem('token', data)
+	// 	// 	} catch (e) {
+	// 	// 		console.log(e);
+	// 	// 	}
+	// 	// }
+	// 	// await storeData(data.login.token)
+	// 	// AsyncStorage.setItem('token', data.login.token)
+	// 	// localStorage.setItem('token', data.login.token)
+	// 	navigation.navigate('Home')
+	// 	return <Text>Loading ...</Text>
+	// 	// return <Loading />
+	// }
 
 	if (loading) {
-		return <div>Loading...</div>
+		return <Text>Loading ...</Text>
+		// return <Loading />
 	}
 
 	if (error) {
-		return <div>{error.message}</div>
+		return (
+			<View style={styles.container}>
+				<Text>{error.message}</Text>
+			</View>
+		)
+		// return <div>{error.message}</div>
 	}
 
 	function login(username, password) {
@@ -40,13 +83,6 @@ const Login = ({ navigation }) => {
 			}
 		})
 	}
-	console.log(data)
-
-	// console.log(username, '<< username')
-	// console.log(password, '<< password')
-	// if (data) {
-	// 	console.log(data.login.token)
-	// }
 
 	return (
 		// <ImageBackground source={require('../assets/foad-roshan-9JbvVFJ1eLk-unsplash.jpg')}>
@@ -63,7 +99,7 @@ const Login = ({ navigation }) => {
 				onChangeText={(inputUsername) => setUsername(inputUsername)}
 				placeholderText="Username"
 				iconType="user"
-				keyboardType="username"
+				keyboardType="default"
 				autoCapitalize="none"
 				autoCorrect={false}
 			/>
