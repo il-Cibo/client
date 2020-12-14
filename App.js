@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe } from './screens'
+import { Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe, EditRecipe } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
@@ -18,6 +18,7 @@ const Tab = createBottomTabNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
+      <HomeStack.Screen name="EditRecipe" component={EditRecipe} options={{ headerShown: false }} />
       <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <HomeStack.Screen name="Search" component={Search} options={{ headerShown: false }} />
       <HomeStack.Screen name="DetailRecipe" component={DetailRecipe} options={{ headerShown: false }} />
@@ -64,14 +65,14 @@ function HomeTabs() {
 }
 
 export default function App() {
-  
+
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>

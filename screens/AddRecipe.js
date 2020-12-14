@@ -20,7 +20,7 @@ const AddRecipe = () => {
   const [cookingTime, setCookingTime] = useState()
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
-  const [tag, setTags] = useState()
+  const [tags, setTags] = useState()
   
   
   useEffect(() => {
@@ -174,8 +174,8 @@ const AddRecipe = () => {
 
             <Text style={styles.inputLabel}>Tags</Text>
             <AddForm
-              labelValue={tag}
-              onChangeText={(tag) => setTags(tag)}
+              labelValue={tags}
+              onChangeText={(tag) => setTags(tags)}
               placeholderText="Input recipe's tags here"
               autoCapitalize="none"
               autoCorrect={false}
