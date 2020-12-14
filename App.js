@@ -70,7 +70,8 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-             <Stack.Screen name="Login" component={UserProfile} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Login" component={UserProfile} options={{ headerShown: false }}></Stack.Screen>
+            {/* <Stack.Screen name="Login" component={MealPlan} options={{ headerShown: false }}></Stack.Screen> */}
             {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen> */}
             {/* <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen> */}
             {/* <Stack.Screen name="AddRecipe" component={AddRecipe} options={{ headerShown: false }}></Stack.Screen> */}

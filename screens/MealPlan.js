@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView, Text } from 'react-native'
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import CalendarStrip from 'react-native-calendar-strip';
-// import CalendarStrip from 'react-native-slideable-calendar-strip';
 import { MealPlanCard } from '../components'
 import { GET_MEALPLAN } from '../config/queries'
 import { useQuery } from '@apollo/client'
+import moment from 'moment'
 
 const MealPlan = () => {
   const [dateNow, setDateNow] = useState()
@@ -23,14 +22,11 @@ const MealPlan = () => {
   }, [])
 
   const getTodayRecipe = (value) => {
-    console.log(value);
+    const newDate = moment(value).format('YYYY-MM-DD')
+    console.log(newDate);
     // setSelectedDate(date)
     // const todayRecipe = allPlans.filter(el => el.date === selectedDate)
     // setTodayPlan(todayRecipe)
-  }
-  
-  const test = (value) => {
-    console.log(value);
   }
 
   const recipe = {
@@ -45,27 +41,21 @@ const MealPlan = () => {
       <View style={style.calendarHeader}>
         {/* <Text>INI MEAL PLAN</Text> */}
         <CalendarStrip
-          style={{height:150, paddingTop: 20, paddingBottom: 10}}
+          style={{height:150, paddingTop: 20, paddingBottom: 10}} 
           scrollable={true}
           startingDate={dateNow}
-          onDateSelected={(date) => test(date)}
-          // onDateSelected={(date) => getTodayRecipe(date)}
-          selectedDate={dateNow}
+          onDateSelected={(date) => getTodayRecipe(date)}
+          // selectedDate={dateNow}
         />
       </View>
 
-      <ScrollView style={style.planBody}>
-        {/* {
+      {/* <ScrollView style={style.planBody}>
+        {
           todayPlan.recipe.map((recipe) => {
             <MealPlanCard key={recipe.id} recipe={recipe} />
           })
-        } */}
-        {/* <MealPlanCard recipe={recipe} />
-        <MealPlanCard recipe={recipe} />
-        <MealPlanCard recipe={recipe} />
-        <MealPlanCard recipe={recipe} />
-        <MealPlanCard recipe={recipe} /> */}
-      </ScrollView>
+        }
+      </ScrollView> */}
     </SafeAreaView>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProfileHeader, ProfileCollection } from '../components'
+import { ProfileHeader, ProfileCollection, ProfileGrid, Gallery } from '../components'
 import { Card } from 'react-native-elements'
 import {
   SafeAreaView,
@@ -25,33 +25,56 @@ const UserProfile = () => {
         token: token
       }
     }
-  }, [])
+  })
+
+  const userData = {
+    "user": {
+      "id": 3,
+      "username": "testlogin",
+      "email": "testlogin@mail.com",
+      "gender": "male",
+      "avatar": "https://image.flaticon.com/icons/png/512/1674/1674291.png",
+      "Recipes": [
+        {
+          "id": 1,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/1f2dae88-cb8d-4837-b798-74fe04657b34.png"
+        },
+        {
+          "id": 2,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/fe87fb9b-60c8-4eab-a1df-c2d4bdf6e418.png"
+        },
+        {
+          "id": 3,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/de779480-2420-43c4-8bee-5bfb7c580456.jpg"
+        },
+        {
+          "id": 6,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/0ed4b29e-6efd-4ae9-a2b0-3518ac3ab1a7.jpg"
+        },
+        {
+          "id": 7,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/ce7f637e-2e23-4aa0-a544-3ccd59687042"
+        },
+        {
+          "id": 8,
+          "image": "https://mealo-image.s3.ap-southeast-1.amazonaws.com/ade93cb8-2f21-480d-a818-991d2839f4e9.jpg"
+        }
+      ]
+    }
+  }
 
   useEffect(() => {
     setUserProfile({
-      name: data.user.name,
-      username: data.user.username,
-      avatar: data.user.avatar
+      name: userData.user.name,
+      username: userData.user.username,
+      avatar: userData.user.avatar
     })
 
-    setUserRecipe({
-      username: data.user.username,
-      recipes: data.user.Recipes
-    })
+    // setUserRecipe({
+    //   username: userData.user.username,
+    //   recipes: userData.user.Recipes
+    // })
   }, [])
-
-  const photos = [
-    { key: 'A' }, 
-    { key: 'B' }, 
-    { key: 'C' }, 
-    { key: 'D' }, 
-    { key: 'E' }, 
-    { key: 'F' }, 
-    { key: 'G' }, 
-    { key: 'H' }, 
-    { key: 'I' }, 
-    { key: 'J' }
-  ]
 
   const checkCollection = () => {
     if (userProfile.Recipe.length > 0) {
@@ -83,22 +106,21 @@ const UserProfile = () => {
   }
 
   return (
-    <ScrollView style={styles.scroll}>
-      <View style={styles.container}>
-        <Card containerStyle={styles.cardContainer}>
+    <View>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
           <ProfileHeader data={userProfile}/>
-          {/* {checkCollection()} */}
-          {/* <ProfileHeader data={profiles} /> */}
-          <SafeAreaView>
-            <ProfileCollection data={photos} user={userRecipe} />
-          </SafeAreaView>
-        </Card>
-      </View>
-    </ScrollView>
+          <View style={styles.container}>
+            <Gallery data={userData.user.Recipes} user={userProfile}/>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   )
 }
 
 export default UserProfile
+
 
 const styles = StyleSheet.create({
   cardContainer: {
