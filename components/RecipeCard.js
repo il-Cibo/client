@@ -1,18 +1,47 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image, Button } from 'react-native'
-import { Card } from 'react-native-elements'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image } from 'react-native'
+import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
 function RecipeCard({ navigation, recipe }) {
+	const [isVisible, setIsVisible] = useState(false)
+	const list = [
+		{
+			title: 'Edit Recipe',
+			containerStyle: { 
+				backgroundColor: '#FFF',
+			},
+			titleStyle: { 
+				color: 'black',
+				marginLeft: 30,
+			},
+			onPress: () => {
+				setIsVisible(false)
+				navigation.navigate('EditRecipe')
+			} 
+		},
+		{
+			title: 'Cancel',
+			containerStyle: { 
+				backgroundColor: '#FFF' 
+			},
+			titleStyle: { 
+				color: 'black',
+				marginLeft: 30,
+			},
+			onPress: () => setIsVisible(false)
+		}
+	]
 	function goToRecipeDetail() {
 		console.log(navigation, '<< console')
 		navigation.navigate('DetailRecipe', {
 			recipeId: recipe.id
 		})
 	}
+
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -23,11 +52,11 @@ function RecipeCard({ navigation, recipe }) {
 					/>
 					<Text style={styles.usernameStyle}>username</Text>
 				</View>
-				<MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
-				source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094' }} />
+				source={{ uri: recipe.image }} />
 			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
@@ -47,6 +76,17 @@ function RecipeCard({ navigation, recipe }) {
 					<Text style={styles.info}>Tags: chicken</Text>
 				</View>
 			</View>
+			<BottomSheet 
+			transparent={true}
+			isVisible={isVisible}>
+				{list.map((l, i) => (
+					<ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
+						<ListItem.Content>
+							<ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+						</ListItem.Content>
+					</ListItem>
+				))}
+			</BottomSheet>
 		</Card>
 	)
 }

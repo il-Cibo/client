@@ -3,16 +3,16 @@ import { Button, Image, View, Platform, StyleSheet, Text, SafeAreaView, ScrollVi
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { AddForm } from '../components'
-import { UPLOAD_RECIPE } from '../config/queries'
+import { UPLOAD_RECIPE, GET_ALL_RECIPES } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
 import { useSelector } from 'react-redux'
 
-const AddRecipe = () => {
-  // const token = useSelector((token) => state.token)
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-  
+const AddRecipe = ({ navigation }) => {
+  const token = useSelector((state) => state.token)
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
@@ -21,8 +21,8 @@ const AddRecipe = () => {
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
   const [tag, setTags] = useState()
-  
-  
+
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -66,12 +66,16 @@ const AddRecipe = () => {
   }
 
   const [uploadRecipe] = useMutation(UPLOAD_RECIPE, {
-		context: {
-			headers: {
-				token: token
-			}
-		}
-	})
+    context: {
+      headers: {
+        token: token
+      }
+    }
+  }, {
+    refetchQueries: [
+      { query: GET_ALL_RECIPES }
+    ]
+  })
 
   const generateRNFile = (uri, name) => {
     return uri ? new ReactNativeFile({
@@ -81,7 +85,7 @@ const AddRecipe = () => {
     }) : null;
   }
 
-  const addNewRecipe = async () => {
+  const addNewRecipe = () => {
     const file = generateRNFile(image, `picture-${Date.now()}`)
 
     const recipe = {
@@ -94,9 +98,9 @@ const AddRecipe = () => {
       ingredients: ingredients.split('\n')
     }
 
-    const tagData = tags.split('\n')
+    const tagData = tag.split('\n')
 
-    console.log(recipe);
+    console.log(recipe, '<< resep');
     console.log(tagData);
 
     uploadRecipe({
@@ -105,7 +109,9 @@ const AddRecipe = () => {
         tags: tagData
       }
     })
+    navigation.navigate('Home')
   }
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -175,7 +181,7 @@ const AddRecipe = () => {
             <Text style={styles.inputLabel}>Tags</Text>
             <AddForm
               labelValue={tag}
-              onChangeText={(tag) => setTags(tag)}
+              onChangeText={(input) => setTags(input)}
               placeholderText="Input recipe's tags here"
               autoCapitalize="none"
               autoCorrect={false}
@@ -193,10 +199,6 @@ const AddRecipe = () => {
 export default AddRecipe
 
 const styles = StyleSheet.create({
-  submit: {
-    backgroundColor: '#FF9494',
-    margin: 10
-  },
   inputForm: {
     // paddingTop: 100,
     paddingLeft: 20,
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   inputLabel: {
-    fontSize: 14
+    fontSize: 10
   },
   input: {
     padding: 10,
@@ -231,7 +233,8 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   title: {
-    margin: 24,
+    marginLeft: 40,
+    marginTop: 20,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'left',
@@ -239,8 +242,8 @@ const styles = StyleSheet.create({
   },
   camera: {
     alignItems: 'center',
-    paddingRight: 24,
-    paddingTop: 12
+    paddingTop: 30,
+    paddingBottom: 20
   },
   cameraIcon: {
     color: 'black',

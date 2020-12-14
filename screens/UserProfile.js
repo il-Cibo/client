@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProfileHeader, ProfileCollection, ProfileGrid, Gallery } from '../components'
-import { Card } from 'react-native-elements'
+import { ProfileHeader, Gallery } from '../components'
 import {
   SafeAreaView,
   ScrollView,
@@ -16,7 +15,7 @@ import { useSelector } from 'react-redux'
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState()
   const [userRecipe, setUserRecipe] = useState()
-  // const token = useSelector((token) => state.token)
+  // const token = useSelector((state) => state.token)
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 
   const { loading, error, data } = useQuery(GET_PROFILE, {
@@ -63,6 +62,7 @@ const UserProfile = () => {
     }
   }
 
+  console.log(data, '<<< data user')
   useEffect(() => {
     setUserProfile({
       name: userData.user.name,
@@ -70,24 +70,17 @@ const UserProfile = () => {
       avatar: userData.user.avatar
     })
 
+    // setUserProfile({
+    //   name: data.user.name,
+    //   username: data.user.username,
+    //   avatar: data.user.avatar
+    // })
+
     // setUserRecipe({
-    //   username: userData.user.username,
-    //   recipes: userData.user.Recipes
+    //   recipes: data.user.Recipes
     // })
   }, [])
 
-  const checkCollection = () => {
-    if (userProfile.Recipe.length > 0) {
-      return (
-        <ProfileCollection data={userProfile.Recipe}/>
-      )
-    } else {
-      return (
-        <Text>No Recipes Collection</Text>
-      )
-    }
-  }
-  
   if(loading) {
     return (
       <View style={styles.container}>
@@ -120,7 +113,6 @@ const UserProfile = () => {
 }
 
 export default UserProfile
-
 
 const styles = StyleSheet.create({
   cardContainer: {
