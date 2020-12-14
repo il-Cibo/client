@@ -1,15 +1,62 @@
 import React, { useContext, useState } from 'react';
-import { View, Text,Image, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Form, Picker, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
+import { useMutation } from '@apollo/client'
+import { REGISTER_USER } from '../config/queries'
+import { RadioButton } from 'react-native-paper'
 
 const register = ({ navigation }) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [userName, setUserName] = useState();
-    const [gender, setGender] = useState();
+
+    const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
+    // console.log(data)
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [userName, setUserName] = useState('');
+    const [gender, setGender] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [addUser, setAddUser] = useState({
+        username: '',
+        email: '',
+        password: '',
+        gender: '',
+        name: '',
+        avatar: ''
+    })
+
+    const onsubmit = (event) => {
+        event.preventDefault()
+
+        newUser({
+            variables: {
+                user: {
+                    username: userName,
+                    email: email,
+                    password: password,
+                    gender: gender,
+                    name: name,
+                    avatar: avatar
+                }
+            }
+        })
+    }
+    if (loading) {
+        return  <Spinner color='blue' />
+    }
+
+    if (error) {
+		return (
+		<Item error>
+            <Input placeholder={error}/>
+            <Icon name='close-circle' />
+          </Item>
+        )
+    }
+    
     return (
+
         <View style={styles.container}>
             <Text style={styles.text}>Create an account</Text>
             <Image
@@ -17,63 +64,100 @@ const register = ({ navigation }) => {
                 style={styles.logo}
             />
             <ScrollView>
-            <FormInput
-                labelValue={userName}
-                onChangeText={(name) => setUserName(name)}
-                placeholderText="Name"
-                iconType="user"
-                autoCapitalize="none"
-            />
-            <FormInput
-                labelValue={gender}
-                onChangeText={(userGender) => setGender(userGender)}
-                placeholderText="Gender"
-                iconType="man"
-                autoCapitalize="none"
-            />
-            
-            <FormInput
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email"
-                iconType="mail"
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <FormInput
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
+                <FormInput
+                    name="username"
+                    value={userName}
+                    onChangeText={(userName) => setUserName(userName)}
+                    placeholderText="username"
+                    iconType="user"
+                    autoCapitalize="none"
+                />
+                <FormInput
+                    name="name"
+                    labelValue={name}
+                    onChangeText={(userfullName) => setName(userfullName)}
+                    placeholderText="Full Name"
+                    iconType="user"
+                    autoCapitalize="none"
+                />
 
-            <FormButton
-                buttonTitle="register"
-                onPress={() => register(email, password)}
-            />
+                <FormInput
+                    name="email"
+                    labelValue={email}
+                    onChangeText={(userEmail) => setEmail(userEmail)}
+                    placeholderText="email"
+                    iconType="mail"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <FormInput
+                    name="password"
+                    labelValue={password}
+                    onChangeText={(userPassword) => setPassword(userPassword)}
+                    placeholderText="password"
+                    iconType="lock"
+                    secureTextEntry={true}
+                />
+                <FormInput
+                    name="avatar"
+                    labelValue={avatar}
+                    onChangeText={(userAvatar) => setAvatar(userAvatar)}
+                    placeholderText="avatar"
+                    iconType="user"
+                    secureTextEntry={true}
+                />
+                {/* <RadioButton
+                    value="Male"
+                    status={gender === 'Male' ? 'checked' : 'unchecked'}
+                    onPress={() => setGender('Male')}
+                /> 
+                <RadioButton
+                    value="Female"
+                    status={gender === 'Female' ? 'checked' : 'unchecked'}
+                    onPress={() => setGender('Female')}
+                /> */}
+                {/* <Form>
+                    <Picker
+                        mode="dropdown"
+                        placeholder="Select One"
+                        placeholderStyle={{ color: "#2874F0" }}
+                        note={false}
+                        selectedValue={gender}
+                        onValueChange={onValueChange}
+                    >
+                        <Picker.Item label="Male" value="Male" />
+                        <Picker.Item label="Female" value="Female" />
+                        
+                    </Picker>
+                </Form> */}
 
-            <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>
-                    By registering, you confirm that you accept our{' '}
-                </Text>
-                <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-                    <Text style={[styles.color_textPrivate, { color: '#e88832' }]}> Terms of service </Text>
-                </TouchableOpacity>
-                <Text style={styles.color_textPrivate}> and </Text>
-                <Text style={[styles.color_textPrivate, { color: '#e88832' }]}> Privacy Policy </Text>
-            </View>
+                <FormButton
+                    buttonTitle="register"
+                    onPress={onsubmit}
+                    onPress={() => navigation.navigate('Register')}
+                />
 
-            {Platform.OS === 'android' ? (
-                <View>
-                    <SocialButton
-                        buttonTitle="Sign Up with Google"
-                        btnType="google"
-                        color="#de4d41"
-                        backgroundColor="#f5e7ea"
-                    />
+                <View style={styles.textPrivate}>
+                    <Text style={styles.color_textPrivate}>
+                        By registering, you confirm that you accept our{' '}
+                    </Text>
+                    <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
+                        <Text style={[styles.color_textPrivate, { color: '#e88832' }]}> Terms of service </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.color_textPrivate}> and </Text>
+                    <Text style={[styles.color_textPrivate, { color: '#e88832' }]}> Privacy Policy </Text>
                 </View>
-            ) : null}
+
+                {Platform.OS === 'android' ? (
+                    <View>
+                        <SocialButton
+                            buttonTitle="Sign Up with Google"
+                            btnType="google"
+                            color="#de4d41"
+                            backgroundColor="#f5e7ea"
+                        />
+                    </View>
+                ) : null}
 
             </ScrollView>
             <TouchableOpacity
@@ -96,10 +180,11 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     text: {
-        fontFamily: 'Kufam-SemiBoldItalic',
+        // fontFamily: 'Kufam-SemiBoldItalic',
         fontSize: 28,
         marginBottom: 10,
         color: '#051d5f',
+        marginTop: 50
     },
     logo: {
         justifyContent: "center",
@@ -107,6 +192,7 @@ const styles = StyleSheet.create({
         height: 150,
         width: 150,
         resizeMode: 'cover',
+        marginTop: 15
     },
     navButton: {
         marginTop: 15,
@@ -128,3 +214,13 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
 });
+
+
+{/* <form onSubmit={onSubmit}>
+    <input name="username" value={addUser.userName} onChange={onChange} placeholder="username" />
+    <input name="gender" value={addUser.gender} onChange={onChange} placeholder="gender" />
+    <input name="email" value={addUser.email} onChange={onChange} placeholder="mail" />
+    <input name="password" value={addUser.password} onChange={onChange} placeholder="pass" />
+    <input name="avatar" value={addUser.avatar} onChange={onChange} placeholder="avatar" />
+    <input type="sumbit" value="register" />
+</form> */}

@@ -103,7 +103,6 @@ export const LOGIN_USER = gql`
 		}
 	}
 `
-
 export const REGISTER_USER = gql`
 	mutation Register ($user : Register) {
 		register(user: $user){
