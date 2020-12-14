@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image, Form, Picker, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Form, Picker,Item, Spinner, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
@@ -17,15 +17,15 @@ const register = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [gender, setGender] = useState('');
     const [avatar, setAvatar] = useState('');
-    const [addUser, setAddUser] = useState({
-        username: '',
-        email: '',
-        password: '',
-        gender: '',
-        name: '',
-        avatar: ''
-    })
-
+    // const [addUser, setAddUser] = useState({
+    //     username: '',
+    //     email: '',
+    //     password: '',
+    //     gender: '',
+    //     name: '',
+    //     avatar: ''
+    // })
+    
     const onsubmit = (event) => {
         event.preventDefault()
 
@@ -42,18 +42,32 @@ const register = ({ navigation }) => {
             }
         })
     }
-    if (loading) {
-        return  <Spinner color='blue' />
-    }
+    console.log(newUser)
+    // if (loading) {
+    //     return  <Spinner color='blue' />
+    // }
 
-    if (error) {
+    // if (error) {
+	// 	return (
+	// 	<Item error>
+    //         <Input placeholder={error}/>
+    //         <Icon name='close-circle' />
+    //       </Item>
+    //     )
+    // }
+    if (loading) {
+		return <Text>Loading ...</Text>
+		// return <Loading />
+	}
+
+	if (error) {
 		return (
-		<Item error>
-            <Input placeholder={error}/>
-            <Icon name='close-circle' />
-          </Item>
-        )
-    }
+			<View style={styles.container}>
+				<Text>{error.message}</Text>
+			</View>
+		)
+		// return <div>{error.message}</div>
+	}
     
     return (
 
@@ -134,7 +148,7 @@ const register = ({ navigation }) => {
                 <FormButton
                     buttonTitle="register"
                     onPress={onsubmit}
-                    onPress={() => navigation.navigate('Register')}
+                    // onPress={() => navigation.navigate('Register')}
                 />
 
                 <View style={styles.textPrivate}>
