@@ -1,29 +1,37 @@
-import React, {useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
+
 import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 import { GET_ALL_RECIPES } from '../config/queries'
 import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
 import { Octicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import Favorite from './Favorite'
+import Constants from 'expo-constants'
 
+const wait = timeout => {
+	return new Promise(resolve => {
+		setTimeout(resolve, timeout);
+	});
+};
 
-function Home({ navigation, ...props }) {
-    const [userId, setUserId] = useState();
+function Home({ navigation }) {
+	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
+	const token = useSelector((state) => state.token)
+  const [userId, setUserId] = useState();
 	const [recipeId, setRecipeId] = useState();
 	const [status, setStatus] = useState(false);
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-	const token = useSelector((state) => state.token)
-	const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
+	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
 				token: token
 			}
 		}
 	})
+
 	const [newFavRecipe] = useMutation (ADD_TO_FAVORITE_RECIPE , {
 		context: {
 			headers: {
@@ -53,7 +61,20 @@ function Home({ navigation, ...props }) {
             }
         })
     }
-	 
+
+	useEffect(() => {
+		refetch()
+	}, [data])
+
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+
+		wait(500).then(() => setRefreshing(false));
+	}, []);
+
+
 	if (loading) {
 		return <Text>Loading ...</Text>
 	}
@@ -75,15 +96,12 @@ function Home({ navigation, ...props }) {
 			<View style={styles.header}>
 				<Text style={styles.headerText}>Mealo</Text>
 				<Octicons name="search" size={24} color="black" onPress={goToSearch} />
-				
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
-			<ScrollView>
-				{/* <TouchableOpacity>
-				<Text>{JSON.stringify(data)}</Text>
-				<Icon name="Favorite" onPress={addFavorite(data?.recipes?.id)}/>
-				</TouchableOpacity> */}
-				<Text>{JSON.stringify(data)}</Text>
+			<ScrollView
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+				title="Please wait, refreshing.."
+				>
 				{data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
 				))}
@@ -96,7 +114,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		justifyContent: 'flex-start',
+		// justifyContent: 'flex-start',
+		marginTop: Constants.statusBarHeight,
 	},
 	header: {
 		height: '5%',

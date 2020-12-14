@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe } from './screens'
+import { Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe, EditRecipe } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
@@ -10,6 +10,8 @@ import { ApolloProvider } from '@apollo/client'
 import client from './config/client'
 import { Provider } from 'react-redux'
 import store from './store'
+import { useFonts } from 'expo-font'
+import AppLoading from 'expo-app-loading'
 
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -19,6 +21,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <HomeStack.Screen name="EditRecipe" component={EditRecipe} options={{ headerShown: false }} />
       <HomeStack.Screen name="Search" component={Search} options={{ headerShown: false }} />
       <HomeStack.Screen name="DetailRecipe" component={DetailRecipe} options={{ headerShown: false }} />
     </HomeStack.Navigator>
@@ -64,15 +67,20 @@ function HomeTabs() {
 }
 
 export default function App() {
-  
+  const [loaded] = useFonts({
+		Oswald: require('./assets/fonts/Oswald-VariableFont_wght.ttf')
+  })
+  if (!loaded) {
+		return <AppLoading />
+	}
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

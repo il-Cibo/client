@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Button, View, StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native';
+import { Button, View, StyleSheet, Text, ScrollView } from 'react-native';
 import { AddForm } from '../components'
+import { EDIT_RECIPE } from '../config/queries'
+import { useMutation } from '@apollo/client'
 
 const EditRecipe = ({ data }) => {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [serving, setServing] = useState()
@@ -10,26 +13,42 @@ const EditRecipe = ({ data }) => {
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
   const [tags, setTags] = useState()
-
+  const [updateRecipe] = useMutation(EDIT_RECIPE, {
+    context: {
+      headers: {
+        token: token
+      }
+    }
+  })
   const editRecipe = () => {
     const recipe = {
       title: title,
       description: description,
-      serving: serving,
-      cookingTime: cookingTime,
+      ingredients: ingredients.split('\n'),
+      serving: +serving,
+      time: +cookingTime,
+      step: cookingSteps.split('\n')
     }
 
     console.log(recipe);
-  }
-  return (
-    <SafeAreaView>
-      <ScrollView>
-          <View style={styles.container}>
-            <View>
-              <Text style={styles.title}>Edit Recipe Title</Text>
-            </View>
-          </View>
 
+    const tagData = tags.split('\n')
+
+    updateRecipe({
+      variables: {
+        id: data.id,
+        recipe: recipe,
+        tags: tagData
+      }
+    })
+  }
+
+  return (
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>Edit Recipe Title</Text>
+        </View>
+        <ScrollView>
           <View style={styles.inputForm}>
             <View>
               <Text style={styles.inputLabel}>Title</Text>
@@ -96,11 +115,10 @@ const EditRecipe = ({ data }) => {
               />
 
             </View>
-            <Button title='Save' style={styles.submit} onPress={editRecipe}/>
+            <Button title='Save' style={styles.submit} onPress={editRecipe} />
           </View>
-        
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </View>
   )
 }
 
@@ -116,16 +134,15 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 20,
     justifyContent: 'center',
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'pink'
   },
   inputLabel: {
-    fontSize: 20
+    fontSize: 14
   },
   input: {
     padding: 10,
-    flex: 1,
     fontSize: 16,
     color: '#333',
     justifyContent: 'center',
@@ -133,9 +150,10 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: 20,
-    flex: 1, 
-    flexDirection: 'row',  
-    justifyContent: 'space-between'
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: '#FFF'
+
   },
   textStyle: {
     color: 'black',

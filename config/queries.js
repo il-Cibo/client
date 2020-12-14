@@ -17,7 +17,7 @@ import { gql } from '@apollo/client'
 //   }
 // `
 
-export const GET_PROFILE = gql `
+export const GET_PROFILE = gql`
   query getUserProfile {
     user {
       username
@@ -41,16 +41,8 @@ export const GET_PROFILE = gql `
   }
 `
 
-export const UPLOAD_RECIPE = gql `
-	mutation addNewRecipe ($recipe: NewRecipe, $tags: [String!]) {
-		addRecipe (recipe: $recipe, tags: $tags) {
-			id
-		}
-	}
-`
-
 // masih gak yakin sama querynya
-export const GET_MEALPLAN = gql `
+export const GET_MEALPLAN = gql`
   query getUserMealPlan {
 		findPlan {
 			User {
@@ -92,6 +84,35 @@ export const GET_RECIPE = gql`
 			serving
 			time
 		}
+	}
+`
+
+export const UPLOAD_RECIPE = gql`
+	mutation addNewRecipe ($recipe: NewRecipe, $tags: [String!]) {
+		addRecipe (recipe: $recipe, tags: $tags) {
+			id
+		}
+	}
+`
+
+export const EDIT_RECIPE = gql` 
+	mutation EditRecipe($id: Int!, $recipe: NewRecipe, $tags: [String!]) {
+		editRecipe (id: $id, recipe: $recipe, tags: $tags) {
+			id
+			title
+			description
+			ingredients
+			step
+			serving
+			time
+			Tags
+		}
+	}
+`
+
+export const DELETE_RECIPE = gql`
+	mutation DeleteRecipe($id: Int!) {
+		deleteRecipe(id: $id)
 	}
 `
 

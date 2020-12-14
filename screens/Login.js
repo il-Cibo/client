@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FormInput, FormButton, SocialButton, Loading } from '../components'
+import { FormInput, SocialButton, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
 import {
@@ -12,8 +12,15 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store'
+import { Button } from 'react-native-paper'
+import { useFonts } from 'expo-font'
+// import { Oswald_400Regular } from '@expo-google-fonts/oswald'
+import AppLoading from 'expo-app-loading'
 
 const Login = ({ navigation }) => {
+	const [loaded] = useFonts({
+		Oswald: require('../assets/fonts/Oswald-VariableFont_wght.ttf')
+	})
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch()
@@ -27,6 +34,9 @@ const Login = ({ navigation }) => {
 		})
 	})
 
+	if (!loaded) {
+		return <AppLoading />
+	}
 	// const storeData = async (value) => {
 	// 	try {
 	// 		await AsyncStorage.setItem('token', value)
@@ -87,10 +97,10 @@ const Login = ({ navigation }) => {
 	return (
 		// <ImageBackground source={require('../assets/foad-roshan-9JbvVFJ1eLk-unsplash.jpg')}>
 		<View style={styles.container}>
-			<Text style={styles.text}>Mealo App </Text>
-			<Text>Please login to continue</Text>
+			<Text style={styles.title}>Mealo</Text>
+			<Text style={styles.h2}>Please login to continue</Text>
 			<Image
-				source={require('../assets/three-female-friends-sitting-cafe-lunch-talking_74855-5295.jpg')}
+				source={require('../assets/login.png')}
 				style={styles.logo}
 			/>
 
@@ -112,10 +122,15 @@ const Login = ({ navigation }) => {
 				secureTextEntry={true}
 			/>
 
-			<FormButton
-				buttonTitle="Login"
+			<Button
+				mode="contained"
+				color="#FF9494"
+				labelStyle={styles.buttonStyle}
+				style={{width: 300, borderRadius: 15, marginTop: 30}}
 				onPress={() => login(username, password)}
-			/>
+			>
+				Login
+			</Button>
 
 			{/* <TouchableOpacity style={styles.forgotButton} >
 				<Text style={styles.navButtonText}>Forgot Password? </Text>
@@ -124,7 +139,7 @@ const Login = ({ navigation }) => {
 			<View>
 				
 				<SocialButton
-					buttonTitle="Sign In with Google"
+					buttonTitle="Sign in with Google"
 					btnType="google"
 					color="#de4d41"
 					backgroundColor="#f5e7ea"
@@ -134,7 +149,7 @@ const Login = ({ navigation }) => {
 				style={styles.forgotButton}
 				onPress={() => navigation.navigate('Register')}>
 				<Text style={styles.navButtonText}>
-				{"\n"}Don't have an acount? Create here
+				{"\n"}Don't have an acount? Create here!
                  </Text>
 			</TouchableOpacity>
 		</View>
@@ -145,33 +160,41 @@ export default Login;
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#f9fafd',
+		backgroundColor: '#FFF',
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 20,
-		paddingTop: 5,
+		paddingTop: 10,
 	},
-	text: {
-		// fontFamily: 'Kufam-SemiBoldItalic',
-		fontSize: 28,
+	title: {
+		fontFamily: 'Oswald',
+		fontSize: 40,
 		marginBottom: 10,
-		color: '#051d5f',
+		color: 'black',
+		alignSelf: 'flex-start',
+		marginLeft: 20
+	},
+	h2: {
+		color: '#bdc3c7',
+		alignSelf: 'flex-start',
+		marginLeft: 20,
+		fontFamily: 'Oswald',
 	},
 	logo: {
-		justifyContent: "center",
-		alignItems: "center",
-		height: 150,
-		width: 150,
+		alignSelf: 'flex-end',
+		height: 250,
+		width: 250,
 		resizeMode: 'cover',
 	},
 	navButton: {
 		marginTop: 15,
 	},
 	navButtonText: {
-		fontSize: 18,
+		fontSize: 14,
 		fontWeight: '500',
-		color: '#2e64e5',
+		color: '#FF9494',
+		fontFamily: 'Oswald',
 	},
 	textPrivate: {
 		flexDirection: 'row',
@@ -179,5 +202,12 @@ const styles = StyleSheet.create({
 		marginVertical: 35,
 		justifyContent: 'center',
 	},
+	buttonStyle: {
+		color: '#EEE6E6',
+		letterSpacing: 3,
+		fontWeight: 'bold',
+		fontSize: 16,
+		fontFamily: 'Oswald'
+	}
 });
 

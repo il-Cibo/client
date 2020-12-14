@@ -25,8 +25,8 @@ const UserProfile = () => {
         token: token
       }
     }
-  }, [])
-
+  })
+  console.log(data, '<<< data user')
   useEffect(() => {
     setUserProfile({
       name: data.user.name,

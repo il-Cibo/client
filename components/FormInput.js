@@ -27,11 +27,11 @@ export default FormInput;
 const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 5,
-    marginBottom: 10,
+    marginBottom: 5,
     width: '100%',
     height: windowHeight / 15,
     borderColor: '#ccc',
-    borderRadius: 3,
+    borderRadius: 10,
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -47,12 +47,15 @@ const styles = StyleSheet.create({
     width: 50,
   },
   input: {
-    padding: 10,
+    marginLeft: 20,
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
     justifyContent: 'center',
     alignItems: 'center',
+    borderTopLeftRadius: 20,
+    fontFamily: 'Oswald',
+    letterSpacing: 2
   },
   inputField: {
     padding: 10,
