@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image,ListItem, Body, CheckBox, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Form, Picker, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
@@ -43,6 +43,9 @@ const register = ({ navigation }) => {
         })
     }
 
+    const onValueChange = (value) => {
+        setGender(value);
+      }
     return (
 
         <View style={styles.container}>
@@ -104,22 +107,20 @@ const register = ({ navigation }) => {
                     status={gender === 'Female' ? 'checked' : 'unchecked'}
                     onPress={() => setGender('Female')}
                 /> */}
-                {/* <ListItem>
-                    <CheckBox 
-                    checked={true} 
-                    // onPress={() => setGender('Male')}
-                    />                    
-                    <Body>
-                        <Text>Male</Text>
-                    </Body>
-                    {/* <CheckBox 
-                    checked={gender === 'Female' ? true : false} 
-                    // onPress={() => setGender('Female')}
-                    />
-                    <Body>
-                        <Text>Female</Text>
-                    </Body> */}
-                {/* </ListItem> */} 
+                {/* <Form>
+                    <Picker
+                        mode="dropdown"
+                        placeholder="Select One"
+                        placeholderStyle={{ color: "#2874F0" }}
+                        note={false}
+                        selectedValue={gender}
+                        onValueChange={onValueChange}
+                    >
+                        <Picker.Item label="Male" value="Male" />
+                        <Picker.Item label="Female" value="Female" />
+                        
+                    </Picker>
+                </Form> */}
 
                 <FormButton
                     buttonTitle="register"
