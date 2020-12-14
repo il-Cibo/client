@@ -1,22 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const GET_PROFILE = gql `
-  query getUserProfile {
-    user {
-      username
-      email
-      gender
-      name
-			avatar,
-			Recipes {
-				id
-				title
-				image
-			}
-		}
-  }
-`
-
 // export const GET_PROFILE = gql `
 //   query getUserProfile {
 //     user {
@@ -29,17 +12,34 @@ export const GET_PROFILE = gql `
 // 				id
 // 				title
 // 				image
-// 				serving
-// 				time
-// 				ingredients
-// 				step
-// 				Tags {
-// 					name
-// 				}
 // 			}
 // 		}
 //   }
 // `
+
+export const GET_PROFILE = gql `
+  query getUserProfile {
+    user {
+      username
+      email
+      gender
+      name
+			avatar,
+			Recipes {
+				id
+				title
+				image
+				serving
+				time
+				ingredients
+				step
+				Tags {
+					name
+				}
+			}
+		}
+  }
+`
 
 export const UPLOAD_RECIPE = gql `
 	mutation addNewRecipe ($recipe: NewRecipe, $tags: [String!]) {

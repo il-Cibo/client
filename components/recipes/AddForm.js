@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     width: 50,
   },
   input: {
-    padding: 10,
+    padding: 8,
     flex: 1,
     fontSize: 10,
     color: '#333',

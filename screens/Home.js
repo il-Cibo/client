@@ -9,8 +9,8 @@ import { Octicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 
 function Home({ navigation }) {
-	const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-	// const token = useSelector((state) => state.token)
+	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+	const token = useSelector((state) => state.token)
 	const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -36,7 +36,6 @@ function Home({ navigation }) {
 		navigation.navigate('Search')
 	}
 
-	console.log(data);
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>

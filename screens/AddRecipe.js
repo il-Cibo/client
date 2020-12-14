@@ -193,10 +193,6 @@ const AddRecipe = () => {
 export default AddRecipe
 
 const styles = StyleSheet.create({
-  submit: {
-    backgroundColor: '#FF9494',
-    margin: 10
-  },
   inputForm: {
     // paddingTop: 100,
     paddingLeft: 20,
@@ -208,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   inputLabel: {
-    fontSize: 14
+    fontSize: 10
   },
   input: {
     padding: 10,
@@ -231,7 +227,8 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   title: {
-    margin: 24,
+    marginLeft: 40,
+    marginTop: 20,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'left',
@@ -239,8 +236,8 @@ const styles = StyleSheet.create({
   },
   camera: {
     alignItems: 'center',
-    paddingRight: 24,
-    paddingTop: 12
+    paddingTop: 30,
+    paddingBottom: 20
   },
   cameraIcon: {
     color: 'black',
