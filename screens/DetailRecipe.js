@@ -8,7 +8,8 @@ import { Divider } from 'react-native-elements'
 import { BottomSheet, ListItem } from 'react-native-elements'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
-export default function DetailRecipe({ navigation }) {
+export default function DetailRecipe({ navigation, route }) {
+  const { recipeData } = route.params
   const [isVisible, setIsVisible] = useState(false)
   const list = [
     {
@@ -51,6 +52,8 @@ export default function DetailRecipe({ navigation }) {
     }
   ]
 
+  console.log(recipeData.ingredients, '<< data')
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -60,11 +63,11 @@ export default function DetailRecipe({ navigation }) {
         <Image
           style={styles.recipeImage}
           resizeMode="cover"
-          source={{ uri: 'https://i.insider.com/5d0bc2a0e3ecba03841d82d2?width=960&format=jpeg' }} />
+          source={{ uri: recipeData.image }} />
       </View>
       <ScrollView>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 20 }}>
-          <Text style={styles.recipeTitle}>Chicken Salad</Text>
+          <Text style={styles.recipeTitle}>{recipeData.title}</Text>
           <SimpleLineIcons name="options" size={20} color="black" onPress={() => setIsVisible(true)} />
         </View>
         <Text style={styles.userInfo}>mealo_user</Text>
@@ -72,11 +75,11 @@ export default function DetailRecipe({ navigation }) {
         <View style={styles.cookInfo}>
           <View style={styles.row}>
             <MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
-            <Text style={styles.info}>Serving: 5</Text>
+            <Text style={styles.info}>Serving: {recipeData.serving}</Text>
           </View>
           <View style={styles.row}>
             <Ionicons name="timer-outline" size={16} color="#747d8c" />
-            <Text style={styles.info}>Time Cook: 90 mins</Text>
+            <Text style={styles.info}>Time Cook: {recipeData.time} mins</Text>
           </View>
           <View style={styles.row}>
             <AntDesign name="tago" size={16} color="#747d8c" />
@@ -84,12 +87,12 @@ export default function DetailRecipe({ navigation }) {
           </View>
         </View>
         <View>
-          <Text style={styles.recipeDescription}>Delicious chicken salad, easy to make, easy to get healthy!</Text>
+          <Text style={styles.recipeDescription}>{recipeData.description}</Text>
         </View>
         <Divider style={styles.divider} />
-        <Ingredients />
+        <Ingredients data={recipeData.ingredients} />
         <Divider style={styles.divider} />
-        <CookingStep />
+        <CookingStep steps={recipeData.step} />
       </ScrollView>
       <BottomSheet
         style={{ height: 300 }}

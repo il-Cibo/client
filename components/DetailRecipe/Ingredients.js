@@ -7,17 +7,14 @@ export default function Ingredients(props) {
     <View style={styles.container}>
       <Text style={styles.header}>Ingredients</Text>
       <View style={styles.ingredientList}>
-        <View style={styles.ingredientItem}>
-          <Entypo name="dot-single" size={24} color="black" />
-          <Text>Beef 200g</Text>
-        </View>
-        <View style={styles.ingredientItem}>
-          <Entypo name="dot-single" size={24} color="black" />
-          <Text>Carrots</Text>
-        </View>
+        {props.data.map((item, i) => (
+          <View key={i} style={styles.ingredientItem}>
+            <Entypo name="dot-single" size={24} color="black" />
+            <Text>{item}</Text>
+          </View>
+        ))}
       </View>
     </View>
-
   )
 }
 
@@ -26,6 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+    paddingBottom: 10
   },
   header: {
     fontSize: 16,

@@ -6,6 +6,7 @@ import { Divider } from 'react-native-elements'
 import { GET_ALL_RECIPES } from '../config/queries'
 import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
+import { Octicons } from '@expo/vector-icons'
 
 const wait = timeout => {
 	return new Promise(resolve => {
@@ -14,8 +15,8 @@ const wait = timeout => {
 };
 
 function Home({ navigation }) {
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
-	const token = useSelector((state) => state.token)
+	const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAwNDM3NX0.e6SvCZB9cfxBGjpnrEwHIdiNcDNONp3YEo_ZLltC7JQ"
+	// const token = useSelector((state) => state.token)
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -76,24 +77,23 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		// justifyContent: 'flex-start',
-		marginTop: Constants.statusBarHeight,
 	},
 	header: {
-		height: '5%',
+		height: '8%',
 		flexDirection: 'row',
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginTop: 25,
-		marginLeft: 25,
-		marginRight: 25,
+		paddingTop: 25,
+		paddingLeft: 25,
+		paddingRight: 25,
 		paddingBottom: 35,
 	},
 	headerText: {
 		fontWeight: 'bold',
-		fontSize: 20,
+		fontSize: 26,
 		color: 'black',
-		letterSpacing: 1
+		letterSpacing: 1,
+		fontFamily: 'Oswald',
 	}
 });
 

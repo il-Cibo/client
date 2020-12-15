@@ -18,34 +18,34 @@ function RecipeCard({ navigation, recipe }) {
 	const list = [
 		{
 			title: 'Edit Recipe',
-			containerStyle: { 
+			containerStyle: {
 				backgroundColor: '#FFF',
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
 			onPress: () => {
 				setIsVisible(false)
 				navigation.navigate('EditRecipe')
-			} 
+			}
 		},
 		{
 			title: 'Cancel',
-			containerStyle: { 
-				backgroundColor: '#FFF' 
+			containerStyle: {
+				backgroundColor: '#FFF'
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
 			onPress: () => setIsVisible(false)
 		}
 	]
-	
+
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
-			recipeId: recipe.id
+			recipeData: recipe
 		})
 	}
 
@@ -91,10 +91,13 @@ function RecipeCard({ navigation, recipe }) {
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
-				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
 			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
-			<Text style={styles.recipeTitle}>{recipe.title}</Text>
+			<Text
+				style={styles.recipeTitle}
+				onPress={goToRecipeDetail}
+			>
+				{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
 			</Text>
@@ -112,9 +115,9 @@ function RecipeCard({ navigation, recipe }) {
 					<Text style={styles.info}>Tags: chicken</Text>
 				</View>
 			</View>
-			<BottomSheet 
-			transparent={true}
-			isVisible={isVisible}>
+			<BottomSheet
+				transparent={true}
+				isVisible={isVisible}>
 				{list.map((l, i) => (
 					<ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
 						<ListItem.Content>
@@ -153,7 +156,9 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	usernameStyle: {
-		fontSize: 12
+		fontSize: 12,
+		fontFamily: 'Oswald',
+		letterSpacing: 1.5
 	},
 	favoriteButton: {
 		marginTop: 5,
@@ -162,11 +167,14 @@ const styles = StyleSheet.create({
 	recipeTitle: {
 		marginTop: 10,
 		fontWeight: 'bold',
-		fontSize: 12
+		fontSize: 14,
+		fontFamily: 'Oswald',
 	},
 	recipeDescription: {
 		marginTop: 5,
-		fontSize: 10
+		fontSize: 10,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	cookInfo: {
 		height: 60,
@@ -176,7 +184,9 @@ const styles = StyleSheet.create({
 	info: {
 		color: "#747d8c",
 		fontSize: 9,
-		marginLeft: 5
+		marginLeft: 5,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	row: {
 		flexDirection: 'row',
