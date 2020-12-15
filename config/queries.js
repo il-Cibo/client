@@ -112,10 +112,6 @@ export const EDIT_RECIPE = gql`
 			step
 			serving
 			time
-			Tags
-			UserRecipe {
-				UserId
-			}
 		}
 	}
 `

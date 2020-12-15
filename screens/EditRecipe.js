@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, StyleSheet, Text, ScrollView, Image, Platform } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, Platform } from 'react-native';
 import { AddForm } from '../components'
 import { EDIT_RECIPE, GET_ALL_RECIPES, GET_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
@@ -8,20 +8,20 @@ import * as mime from 'react-native-mime-types';
 import * as ImagePicker from 'expo-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { Ionicons } from '@expo/vector-icons';
+import { Button } from 'react-native-paper'
 
 const EditRecipe = ({ route }) => {
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAzMTg0Mn0.s_2T4KCIkcjWY6HC1IZaUyshDHNFJHUzymftYk1w0mY"
   // const token = useSelector((state) => state.token)
   const { recipeId } = route.params
-  console.log(route.params, '<<< ROUTE')
-  const [title, setTitle] = useState()
-  const [description, setDescription] = useState()
-  const [image, setImage] = useState(null)
-  const [ingredients, setIngredients] = useState()
-  const [cookingSteps, setCookingSteps] = useState()
-  const [serving, setServing] = useState()
-  const [cookingTime, setCookingTime] = useState()
-  const [tag, setTags] = useState()
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
+  const [ingredients, setIngredients] = useState('')
+  const [cookingSteps, setCookingSteps] = useState('')
+  const [serving, setServing] = useState('')
+  const [cookingTime, setCookingTime] = useState('')
+  const [tag, setTags] = useState('')
   const { loading, error, data } = useQuery(GET_RECIPE, {
     context: {
       headers: {
@@ -40,21 +40,6 @@ const EditRecipe = ({ route }) => {
       }
     }
   })
-  // console.log(data, '<<< DATA RECIPE BY ID')
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data, '<<<< data recipe by id')
-  //   }
-  // }, [data])
-
-  if (loading) {
-    return <Text> Loading... </Text>
-  }
-
-  if (error) {
-    return <Text>{error.message}</Text>
-  }
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -65,6 +50,30 @@ const EditRecipe = ({ route }) => {
       }
     })();
   }, []);
+  
+  useEffect(() => {
+    if (data) {
+      const newTags = data.recipe.Tags.map((el) => {
+        return el.name
+      }).join('\n')
+      setTitle(data.recipe.title)
+      setDescription(data.recipe.description)
+      setImage(data.recipe.image)
+      setIngredients(data.recipe.ingredients.join('\n'))
+      setCookingSteps(data.recipe.step.join('\n'))
+      setServing(data.recipe.serving.toString())
+      setCookingTime(data.recipe.time.toString())
+      setTags(newTags)
+    }
+  }, [data])
+
+  if (loading) {
+    return <Text> Loading... </Text>
+  }
+
+  if (error) {
+    return <Text>{error.message}</Text>
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -84,14 +93,12 @@ const EditRecipe = ({ route }) => {
       return (
         <View style={styles.camera}>
           <Ionicons style={styles.cameraIcon} name='camera' onPress={pickImage} />
-          <Text style={{ fontWeight: 'bold' }}>Add Photo</Text>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
-          <Image source={{ uri: image }} style={{ width: 20, height: 20 }} onPress={pickImage} />
-          <Text style={{ fontWeight: 'bold' }}>Change Photo</Text>
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} onPress={pickImage} />
         </View>
       )
     }
@@ -118,13 +125,13 @@ const EditRecipe = ({ route }) => {
       time: +cookingTime
     }
 
-    console.log(recipe);
+    console.log(recipe, '<<< data recipe setelah update');
 
     const tagData = tag.split('\n')
 
     updateRecipe({
       variables: {
-        id: data.id,
+        id: data.recipeid,
         recipe: recipe,
         tags: tagData
       }
@@ -133,11 +140,12 @@ const EditRecipe = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View>{JSON.stringify(data)}</View>
-      {/* <View>
+      {/* <View>{JSON.stringify(data)}</View> */}
+      <View>
         <Text style={styles.title}>Edit Recipe</Text>
       </View>
       {checkImage()}
+      <Button onPress={pickImage}>Change Photo</Button>
       <ScrollView>
         <View style={styles.inputForm}>
           <View>
@@ -205,9 +213,9 @@ const EditRecipe = ({ route }) => {
             />
 
           </View>
-          <Button title='Save' style={styles.submit} onPress={editRecipe} />
+          <Button style={styles.submit} onPress={editRecipe}>Save Recipe</Button>
         </View>
-      </ScrollView> */}
+      </ScrollView>
     </View>
   )
 }
@@ -254,12 +262,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'left',
-    color: '#000000'
+    color: '#000000',
+    fontFamily: 'Oswald',
   },
   camera: {
     alignItems: 'center',
-    paddingRight: 24,
-    paddingTop: 12
   },
   cameraIcon: {
     color: 'black',
