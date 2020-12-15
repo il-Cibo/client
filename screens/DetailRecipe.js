@@ -7,10 +7,26 @@ import { AntDesign } from '@expo/vector-icons'
 import { Divider } from 'react-native-elements'
 import { BottomSheet, ListItem } from 'react-native-elements'
 import { SimpleLineIcons } from '@expo/vector-icons'
+import { DELETE_RECIPE, GET_ALL_RECIPES } from '../config/queries'
+import { useMutation } from '@apollo/client'
+import { useSelector } from 'react-redux'
 
 export default function DetailRecipe({ navigation, route }) {
-  const { recipeData } = route.params
+  const token = useSelector((state) => state.token)
+  console.log(token, '<< token')
   const [isVisible, setIsVisible] = useState(false)
+  const { recipeData } = route.params
+  const [deleteRecipe] = useMutation(DELETE_RECIPE, {
+    context: {
+      headers: {
+        token: token
+      }
+    }
+  }, {
+    refetchQueries: [
+      { query: GET_ALL_RECIPES }
+    ]
+  })
   const list = [
     {
       title: 'Edit Recipe',
@@ -36,7 +52,7 @@ export default function DetailRecipe({ navigation, route }) {
         marginLeft: 30,
       },
       onPress: () => {
-        setIsVisible(false)
+        deleteARecipe()
       }
     },
     {
@@ -52,7 +68,16 @@ export default function DetailRecipe({ navigation, route }) {
     }
   ]
 
-  console.log(recipeData.ingredients, '<< data')
+  const deleteARecipe = () => {
+    setIsVisible(false)
+    deleteRecipe({
+      variables: {
+        id: recipeData.id
+      }
+    })
+    navigation.navigate('Home')
+    console.log(`delete recipe with id ${recipeData.id}`)
+  }
 
   return (
     <View style={styles.container}>

@@ -112,7 +112,9 @@ export const EDIT_RECIPE = gql`
 
 export const DELETE_RECIPE = gql`
 	mutation DeleteRecipe($id: Int!) {
-		deleteRecipe(id: $id)
+		deleteRecipe(id: $id) {
+			message
+		}
 	}
 `
 
