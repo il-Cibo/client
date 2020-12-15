@@ -7,7 +7,6 @@ import {
   View,
   Text
 } from 'react-native'
-
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
 import { useSelector } from 'react-redux'
@@ -70,15 +69,10 @@ const UserProfile = () => {
       avatar: userData.user.avatar
     })
 
-    // setUserProfile({
-    //   name: data.user.name,
-    //   username: data.user.username,
-    //   avatar: data.user.avatar
-    // })
-
-    // setUserRecipe({
-    //   recipes: data.user.Recipes
-    // })
+  //   setUserRecipe({
+  //     username: data.user.username,
+  //     recipes: data.user.Recipes
+  //   })
   }, [])
 
   if(loading) {

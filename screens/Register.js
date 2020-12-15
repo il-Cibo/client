@@ -8,85 +8,42 @@ import { REGISTER_USER } from '../config/queries'
 import { RadioButton } from 'react-native-paper'
 
 const register = ({ navigation }) => {
-    const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
-    const [gender, setGender] = useState('');
+  const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
+  const [gender, setGender] = useState('');
 
-    const onsubmit = (event) => {
-        event.preventDefault()
-        let avatar = ''
-        
 
-        if(gender === 'male'){
-            avatar = 'https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png'
-        } else if(gender === 'female'){
-            avatar = 'https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png'
-        } else {
-            avatar = 'https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png'
-        }
-        
-        newUser({
-            variables: {
-                user: {
-                    username: userName,
-                    email: email,
-                    password: password,
-                    gender: gender,
-                    name: name,
-                    avatar: avatar
-                }
-            }
-        })
+  const onsubmit = (event) => {
+    event.preventDefault()
+    let avatar = ''
+
+
+    if (gender === 'male') {
+      avatar = 'https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png'
+    } else if (gender === 'female') {
+      avatar = 'https://toppng.com/uploads/preview/erson-icon-black-female-user-icon-11562985556wqtga6z7zf.png'
+    } else {
+      avatar = 'https://e7.pngegg.com/pngimages/550/997/png-clipart-user-icon-foreigners-avatar-child-face-thumbnail.png'
     }
-    // if (loading) {
-    //     return  <Spinner color='blue' />
-    // }
 
-    // if (error) {
-	// 	return (
-	// 	<Item error>
-    //         <Input placeholder={error}/>
-    //         <Icon name='close-circle' />
-    //       </Item>
-    //     )
-    // }
-    if (loading) {
-		return <Text>Loading ...</Text>
-		// return <Loading />
-	}
-
-  // const onsubmit = (event) => {
-  //   event.preventDefault()
-
-  //   newUser({
-  //     variables: {
-  //       user: {
-  //         username: userName,
-  //         email: email,
-  //         password: password,
-  //         gender: gender,
-  //         name: name,
-  //         avatar: avatar
-  //       }
-  //     }
-  //   })
-  // }
+    newUser({
+      variables: {
+        user: {
+          username: userName,
+          email: email,
+          password: password,
+          gender: gender,
+          name: name,
+          avatar: avatar
+        }
+      }
+    })
+  }
   console.log(newUser)
-  // if (loading) {
-  //     return  <Spinner color='blue' />
-  // }
-
-  // if (error) {
-  // 	return (
-  // 	<Item error>
-  //         <Input placeholder={error}/>
-  //         <Icon name='close-circle' />
-  //       </Item>
-  //     )
-  // }
+  
   if (loading) {
     return <Text>Loading ...</Text>
     // return <Loading />
@@ -187,12 +144,12 @@ const register = ({ navigation }) => {
 			</Button>
 
         {Platform.OS === 'android' ? (
-            <SocialButton
-              buttonTitle="Sign Up with Google"
-              btnType="google"
-              color="#de4d41"
-              backgroundColor="#f5e7ea"
-            />
+          <SocialButton
+            buttonTitle="Sign Up with Google"
+            btnType="google"
+            color="#de4d41"
+            backgroundColor="#f5e7ea"
+          />
         ) : null}
 
       </ScrollView>
@@ -216,38 +173,38 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-		fontFamily: 'Oswald',
-		fontSize: 38,
-		color: 'black',
+    fontFamily: 'Oswald',
+    fontSize: 38,
+    color: 'black',
     alignSelf: 'flex-end',
     textAlign: 'right',
     width: 160,
     marginRight: 15,
     marginBottom: 150,
     marginTop: 15
-	},
+  },
   logo: {
     alignSelf: 'flex-start',
-    marginTop: 90, 
+    marginTop: 90,
     height: 200,
     width: 200,
     resizeMode: 'cover',
     position: 'absolute',
   },
   navButtonText: {
-		fontSize: 14,
-		fontWeight: '500',
-		color: '#FF9494',
-		fontFamily: 'Oswald',
-	},
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#FF9494',
+    fontFamily: 'Oswald',
+  },
   buttonStyle: {
-		color: '#EEE6E6',
-		letterSpacing: 1,
-		fontWeight: 'bold',
-		fontSize: 16,
-		fontFamily: 'Oswald',
+    color: '#EEE6E6',
+    letterSpacing: 1,
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Oswald',
 
-	}
+  }
 });
 
 

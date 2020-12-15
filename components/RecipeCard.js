@@ -5,9 +5,16 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
+import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
+import { useMutation } from '@apollo/client'
+import { useSelector } from 'react-redux'
 
 function RecipeCard({ navigation, recipe }) {
+	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
+	const [userId, setUserId] = useState();
+	const [recipeId, setRecipeId] = useState();
+	const [status, setStatus] = useState(false);
 	const list = [
 		{
 			title: 'Edit Recipe',
@@ -35,11 +42,40 @@ function RecipeCard({ navigation, recipe }) {
 			onPress: () => setIsVisible(false)
 		}
 	]
+	
 	function goToRecipeDetail() {
-		console.log(navigation, '<< console')
 		navigation.navigate('DetailRecipe', {
 			recipeId: recipe.id
 		})
+	}
+
+	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
+
+	const onsubmit = (event) => {
+		event.preventDefault()
+		newFavRecipe({
+			variables: {
+				user: {
+					UserId: userId,
+					RecipeId: recipeId,
+					Favorite: status,
+					plan: []
+				}
+			}
+		})
+	}
+
+	const addFavorite = (recipeId) => {
+		setUserId(data?.user?.id)
+		setRecipeId(recipeId)
+		setStatus(!status)
+		onsubmit()
 	}
 
 	return (
@@ -57,7 +93,7 @@ function RecipeCard({ navigation, recipe }) {
 			<Card.Image
 				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
-			<MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
+			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}

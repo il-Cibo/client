@@ -4,10 +4,12 @@ import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
 import { RecipeCard } from '../components'
 import { LIST_FAV_USER_RECIPE } from '../config/queries'
+import { useQuery } from '@apollo/client'
+import { useSelector } from 'react-redux'
 
 function Favorite() {
 	const UserId = data?.user?.id
-
+	const token = useSelector((state) => state.token)
 	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
 		variables: {
 			UserId
@@ -18,6 +20,19 @@ function Favorite() {
 			}
 		}
 	})
+
+	if (loading) {
+		return <Text>Loading ...</Text>
+	}
+
+	if (error) {
+		return (
+			<View style={styles.container}>
+				<Text>{JSON.stringify(error.message)}</Text>
+			</View>
+		)
+	}
+	console.log(data, '<<< data favorite')
 
 	return (
 		<View style={styles.container}>
@@ -58,7 +73,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: 'black',
 		letterSpacing: 1
-	}, 
+	},
 	content: {
 		marginBottom: 20,
 		marginTop: 20
