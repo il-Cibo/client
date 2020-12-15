@@ -83,6 +83,12 @@ export const GET_RECIPE = gql`
 			step
 			serving
 			time
+			Tags {
+				name
+			}
+			UserRecipe {
+				UserId
+			}
 		}
 	}
 `
@@ -101,11 +107,15 @@ export const EDIT_RECIPE = gql`
 			id
 			title
 			description
+			image
 			ingredients
 			step
 			serving
 			time
 			Tags
+			UserRecipe {
+				UserId
+			}
 		}
 	}
 `

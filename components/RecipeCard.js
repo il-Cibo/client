@@ -27,7 +27,9 @@ function RecipeCard({ navigation, recipe }) {
 			},
 			onPress: () => {
 				setIsVisible(false)
-				navigation.navigate('EditRecipe')
+				navigation.navigate('EditRecipe', {
+					recipeId: recipe.id
+				})
 			}
 		},
 		{
@@ -39,13 +41,12 @@ function RecipeCard({ navigation, recipe }) {
 				color: 'black',
 				marginLeft: 30,
 			},
-			onPress: () => setIsVisible(false)
 		}
 	]
 
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
-			recipeData: recipe
+			recipeId: recipe.id
 		})
 	}
 
