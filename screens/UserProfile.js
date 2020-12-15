@@ -8,7 +8,6 @@ import {
   View,
   Text
 } from 'react-native'
-
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
 import { useSelector } from 'react-redux'
@@ -26,19 +25,20 @@ const UserProfile = () => {
       }
     }
   })
-  console.log(data, '<<< data user')
-  useEffect(() => {
-    setUserProfile({
-      name: data.user.name,
-      username: data.user.username,
-      avatar: data.user.avatar
-    })
 
-    setUserRecipe({
-      username: data.user.username,
-      recipes: data.user.Recipes
-    })
-  }, [])
+  // console.log(data, '<<< data user')
+  // useEffect(() => {
+  //   setUserProfile({
+  //     name: data.user.name,
+  //     username: data.user.username,
+  //     avatar: data.user.avatar
+  //   })
+
+  //   setUserRecipe({
+  //     username: data.user.username,
+  //     recipes: data.user.Recipes
+  //   })
+  // }, [])
 
   const photos = [
     { key: 'A' }, 

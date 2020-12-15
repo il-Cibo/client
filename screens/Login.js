@@ -13,14 +13,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store'
 import { Button } from 'react-native-paper'
-import { useFonts } from 'expo-font'
-// import { Oswald_400Regular } from '@expo-google-fonts/oswald'
-import AppLoading from 'expo-app-loading'
 
 const Login = ({ navigation }) => {
-	const [loaded] = useFonts({
-		Oswald: require('../assets/fonts/Oswald-VariableFont_wght.ttf')
-	})
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch()
@@ -34,9 +28,6 @@ const Login = ({ navigation }) => {
 		})
 	})
 
-	if (!loaded) {
-		return <AppLoading />
-	}
 	// const storeData = async (value) => {
 	// 	try {
 	// 		await AsyncStorage.setItem('token', value)

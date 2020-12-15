@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
-
 import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
-// import { ScrollView } from 'react-native-gesture-handler';
 import { GET_ALL_RECIPES } from '../config/queries'
-import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
 import { Octicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
-import Favorite from './Favorite'
 import Constants from 'expo-constants'
 
 const wait = timeout => {
@@ -21,9 +17,6 @@ const wait = timeout => {
 function Home({ navigation }) {
 	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
 	const token = useSelector((state) => state.token)
-  const [userId, setUserId] = useState();
-	const [recipeId, setRecipeId] = useState();
-	const [status, setStatus] = useState(false);
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -31,36 +24,6 @@ function Home({ navigation }) {
 			}
 		}
 	})
-
-	const [newFavRecipe] = useMutation (ADD_TO_FAVORITE_RECIPE , {
-		context: {
-			headers: {
-				token: token
-			}
-		}
-	})
-
-	const addFavorite = (recipeId) => {
-		setUserId(data?.user?.id)
-		setRecipeId(recipeId)
-		setStatus(!status)
-		onsubmit()
-	}
-
-	const onsubmit = () => {
-        // event.preventDefault()
-
-        newFavRecipe({
-            variables: {
-                user: {
-                    UserId: userId,
-					RecipeId: recipeId,
-					Favorite: status,
-					plan : []
-                }
-            }
-        })
-    }
 
 	useEffect(() => {
 		refetch()
@@ -101,7 +64,7 @@ function Home({ navigation }) {
 			<ScrollView
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				title="Please wait, refreshing.."
-				>
+			>
 				{data.recipes.map((recipePost) => (
 					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
 				))}
