@@ -43,7 +43,7 @@ const register = ({ navigation }) => {
     })
   }
   console.log(newUser)
-  
+
   if (loading) {
     return <Text>Loading ...</Text>
     // return <Loading />
@@ -138,7 +138,7 @@ const register = ({ navigation }) => {
           color="#FF9494"
           labelStyle={styles.buttonStyle}
           style={{ width: 300, borderRadius: 15, marginTop: 30 }}
-          onPress={() => login(username, password)}
+          onPress={(e) => onsubmit(e)}
         >
           Create an account
 			</Button>

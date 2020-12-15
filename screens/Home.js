@@ -24,7 +24,6 @@ function Home({ navigation }) {
 			}
 		}
 	})
-
 	useEffect(() => {
 		refetch()
 	}, [data])
@@ -39,13 +38,13 @@ function Home({ navigation }) {
 
 
 	if (loading) {
-		return <Text>Loading ...</Text>
+		return <Loading />
 	}
 
 	if (error) {
 		return (
 			<View style={styles.container}>
-				<Text>{JSON.stringify(error.message)}</Text>
+				<Text>{JSON.stringify(error.message)}asdadasd</Text>
 			</View>
 		)
 	}
