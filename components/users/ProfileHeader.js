@@ -23,13 +23,8 @@ const ProfileHeader = ({data}) => {
           <Text style={styles.username}>{data.username}</Text>
           
           <View style={styles.userInfo}>
-            <View>
-              <Ionicons style={styles.likeIcon} name='heart-sharp' />
-            </View>
-
             <View style={styles.likeRows}>
               <Text style={styles.likeCounts}>
-                {/* {data.totalLikes} */}
               </Text>
             </View>
 

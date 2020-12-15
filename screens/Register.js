@@ -41,6 +41,7 @@ const register = ({ navigation }) => {
         }
       }
     })
+    navigation.navigate("Login")
   }
   console.log(newUser)
   
@@ -138,7 +139,7 @@ const register = ({ navigation }) => {
           color="#FF9494"
           labelStyle={styles.buttonStyle}
           style={{ width: 300, borderRadius: 15, marginTop: 30 }}
-          onPress={() => login(username, password)}
+          onPress={() => onsubmit}
         >
           Create an account
 			</Button>

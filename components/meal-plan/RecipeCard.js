@@ -1,49 +1,54 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image, Button, TouchableHighlight } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-elements'
 import { SimpleLineIcons } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
+import {Picker} from '@react-native-picker/picker';
 
 function RecipeCard({recipe}) {
-  const recipeDetail = (recipe) => {
-    console.log(recipe)
-  }
+	const [test, setTest] = useState({
+		language: 'Java'
+	})
+
+	const goToRecipeDetails = () => {
+		// navigation.navigate('DetailRecipe', {
+		// 	recipeData: recipe,
+		// })
+	}
+	
+
+	const showModal = () => {
+		return (
+			<Picker
+				// selectedValue={test}
+				// style={{height: 50, width: 100}}
+				// onValueChange={(itemValue, itemIndex) =>
+				// 	setTest({language: itemValue})
+				// }
+				>
+				<Picker.Item label="Java" value="java" />
+				<Picker.Item label="JavaScript" value="js" />
+			</Picker>
+		)
+	}
 
 	return (
-    <TouchableHighlight onPress={(recipe) => recipeDetail(recipe)} underlayColor='#ffffff'>
-      <Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
-        {/* <View style={styles.cardHeader}>
-          <View style={styles.userInfo}>
-            <Text>username</Text> 
-          </View>
-          <SimpleLineIcons name="options" size={20} color="black" />
-        </View> */}
-        
-        {/* <Card.Image source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094'}} /> */}
-        {/* <MaterialIcons name="favorite-outline" size={24} color="black" style={styles.favoriteButton} /> */}
-        <Text style={styles.recipeTitle}>{recipe.title}</Text>
-        <Text style={styles.recipeDescription}>
-          {recipe.description}
-        </Text>
-        {/* <View style={styles.cookInfo}>
-          <View style={styles.row}>
-            <MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
-            <Text style={styles.info}>Serving: {recipe.serving}</Text>
-          </View>
-          <View style={styles.row}>
-            <Ionicons name="timer-outline" size={16} color="#747d8c" />
-            <Text style={styles.info}>Time Cook: {recipe.time}mins</Text>
-          </View>
-          <View style={styles.row}>
-            <AntDesign name="tago" size={16} color="#747d8c" />
-            <Text style={styles.info}>Tags: chicken</Text>
-          </View>
-        </View> */}
-      </Card>
-    </TouchableHighlight>
+		<TouchableOpacity onPress={goToRecipeDetails} >
+			<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
+				<View style={styles.cardHeader}>
+					<View style={styles.userInfo}>
+						<Text style={styles.recipeTitle}>{recipe.title}</Text>
+					</View>
+					<SimpleLineIcons name="options" size={20} color="black" onPress={showModal} />
+				</View>
+				<View style={styles.userInfo}>
+				</View>
+				<Text style={styles.recipeDescription}>
+					{recipe.description}
+				</Text>
+
+			
+			</Card>
+		</TouchableOpacity>
 	)
 }
 
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
 	userInfo: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-around',
+		// justifyContent: 'space-around',
 		width: 130,
 		marginTop: -5,
 		marginBottom: 5

@@ -9,7 +9,8 @@ import { BottomSheet, ListItem } from 'react-native-elements'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 export default function DetailRecipe({ navigation, route }) {
-  const { recipeData } = route.params
+  const { recipeData, user } = route.params
+  // console.log(user);
   const [isVisible, setIsVisible] = useState(false)
   const list = [
     {
@@ -51,8 +52,11 @@ export default function DetailRecipe({ navigation, route }) {
       onPress: () => setIsVisible(false)
     }
   ]
+  // registerdemo
+  // registerdemo
+  // demoaccount@mail.com
 
-  console.log(recipeData.ingredients, '<< data')
+  // console.log(recipeData.ingredients, '<< data')
 
   return (
     <View style={styles.container}>
@@ -70,7 +74,7 @@ export default function DetailRecipe({ navigation, route }) {
           <Text style={styles.recipeTitle}>{recipeData.title}</Text>
           <SimpleLineIcons name="options" size={20} color="black" onPress={() => setIsVisible(true)} />
         </View>
-        <Text style={styles.userInfo}>mealo_user</Text>
+        <Text style={styles.userInfo}>Mealo User</Text>
 
         <View style={styles.cookInfo}>
           <View style={styles.row}>
