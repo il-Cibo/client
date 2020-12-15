@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native
 import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
 import { GET_ALL_RECIPES } from '../config/queries'
-import { Octicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
 
