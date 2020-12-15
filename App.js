@@ -56,7 +56,6 @@ function HomeTabs() {
         inactiveTintColor: 'gray'
       }}
     >
-      {/* <Tab.Screen name="AddRecipe" component={AddRecipe} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Favorite" component={Favorite} />
       <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
@@ -68,20 +67,21 @@ function HomeTabs() {
 
 export default function App() {
   const [loaded] = useFonts({
-		Oswald: require('./assets/fonts/Oswald-VariableFont_wght.ttf')
+    Oswald: require('./assets/fonts/Oswald-VariableFont_wght.ttf')
   })
+
   if (!loaded) {
-		return <AppLoading />
-	}
+    return <AppLoading />
+  }
+
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-          <Stack.Screen name="Login" component={MealPlan} options={{ headerShown: false }}></Stack.Screen>
-            {/* <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen> */}
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

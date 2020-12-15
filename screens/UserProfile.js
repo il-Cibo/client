@@ -15,15 +15,15 @@ const UserProfile = () => {
   const [userProfile, setUserProfile] = useState()
   const [userRecipe, setUserRecipe] = useState()
   // const token = useSelector((state) => state.token)
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAwNDM3NX0.e6SvCZB9cfxBGjpnrEwHIdiNcDNONp3YEo_ZLltC7JQ"
 
-  const { loading, error, data } = useQuery(GET_PROFILE, {
-    context: {
-      headers: {
-        token: token
-      }
-    }
-  })
+  // const { loading, error, data } = useQuery(GET_PROFILE, {
+  //   context: {
+  //     headers: {
+  //       token: token
+  //     }
+  //   }
+  // })
 
   const userData = {
     "user": {
@@ -61,7 +61,7 @@ const UserProfile = () => {
     }
   }
 
-  console.log(data, '<<< data user')
+  // console.log(data, '<<< data user')
   useEffect(() => {
     setUserProfile({
       name: userData.user.name,
@@ -75,22 +75,22 @@ const UserProfile = () => {
   //   })
   }, [])
 
-  if(loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading ...</Text>
-      </View>
-    )
-  }
+  // if(loading) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text>Loading ...</Text>
+  //     </View>
+  //   )
+  // }
 
-  if(error) {
-    console.log(error);
-    return (
-      <View style={styles.container}>
-        <Text>{JSON.stringify(error.message)}</Text>
-      </View>
-    )
-  }
+  // if(error) {
+  //   console.log(error);
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text>{JSON.stringify(error.message)}</Text>
+  //     </View>
+  //   )
+  // }
 
   return (
     <View>

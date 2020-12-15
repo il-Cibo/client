@@ -2,14 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { FormInput, SocialButton, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	Image,
-	StyleSheet,
-	ScrollView
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store'
 import { Button } from 'react-native-paper'
@@ -117,7 +110,7 @@ const Login = ({ navigation }) => {
 				mode="contained"
 				color="#FF9494"
 				labelStyle={styles.buttonStyle}
-				style={{width: 300, borderRadius: 15, marginTop: 30}}
+				style={{ width: 300, borderRadius: 15, marginTop: 30 }}
 				onPress={() => login(username, password)}
 			>
 				Login
@@ -128,7 +121,7 @@ const Login = ({ navigation }) => {
 			</TouchableOpacity> */}
 
 			<View>
-				
+
 				<SocialButton
 					buttonTitle="Sign in with Google"
 					btnType="google"
@@ -140,7 +133,7 @@ const Login = ({ navigation }) => {
 				style={styles.forgotButton}
 				onPress={() => navigation.navigate('Register')}>
 				<Text style={styles.navButtonText}>
-				{"\n"}Don't have an acount? Create here!
+					{"\n"}Don't have an acount? Create here!
                  </Text>
 			</TouchableOpacity>
 		</View>
