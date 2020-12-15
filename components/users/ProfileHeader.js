@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 
 const ProfileHeader = ({data}) => {
-  console.log(data, 'di header');
   return (
     <View>
       <ImageBackground 

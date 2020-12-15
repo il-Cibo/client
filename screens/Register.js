@@ -15,6 +15,7 @@ const register = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [gender, setGender] = useState('');
 
+
   const onsubmit = (event) => {
     event.preventDefault()
     let avatar = ''
@@ -41,52 +42,8 @@ const register = ({ navigation }) => {
       }
     })
   }
-  // if (loading) {
-  //     return  <Spinner color='blue' />
-  // }
-
-  // if (error) {
-  // 	return (
-  // 	<Item error>
-  //         <Input placeholder={error}/>
-  //         <Icon name='close-circle' />
-  //       </Item>
-  //     )
-  // }
-  if (loading) {
-    return <Text>Loading ...</Text>
-    // return <Loading />
-  }
-
-  // const onsubmit = (event) => {
-  //   event.preventDefault()
-
-  //   newUser({
-  //     variables: {
-  //       user: {
-  //         username: userName,
-  //         email: email,
-  //         password: password,
-  //         gender: gender,
-  //         name: name,
-  //         avatar: avatar
-  //       }
-  //     
-  //   })
-  // }
   console.log(newUser)
-  // if (loading) {
-  //     return  <Spinner color='blue' />
-  // }
-
-  // if (error) {
-  // 	return (
-  // 	<Item error>
-  //         <Input placeholder={error}/>
-  //         <Icon name='close-circle' />
-  //       </Item>
-  //     )
-  // }
+  
   if (loading) {
     return <Text>Loading ...</Text>
     // return <Loading />
