@@ -54,8 +54,8 @@ const Login = ({ navigation }) => {
 	// }
 
 	if (loading) {
-		return <Text>Loading ...</Text>
-		// return <Loading />
+		// return <Text>Loading ...</Text>
+		return <Loading />
 	}
 
 	if (error) {
