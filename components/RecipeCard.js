@@ -9,12 +9,10 @@ import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
 
-function RecipeCard({ navigation, recipe }) {
+function RecipeCard({ navigation, recipe, user}) {
+	
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
-	const [userId, setUserId] = useState();
-	const [recipeId, setRecipeId] = useState();
-	const [status, setStatus] = useState(false);
 	const list = [
 		{
 			title: 'Edit Recipe',
@@ -50,6 +48,7 @@ function RecipeCard({ navigation, recipe }) {
 	}
 
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
+		
 		context: {
 			headers: {
 				token: token
@@ -57,26 +56,23 @@ function RecipeCard({ navigation, recipe }) {
 		}
 	})
 
-	const onsubmit = (event) => {
-		event.preventDefault()
+	// console.log(recipe, user, "======================= list recipe dan userid dari home ==============")
+
+	const onsubmit = () => {
+		
 		newFavRecipe({
 			variables: {
-				user: {
-					UserId: userId,
-					RecipeId: recipeId,
-					Favorite: status,
+				id: recipe.id,
+				UserRecipe: {
+					UserId: user,
+					RecipeId: recipe.id,
+					favorites: true,
 					plan: []
 				}
 			}
 		})
 	}
-
-	const addFavorite = (recipeId) => {
-		setUserId(data?.user?.id)
-		setRecipeId(recipeId)
-		setStatus(!status)
-		onsubmit()
-	}
+	
 
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
@@ -93,7 +89,7 @@ function RecipeCard({ navigation, recipe }) {
 			<Card.Image
 				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
-			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
+			<MaterialIcons onPress={onsubmit} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}

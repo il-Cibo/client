@@ -16,6 +16,7 @@ const wait = timeout => {
 
 function Home({ navigation }) {
 	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
+	const UserId = data?.user?.id
 	const token = useSelector((state) => state.token)
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
@@ -65,8 +66,8 @@ function Home({ navigation }) {
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				title="Please wait, refreshing.."
 			>
-				{data.recipes.map((recipePost) => (
-					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
+				{data.recipes.map((recipePost, key) => (
+					<RecipeCard key={recipePost.id} index={key} user={data?.user?.id} recipe={recipePost} navigation={navigation} />
 				))}
 			</ScrollView>
 		</View>

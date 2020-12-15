@@ -133,33 +133,44 @@ export const REGISTER_USER = gql`
 `;
 //====== ini ====
 export const ADD_TO_FAVORITE_RECIPE = gql`
-	mutation userRecipe ($favRecipe : User) {
-		register(findFav: $favRecipe){
+	mutation userRecipe ($id : Int!) {
+		addFav(id: $id){
 			UserId
 			RecipeId
+			favorites
 		}
 	}
 `;
 
 export const DELETE_RECIPE_FAV = gql`
-	mutation userRecipe ($id: Int!) {
+	mutation userRecipe ($id : Int!) {
 		deleteFav(id: $id){
-			fa
+			UserId
+			RecipeId
+			favorites
 		}
 	}
 `;
 
 export const LIST_FAV_USER_RECIPE = gql`
-	query ListFavorit($id: String) {
-		movieInfo(id: $id) {
-			title
-			overview
-			poster_path
-			genres
-			release_date
-			vote_average
-			runtime
-			production_companies
+	query find {
+		findFav {
+			id
+			username
+			email
+			avatar
+			gender
+			name
+			Recipes {
+			  UserRecipe { UserId, favorites }
+			  id
+			  title
+			  description
+			  image
+			  serving
+			  time
+			  Tags { name }
+			}
 		}
 	}
 `;
