@@ -83,6 +83,12 @@ export const GET_RECIPE = gql`
 			step
 			serving
 			time
+			Tags {
+				name
+			}
+			UserRecipe {
+				UserId
+			}
 		}
 	}
 `
@@ -101,11 +107,11 @@ export const EDIT_RECIPE = gql`
 			id
 			title
 			description
+			image
 			ingredients
 			step
 			serving
 			time
-			Tags
 		}
 	}
 `
@@ -165,3 +171,20 @@ export const LIST_FAV_USER_RECIPE = gql`
 		}
 	}
 `;
+
+export const QUERY_SEARCH_RECIPE = gql`
+  query searchRecipe($query: String!) {
+    queryRecipes(query: $query) {
+      id
+      title
+      description
+      image
+      ingredients
+      step
+      serving
+      time
+      Tags { name }
+      UserRecipe { favorites plan }
+    }
+  }  
+`

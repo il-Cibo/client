@@ -12,13 +12,13 @@ import { useSelector } from 'react-redux'
 const AddRecipe = ({ navigation }) => {
   const token = useSelector((state) => state.token)
   // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-  const [image, setImage] = useState(null)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
-  const [serving, setServing] = useState()
-  const [cookingTime, setCookingTime] = useState()
+  const [image, setImage] = useState(null)
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
+  const [serving, setServing] = useState()
+  const [cookingTime, setCookingTime] = useState()
   const [tag, setTags] = useState()
 
 
@@ -91,10 +91,10 @@ const AddRecipe = ({ navigation }) => {
       title: title,
       description: description,
       image: file,
+      ingredients: ingredients.split('\n'),
+      step: cookingSteps.split('\n'),
       serving: +serving,
       time: +cookingTime,
-      step: cookingSteps.split('\n'),
-      ingredients: ingredients.split('\n')
     }
 
     const tagData = tag.split('\n')
@@ -187,7 +187,7 @@ const AddRecipe = ({ navigation }) => {
             />
 
           </View>
-          <Button title='Add new recipe' style={styles.submit} onPress={addNewRecipe} />
+          <Button title='Add New Recipe' style={styles.submit} onPress={addNewRecipe} />
         </View>
 
       </ScrollView>

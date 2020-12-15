@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux'
 
 export default function DetailRecipe({ navigation, route }) {
   const token = useSelector((state) => state.token)
-  console.log(token, '<< token')
   const [isVisible, setIsVisible] = useState(false)
   const { recipeData } = route.params
   const [deleteRecipe] = useMutation(DELETE_RECIPE, {
