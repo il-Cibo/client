@@ -6,12 +6,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
-function RecipeSmallCard() {
+function RecipeSmallCard({ recipe }) {
+  const { image, title, description, step, serving, time, Tags } = recipe;
 	return (
 		<Card containerStyle={{ borderColor: '#FFF' }}>
 			<View style={{ flexDirection: 'row' }}>
 				<Card.Image
-					source={{ uri: 'https://specials-images.forbesimg.com/imageserve/5f748b1a267da47f7b3c2dfa/960x0.jpg?cropX1=0&cropX2=1252&cropY1=155&cropY2=1094' }}
+					source={{ uri: `${image}` }}
 					style={{ width: 100, height: 100 }}
 				/>
 				<View style={styles.cardBody}>
@@ -26,19 +27,21 @@ function RecipeSmallCard() {
 						<MaterialIcons name="keyboard-arrow-down" size={20} color="#747d8c" />
 					</View>
 					<View style={styles.recipeInfo}>
-						<Text style={styles.recipeTitle}>Spaghetti Bolognaise</Text>
+						<Text style={styles.recipeTitle}>{title}</Text>
 						<View style={styles.cookInfo}>
 							<View style={styles.row}>
 								<MaterialCommunityIcons name="bowl-mix-outline" size={14} color="#747d8c" />
-								<Text style={styles.info}>Serving: 6</Text>
+								<Text style={styles.info}>Serving: {serving}</Text>
 							</View>
 							<View style={styles.row}>
 								<Ionicons name="timer-outline" size={14} color="#747d8c" />
-								<Text style={styles.info}>Time Cook: 90 mins</Text>
+								<Text style={styles.info}>Time Cook: {time} mins</Text>
 							</View>
 							<View style={styles.row}>
 								<AntDesign name="tago" size={14} color="#747d8c" />
-								<Text style={styles.info}>chicken</Text>
+                {
+                  Tags.map((tag, i) => <Text key={i} style={styles.info}>{tag.name}</Text>)
+                }
 							</View>
 						</View>
 					</View>

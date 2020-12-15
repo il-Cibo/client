@@ -165,3 +165,20 @@ export const LIST_FAV_USER_RECIPE = gql`
 		}
 	}
 `;
+
+export const QUERY_SEARCH_RECIPE = gql`
+  query searchRecipe($query: String!) {
+    queryRecipes(query: $query) {
+      id
+      title
+      description
+      image
+      ingredients
+      step
+      serving
+      time
+      Tags { name }
+      UserRecipe { favorites plan }
+    }
+  }  
+`
