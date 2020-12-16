@@ -21,8 +21,8 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <HomeStack.Screen name="DetailRecipe" component={DetailRecipe} options={{ headerShown: false }} />
       <HomeStack.Screen name="EditRecipe" component={EditRecipe} options={{ headerShown: false }} />
+      <HomeStack.Screen name="DetailRecipe" component={DetailRecipe} options={{ headerShown: false }} />
       <HomeStack.Screen name="Search" component={Search} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   )
@@ -52,7 +52,7 @@ function HomeTabs() {
         }
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: '#FF9494',
         inactiveTintColor: 'gray'
       }}
     >

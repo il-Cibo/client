@@ -1,25 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { SearchBox, RecipeSmallCard } from '../components'
-import { Divider } from 'react-native-elements'
+import { SearchBar } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
+import { useQuery } from '@apollo/client';
+import { QUERY_SEARCH_RECIPE } from '../config/queries';
+import { useSelector } from 'react-redux';
+import Constants from 'expo-constants'
 
 function Search() {
+	const token = useSelector(state => state.token);
+	const [search, setSearch] = useState('');
+	const { data, error } = useQuery(QUERY_SEARCH_RECIPE, {
+		variables: {
+			query: search
+		},
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Text style={styles.headerText}>Mealo</Text>
+				<Text style={styles.headerText}>Search for Recipe</Text>
 			</View>
-			<SearchBox
+			<SearchBar
+				placeholder="Search for recipes..."
+				onChangeText={setSearch}
+				value={search}
+				lightTheme={true}
+				round={true}
+				containerStyle={{
+					backgroundColor: '#FFF',
+					borderBottomColor: 'transparent',
+					borderTopColor: 'transparent',
+					marginTop: 20
+				}}
+				inputContainerStyle={{
+					backgroundColor: '#f5f6fa',
+					marginLeft: 25,
+					marginRight: 25,
+					height: 45
+				}}
+				inputStyle={{
+					fontSize: 15
+				}}
 			/>
 			<ScrollView>
-				<RecipeSmallCard />
-				<RecipeSmallCard />
-				<RecipeSmallCard />
-				<RecipeSmallCard />
-				<RecipeSmallCard />
-				<RecipeSmallCard />
-				<RecipeSmallCard />
+				{error && <Text>{JSON.stringify(error.message)}</Text>}
+				{data && data.queryRecipes.map((recipe) => (
+					<RecipeSmallCard onPress={recipe.id} key={recipe.id} recipe={recipe} />
+				))}
 			</ScrollView>
 		</View>
 	)
@@ -30,22 +64,24 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		justifyContent: 'flex-start',
+		marginTop: Constants.statusBarHeight
 	},
 	header: {
-		height: '5%',
+		height: '8%',
 		flexDirection: 'row',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
-		marginTop: 25,
 		marginLeft: 25,
 		marginRight: 25,
 		paddingBottom: 35,
+		paddingTop: 20
 	},
 	headerText: {
 		fontWeight: 'bold',
-		fontSize: 20,
+		fontSize: 26,
 		color: 'black',
-		letterSpacing: 1
+		letterSpacing: 1,
+		fontFamily: 'Oswald',
 	}
 });
 

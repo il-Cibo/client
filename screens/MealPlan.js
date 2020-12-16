@@ -7,6 +7,9 @@ import moment from 'moment-timezone'
 import { Octicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux'
+import moment from 'moment'
+import CalendarStrip from 'react-native-calendar-strip';
+import Constants from 'expo-constants'
 
 const MealPlan = () => {
   // const token = useSelector((token) => state.token)
@@ -134,6 +137,12 @@ const style = StyleSheet.create({
     padding: 30,
     justifyContent: 'space-between',
     flexDirection: 'row'
+		marginTop: Constants.statusBarHeight,
+    paddingLeft: 20,
+    paddingRight: 20,
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems: 'center'
   },
   headerText: {
     fontSize: 25,

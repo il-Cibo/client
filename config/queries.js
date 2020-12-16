@@ -84,6 +84,12 @@ export const GET_RECIPE = gql`
 			step
 			serving
 			time
+			Tags {
+				name
+			}
+			UserRecipe {
+				UserId
+			}
 		}
 	}
 `
@@ -102,18 +108,20 @@ export const EDIT_RECIPE = gql`
 			id
 			title
 			description
+			image
 			ingredients
 			step
 			serving
 			time
-			Tags
 		}
 	}
 `
 
 export const DELETE_RECIPE = gql`
 	mutation DeleteRecipe($id: Int!) {
-		deleteRecipe(id: $id)
+		deleteRecipe(id: $id) {
+			message
+		}
 	}
 `
 
@@ -180,3 +188,21 @@ export const ADD_TO_PLAN = gql `
 		}
 	}
 `
+
+export const QUERY_SEARCH_RECIPE = gql`
+  query searchRecipe($query: String!) {
+    queryRecipes(query: $query) {
+      id
+      title
+      description
+      image
+      ingredients
+      step
+      serving
+      time
+      Tags { name }
+      UserRecipe { favorites plan }
+    }
+  }  
+`
+
