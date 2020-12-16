@@ -12,9 +12,7 @@ import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 
 function Favorite({ navigation }) {
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 	const [userFavo, setUserFavo] = useState([])
-	const token = useSelector((state) => state.token)
 	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
 			headers: {

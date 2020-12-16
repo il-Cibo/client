@@ -6,22 +6,22 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { ADD_TO_FAVORITE_RECIPE, DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
-import { useSelector } from 'react-redux'
 import { Ionicons, FontAwesome } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
+import { ModalAddPlan } from './'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { tokenVar } from '../store/makeVar'
 
 function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
+	const [showModal, setShowModal] = useState(false)
 	const [userId, setUserId] = useState();
 	const [recipeId, setRecipeId] = useState();
 	const [status, setStatus] = useState(false);
 	const [tags, setTags] = useState()
+
 	useEffect(() => {
 		if(recipe.Tags) {
 			const newTags = recipe.Tags.map((el) => {
@@ -31,6 +31,15 @@ function RecipeCard({ navigation, recipe }) {
 			setTags(newTags)
 		}
 	}, [])
+
+	
+	const closeModal = () => {
+		setShowModal(false)
+	}
+
+	const openModal = () => {
+		setShowModal(true)
+	}
 
 	const list = [
 		{
@@ -109,10 +118,6 @@ function RecipeCard({ navigation, recipe }) {
 		}
 	}, [data])
 
-	// console.log(data?.findFav?.Recipes[0]?.UserRecipe, "======================= list recipe dan userid dari home ==============")
-	// console.log(like);
-	// console.log({ recipe });
-
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -128,10 +133,15 @@ function RecipeCard({ navigation, recipe }) {
 			<Card.Image
 				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
-
-			{!like && <MaterialIcons onPress={addToFav} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />}
-			{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
-
+			
+			<View style={{
+				flexDirection: 'row',
+				paddingTop: 10
+			}}>
+				{!like && <MaterialIcons onPress={addToFav} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />}
+				{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
+				<MaterialCommunityIcons onPress={openModal} name="bookmark-outline" size={24} color="black" />
+			</View>
 				{/* source={{ uri: recipe.image }} resizeMode="cover" /> */}
 			<Text
 				style={styles.recipeTitle}
@@ -165,6 +175,13 @@ function RecipeCard({ navigation, recipe }) {
 					/>
 				</View>
 			</View>
+
+			<ModalAddPlan 
+				isVisible={showModal}
+				recipe={recipe}
+				onClose={closeModal}
+			/>
+
 			<BottomSheet
 				transparent={true}
 				isVisible={isVisible}>
@@ -209,7 +226,7 @@ const styles = StyleSheet.create({
 		letterSpacing: 1.5
 	},
 	favoriteButton: {
-		marginTop: 5,
+		// marginTop: 5,
 		marginLeft: 5
 	},
 	recipeTitle: {

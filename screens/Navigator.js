@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Navigator() {
   const token = useReactiveVar(tokenVar)
-  // const token = useSelector((state) => state.token)  
 
   const Stack = createStackNavigator();
   const HomeStack = createStackNavigator();

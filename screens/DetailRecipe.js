@@ -11,11 +11,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { tokenVar } from '../store/makeVar'
+import { ModalAddPlan } from '../components'
 import Constants from 'expo-constants'
 
 export default function DetailRecipe({ navigation, route }) {
   const { recipeData, page, user } = route.params
   const [isVisible, setIsVisible] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
     context: {
       headers: {
@@ -30,7 +32,25 @@ export default function DetailRecipe({ navigation, route }) {
     fetchPolicy: 'network-only'
   })
 
+  const closeModal = () => {
+    setShowModal(false)
+  }
   const list = [
+    {
+      title: 'Add Recipe to your Plan',
+      containerStyle: {
+        backgroundColor: '#FFF',
+      },
+      titleStyle: {
+        color: 'black',
+        marginLeft: 30,
+      },
+      onPress: () => {
+        setShowModal(true)
+        // setIsVisible(false)
+        // navigation.navigate('EditRecipe')
+      }
+    },
     {
       title: 'Edit Recipe',
       containerStyle: {
@@ -137,6 +157,13 @@ export default function DetailRecipe({ navigation, route }) {
         <Divider style={styles.divider} />
         <CookingStep steps={recipeData.step} />
       </ScrollView>
+
+      <ModalAddPlan 
+				isVisible={showModal}
+				recipe={recipeData}
+				onClose={closeModal}
+			/>
+
       <BottomSheet
         style={{ height: 300 }}
         isVisible={isVisible}>
