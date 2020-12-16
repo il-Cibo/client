@@ -19,10 +19,10 @@ function FavoriteCard({ navigation, recipe, username }) {
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 
-
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
-			recipeId: recipe.id
+			recipeData: recipe,
+			user: username
 		})
 	}
 
@@ -128,7 +128,6 @@ function FavoriteCard({ navigation, recipe, username }) {
 	// 	})
 	// }
 
-
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -143,10 +142,9 @@ function FavoriteCard({ navigation, recipe, username }) {
 				<MaterialIcons onPress={deleteThisFromFav} name="delete" size={24} color="black" style={styles.deleteButton} />
 			</View>
 			<Card.Image
-				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
 			{/* <MaterialIcons onPress={deleteFromFav(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} /> */}
-			<Text style={styles.recipeTitle}>{recipe.title}</Text>
+			<Text style={styles.recipeTitle} onPress={goToRecipeDetail}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
 			</Text>
@@ -195,7 +193,9 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	usernameStyle: {
-		fontSize: 13
+		fontSize: 13,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	favoriteButton: {
 		marginTop: 5,
@@ -209,11 +209,14 @@ const styles = StyleSheet.create({
 	recipeTitle: {
 		marginTop: 10,
 		fontWeight: 'bold',
-		fontSize: 16
+		fontSize: 16,
+		fontFamily: 'Oswald',
 	},
 	recipeDescription: {
 		marginTop: 5,
-		fontSize: 12
+		fontSize: 12,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	cookInfo: {
 		height: 60,
@@ -223,7 +226,9 @@ const styles = StyleSheet.create({
 	info: {
 		color: "#747d8c",
 		fontSize: 9,
-		marginLeft: 5
+		marginLeft: 5,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	row: {
 		flexDirection: 'row',

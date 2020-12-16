@@ -10,6 +10,7 @@ import { Button, TextInput } from 'react-native-paper'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 import { Divider } from 'react-native-elements'
+import { Loading } from '../components'
 
 const EditRecipe = ({ navigation, route }) => {
   const { recipeId } = route.params
@@ -68,11 +69,17 @@ const EditRecipe = ({ navigation, route }) => {
   }, [data])
 
   if (loading) {
-    return <Text> Loading... </Text>
+    return (
+      <Loading />
+    )
   }
 
   if (error) {
-    return <Text>{error.message}</Text>
+    return (
+      <View style={styles.container}>
+        <Text>{error.message}</Text>
+      </View>
+    )
   }
 
   const pickImage = async () => {
@@ -93,14 +100,14 @@ const EditRecipe = ({ navigation, route }) => {
       return (
         <View style={styles.camera}>
           <Ionicons style={styles.cameraIcon} name='camera' />
-          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#dcdde1' }} onPress={pickImage}>Take a Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#353b48' }} onPress={pickImage}>Take a Photo</Button>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
           <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
-          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#dcdde1' }} onPress={pickImage}>Change Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#353b48' }} onPress={pickImage}>Change Photo</Button>
         </View>
       )
     }
@@ -315,6 +322,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     fontSize: 10,
-    color: 'black'
+    color: '#f5f6fa'
   }
 })

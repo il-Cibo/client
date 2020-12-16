@@ -76,14 +76,14 @@ const AddRecipe = ({ navigation }) => {
       return (
         <View style={styles.camera}>
           <Ionicons style={styles.cameraIcon} name='camera' />
-          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Take a Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#353b48'}} onPress={pickImage}>Take a Photo</Button>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
           <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
-          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Change Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#353b48'}} onPress={pickImage}>Change Photo</Button>
         </View>
       )
     }
@@ -254,14 +254,16 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'black',
     alignSelf: 'flex-start',
-    marginLeft: 30
+    marginLeft: 30,
+    fontFamily: 'Oswald',
   },
   inputForm: {
     paddingLeft: 25,
     paddingRight: 25,
   },
   inputFormStyle: {
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: 'Oswald'
   },
   formBox: {
     marginTop: 15
@@ -273,11 +275,6 @@ const styles = StyleSheet.create({
     color: '#333',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  textStyle: {
-    color: 'black',
-    alignSelf: 'center',
-    margin: 20,
   },
   camera: {
     flex: 1,
@@ -298,6 +295,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     fontSize: 10,
-    color: 'black'
+    color: '#f5f6fa'
   }
 })
