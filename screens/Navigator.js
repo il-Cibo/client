@@ -58,7 +58,7 @@ function Navigator() {
         }}
       >
         <Tab.Screen name="Home" component={HomeStackScreen} />
-        {/* <Tab.Screen name="Favorite" component={Favorite} /> */}
+        <Tab.Screen name="Favorite" component={Favorite} />
         <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
         <Tab.Screen name="Meal Plan" component={MealPlan} options={{ headerShown: false }} />
         <Tab.Screen name="Profile" component={UserProfile} options={{ headerShown: false }} />

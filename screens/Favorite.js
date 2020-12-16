@@ -23,7 +23,6 @@ function Favorite(props) {
 		}
 	})
 
-	console.log(data, 'cek fav');
 	const isFocused = useIsFocused();
 
 	useEffect(() => { 
@@ -51,7 +50,7 @@ function Favorite(props) {
 	if (error) {
 		return (
 			<View style={styles.container}>
-				<Text>{JSON.stringify(error.message)}</Text>
+				<Text>{error.message}</Text>
 			</View>
 		)
 	}

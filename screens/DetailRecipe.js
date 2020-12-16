@@ -41,7 +41,9 @@ export default function DetailRecipe({ navigation, route }) {
       },
       onPress: () => {
         setIsVisible(false)
-        navigation.navigate('EditRecipe')
+        navigation.navigate('EditRecipe', {
+          recipeId: recipeData.id
+        })
       }
     },
     {
@@ -69,10 +71,6 @@ export default function DetailRecipe({ navigation, route }) {
       onPress: () => setIsVisible(false)
     }
   ]
-  
-  // registerdemo
-  // registerdemo
-  // demoaccount@mail.com
 
   const deleteARecipe = () => {
     setIsVisible(false)

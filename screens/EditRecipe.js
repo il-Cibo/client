@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Image, Platform } from 'react-native';
-import { AddForm } from '../components'
 import { EDIT_RECIPE, GET_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import * as mime from 'react-native-mime-types';
 import * as ImagePicker from 'expo-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { Ionicons } from '@expo/vector-icons';
-import { Button } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
+import { Divider } from 'react-native-elements'
 
-
-const EditRecipe = ({ route }) => {
+const EditRecipe = ({ navigation, route }) => {
   const { recipeId } = route.params
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -40,6 +39,7 @@ const EditRecipe = ({ route }) => {
       }
     }
   })
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -50,7 +50,7 @@ const EditRecipe = ({ route }) => {
       }
     })();
   }, []);
-  
+
   useEffect(() => {
     if (data) {
       const newTags = data.recipe.Tags.map((el) => {
@@ -92,13 +92,15 @@ const EditRecipe = ({ route }) => {
     if (!image) {
       return (
         <View style={styles.camera}>
-          <Ionicons style={styles.cameraIcon} name='camera' onPress={pickImage} />
+          <Ionicons style={styles.cameraIcon} name='camera' />
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#dcdde1' }} onPress={pickImage}>Take a Photo</Button>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} onPress={pickImage} />
+          <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{ backgroundColor: '#dcdde1' }} onPress={pickImage}>Change Photo</Button>
         </View>
       )
     }
@@ -140,100 +142,132 @@ const EditRecipe = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* <View>{JSON.stringify(data)}</View> */}
-      <View>
-        <Text style={styles.title}>Edit Recipe</Text>
-      </View>
-      {checkImage()}
-      <Button onPress={pickImage}>Change Photo</Button>
       <ScrollView>
+        <View style={styles.header}>
+          <Ionicons name="arrow-back" size={30} color="black" onPress={() => navigation.navigate('Home')} />
+          <Text style={styles.title}>Edit Recipe</Text>
+        </View>
+        <Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
+        {checkImage()}
+        <Divider style={{ height: 1.5, backgroundColor: '#f5f6fa', marginTop: 15 }} />
         <View style={styles.inputForm}>
-          <View>
-            <Text style={styles.inputLabel}>Title</Text>
-            <AddForm
-              labelValue={title}
+          <View style={styles.formBox}>
+            <TextInput
+              value={title}
+              label="Title"
+              placeholder="Insert title"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
               onChangeText={(title) => setTitle(title)}
-              placeholderText="Recipe title"
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-
-            <Text style={styles.inputLabel}>Description</Text>
-            <AddForm
-              labelValue={description}
-              onChangeText={(description) => setDescription(description)}
-              placeholderText="Recipe's description"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Serving</Text>
-            <AddForm
-              labelValue={serving}
-              onChangeText={(serving) => setServing(serving)}
-              placeholderText="Serving size"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Cooking Time</Text>
-            <AddForm
-              labelValue={cookingTime}
-              onChangeText={(cookingTime) => setCookingTime(cookingTime)}
-              placeholderText="Recipe's cooking time"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Ingredients</Text>
-            <AddForm
-              labelValue={ingredients}
-              onChangeText={(ingredients) => setIngredients(ingredients)}
-              placeholderText="Recipe's ingredients"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Cooking steps</Text>
-            <AddForm
-              labelValue={cookingSteps}
-              onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
-              placeholderText="Steps of how to cook"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Tags</Text>
-            <AddForm
-              labelValue={tag}
-              onChangeText={(tag) => setTags(tag)}
-              placeholderText="Input recipe's tags here"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
           </View>
-          <Button style={styles.submit} onPress={editRecipe}>Save Recipe</Button>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={description}
+              label="Description"
+              placeholder="Insert description"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(description) => setDescription(description)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={serving}
+              label="Serving"
+              placeholder="Insert serving size"
+              selectionColor="#FF9494"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(serving) => setServing(serving)}
+              keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={cookingTime}
+              label="Cooking Time"
+              placeholder="Insert cooking time"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(cookingTime) => setCookingTime(cookingTime)}
+              keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={ingredients}
+              label="Ingredients"
+              placeholder="Insert ingredients"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(ingredients) => setIngredients(ingredients)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={cookingSteps}
+              label="Steps of Cooking"
+              placeholder="Insert steps of cooking"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={tag}
+              label="Tags"
+              placeholder="Insert tags"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(input) => setTags(input)}
+            />
+          </View>
+          <Button mode="contained" style={styles.submitButtonStyle} onPress={editRecipe}>Add Recipe</Button>
         </View>
       </ScrollView>
-    </View>
+    </View >
   )
 }
 
 export default EditRecipe
 
 const styles = StyleSheet.create({
-  submit: {
+  submitButtonStyle: {
     backgroundColor: '#FF9494',
-    margin: 10
+    margin: 20
   },
   inputForm: {
-    // paddingTop: 100,
-    paddingLeft: 24,
-    paddingRight: 20,
-    justifyContent: 'center',
+    paddingLeft: 25,
+    paddingRight: 25,
+  },
+  header: {
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 15,
+    flexDirection: 'row'
+  },
+  formBox: {
+    marginTop: 15
   },
   inputLabel: {
     fontSize: 14
@@ -248,7 +282,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     backgroundColor: '#FFF'
 
   },
@@ -258,18 +292,29 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   title: {
-    margin: 24,
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'left',
-    color: '#000000',
+    color: 'black',
+    alignSelf: 'flex-start',
+    marginLeft: 30,
     fontFamily: 'Oswald',
   },
   camera: {
+    flex: 1,
+    alignSelf: 'center',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    height: 240,
+    marginBottom: -20,
   },
   cameraIcon: {
     color: 'black',
     fontSize: 30,
   },
+  buttonStyle: {
+    fontSize: 10,
+    color: 'black'
+  }
 })

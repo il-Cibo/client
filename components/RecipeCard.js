@@ -11,6 +11,7 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { tokenVar } from '../store/makeVar'
 
 function RecipeCard({ navigation, recipe, user }) {
 	const [like, setLike] = useState(false)
@@ -76,7 +77,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
@@ -96,7 +97,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
