@@ -1,10 +1,11 @@
 import React from 'react'
 import { ProfileHeader, Gallery } from '../components'
-import { ScrollView, StyleSheet, View, Text } from 'react-native'
+import { ScrollView, StyleSheet, View, Text, Alert } from 'react-native'
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
 import { tokenVar } from '../store/makeVar'
 import { Button } from 'react-native-elements'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Loading } from '../components'
 
 const UserProfile = ({ navigation }) => {
@@ -15,6 +16,29 @@ const UserProfile = ({ navigation }) => {
       }
     }
   })
+
+  const logout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Logout Cancelled'),
+          style: 'cancel'
+        },
+        {
+          text: 'Yes',
+          onPress: async () => {
+            await AsyncStorage.removeItem('token');
+            tokenVar('');
+          }
+        },
+      ],
+    )
+    await AsyncStorage.removeItem('token');
+    tokenVar('');
+  }
 
   if (loading) {
 		return (
@@ -36,7 +60,7 @@ const UserProfile = ({ navigation }) => {
         <View style={styles.container}>
           <ProfileHeader data={{ username: data.user.username, name: data.user.name, avatar: data.user.avatar }} />
           <View style={styles.container}>
-            <Button title="LOGOUT" mode="contained" />
+            <Button onPress={logout} title="LOGOUT" mode="contained" />
             <Gallery data={data.user.Recipes} user={data.user.username} navigation={navigation} />
           </View>
         </View>
