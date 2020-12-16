@@ -9,6 +9,7 @@ import { FavoriteCard } from '../components'
 import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
+import Constants from 'expo-constants'
 
 function Favorite(props) {
 	const [userFavo, setUserFavo] = useState([])
@@ -75,20 +76,21 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#FFF',
 		justifyContent: 'flex-start',
+		marginTop: Constants.statusBarHeight
 	},
 	header: {
 		width: '100%',
 		height: '5%',
 		flexDirection: 'row',
-		alignItems: 'flex-start',
-		justifyContent: 'flex-start',
+		alignItems: 'center',
+		justifyContent: 'center',
 		marginTop: 25,
 		marginLeft: 25,
 		paddingBottom: 35
 	},
 	headerText: {
 		fontWeight: 'bold',
-		fontSize: 20,
+		fontSize: 22,
 		color: 'black',
 		letterSpacing: 1
 	},

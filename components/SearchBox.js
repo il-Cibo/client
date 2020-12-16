@@ -4,13 +4,10 @@ import { SearchBar } from 'react-native-elements'
 
 function SearchBox() {
 	const [search, setSearch] = useState('')
-	function updateSearch(input) {
-		setSearch(input)
-	}
 	return (
 		<SearchBar
 			placeholder="Search for recipes..."
-			onChangeText={(input) => updateSearch(input)}
+			onChangeText={setSearch}
 			value={search}
 			lightTheme={true}
 			round={true}

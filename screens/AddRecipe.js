@@ -1,27 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native';
+import { Image, View, Platform, StyleSheet, Text, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { AddForm } from '../components'
+import { AddForm, Loading } from '../components'
 import { UPLOAD_RECIPE, GET_ALL_RECIPES } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
 import { useSelector } from 'react-redux'
+import Constants from 'expo-constants'
+import { Button, TextInput } from 'react-native-paper'
+import { Divider } from 'react-native-elements'
 
 const AddRecipe = ({ navigation }) => {
-  const token = useSelector((state) => state.token)
-  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-
-  const [image, setImage] = useState(null)
+  // const token = useSelector((state) => state.token)
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODA5Mjk4NX0.VCfMNg0uiit-7m5WRpU8ztGYs75QG5DeSIWhmV1RlM0"
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
-  const [serving, setServing] = useState()
-  const [cookingTime, setCookingTime] = useState()
+  const [image, setImage] = useState(null)
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
+  const [serving, setServing] = useState()
+  const [cookingTime, setCookingTime] = useState()
   const [tag, setTags] = useState()
-
+  const [uploadRecipe, { loading, error, data }] = useMutation(UPLOAD_RECIPE, {
+    context: {
+      headers: {
+        token: token
+      }
+    }
+  }, {
+    refetchQueries: [
+      { query: GET_ALL_RECIPES }
+    ]
+  })
 
   useEffect(() => {
     (async () => {
@@ -33,6 +45,20 @@ const AddRecipe = ({ navigation }) => {
       }
     })();
   }, []);
+
+  if (loading) {
+    return (
+      <Loading />
+    )
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>{error.message}</Text>
+      </View>
+    )
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -51,31 +77,19 @@ const AddRecipe = ({ navigation }) => {
     if (!image) {
       return (
         <View style={styles.camera}>
-          <Ionicons style={styles.cameraIcon} name='camera' onPress={pickImage} />
-          <Text style={{ fontWeight: 'bold' }}>Add Photo</Text>
+          <Ionicons style={styles.cameraIcon} name='camera' />
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Take a Photo</Button>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
-          <Image source={{ uri: image }} style={{ width: 20, height: 20 }} onPress={pickImage} />
-          <Text style={{ fontWeight: 'bold' }}>Change Photo</Text>
+          <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Change Photo</Button>
         </View>
       )
     }
   }
-
-  const [uploadRecipe] = useMutation(UPLOAD_RECIPE, {
-    context: {
-      headers: {
-        token: token
-      }
-    }
-  }, {
-    refetchQueries: [
-      { query: GET_ALL_RECIPES }
-    ]
-  })
 
   const generateRNFile = (uri, name) => {
     return uri ? new ReactNativeFile({
@@ -92,15 +106,15 @@ const AddRecipe = ({ navigation }) => {
       title: title,
       description: description,
       image: file,
+      ingredients: ingredients.split('\n'),
+      step: cookingSteps.split('\n'),
       serving: +serving,
       time: +cookingTime,
-      step: cookingSteps.split('\n'),
-      ingredients: ingredients.split('\n')
     }
 
     const tagData = tag.split('\n')
 
-    console.log(recipe, '<< resep');
+    console.log(recipe);
     console.log(tagData);
 
     uploadRecipe({
@@ -113,104 +127,146 @@ const AddRecipe = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView>
+    <View style={styles.container}>
       <ScrollView>
-        <View style={styles.container}>
-          <View>
-            <Text style={styles.title}>Add New Recipe</Text>
-          </View>
-          {checkImage()}
+        <View style={styles.header}>
+          <Ionicons name="arrow-back" size={30} color="black" onPress={() => navigation.navigate('Home')} />
+          <Text style={styles.title}>New Recipe</Text>
         </View>
-
+        <Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
+        {checkImage()}
+        <Divider style={{ height: 1.5, backgroundColor: '#f5f6fa', marginTop: 15 }} />
         <View style={styles.inputForm}>
-          <View>
-            <Text style={styles.inputLabel}>Title</Text>
-            <AddForm
-              labelValue={title}
+          <View style={styles.formBox}>
+            <TextInput
+              value={title}
+              label="Title"
+              placeholder="Insert title"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
               onChangeText={(title) => setTitle(title)}
-              placeholderText="Recipe's title"
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-
-            <Text style={styles.inputLabel}>Description</Text>
-            <AddForm
-              labelValue={description}
-              onChangeText={(description) => setDescription(description)}
-              placeholderText="Recipe's description"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Serving</Text>
-            <AddForm
-              labelValue={serving}
-              onChangeText={(serving) => setServing(serving)}
-              placeholderText="Serving size"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Cooking Time</Text>
-            <AddForm
-              labelValue={cookingTime}
-              onChangeText={(cookingTime) => setCookingTime(cookingTime)}
-              placeholderText="Recipe's cooking time"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Ingredients</Text>
-            <AddForm
-              labelValue={ingredients}
-              onChangeText={(ingredients) => setIngredients(ingredients)}
-              placeholderText="Recipe's ingredients"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Cooking steps</Text>
-            <AddForm
-              labelValue={cookingSteps}
-              onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
-              placeholderText="Steps of how to cook"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <Text style={styles.inputLabel}>Tags</Text>
-            <AddForm
-              labelValue={tag}
-              onChangeText={(input) => setTags(input)}
-              placeholderText="Input recipe's tags here"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
           </View>
-          <Button title='Add new recipe' style={styles.submit} onPress={addNewRecipe} />
-        </View>
 
+          <View style={styles.formBox}>
+            <TextInput
+              value={description}
+              label="Description"
+              placeholder="Insert description"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(description) => setDescription(description)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={serving}
+              label="Serving"
+              placeholder="Insert serving size"
+              selectionColor="#FF9494"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(serving) => setServing(serving)}
+              keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={cookingTime}
+              label="Cooking Time"
+              placeholder="Insert cooking time"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(cookingTime) => setCookingTime(cookingTime)}
+              keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={ingredients}
+              label="Ingredients"
+              placeholder="Insert ingredients"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(ingredients) => setIngredients(ingredients)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={cookingSteps}
+              label="Steps of Cooking"
+              placeholder="Insert steps of cooking"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
+            />
+          </View>
+
+          <View style={styles.formBox}>
+            <TextInput
+              value={tag}
+              label="Tags"
+              placeholder="Insert tags"
+              underlineColor="#FF9494"
+              multiline={true}
+              mode="outlined"
+              style={styles.inputFormStyle}
+              onChangeText={(input) => setTags(input)}
+            />
+          </View>
+          <Button mode="contained" style={styles.submitButtonStyle} onPress={addNewRecipe}>Add Recipe</Button>
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 
 export default AddRecipe
 
 const styles = StyleSheet.create({
-  inputForm: {
-    // paddingTop: 100,
-    paddingLeft: 20,
-    paddingRight: 20,
-    justifyContent: 'center',
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
+    justifyContent: 'flex-start',
+    backgroundColor: '#FFF',
+    marginTop: Constants.statusBarHeight
   },
-  inputLabel: {
-    fontSize: 10
+  header: {
+    alignItems: 'center',
+    padding: 15,
+    flexDirection: 'row'
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    color: 'black',
+    alignSelf: 'flex-start',
+    marginLeft: 30
+  },
+  inputForm: {
+    paddingLeft: 25,
+    paddingRight: 25,
+  },
+  inputFormStyle: {
+    fontSize: 15
+  },
+  formBox: {
+    marginTop: 15
   },
   input: {
     padding: 10,
@@ -220,33 +276,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {
-    paddingTop: 20,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFF'
-  },
   textStyle: {
     color: 'black',
     alignSelf: 'center',
     margin: 20,
   },
-  title: {
-    marginLeft: 40,
-    marginTop: 20,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    color: '#000000'
-  },
   camera: {
+    flex: 1,
+    alignSelf: 'center',
     alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 20
+    justifyContent: 'space-evenly',
+    width: '100%',
+    height: 240,
+    marginBottom: -20,
   },
   cameraIcon: {
     color: 'black',
-    fontSize: 30,
+    fontSize: 40,
   },
+  submitButtonStyle: {
+    backgroundColor: '#FF9494',
+    margin: 20
+  },
+  buttonStyle: {
+    fontSize: 10,
+    color: 'black'
+  }
 })

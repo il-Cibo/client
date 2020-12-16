@@ -1,33 +1,39 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import BouncingPreloader from 'react-native-bouncing-preloader';
+import { StyleSheet, View, Text } from 'react-native';
+import LottieView from 'lottie-react-native'
 
-export default function Loading() {
-  return (
-    <View style={styles.container}>
-      <BouncingPreloader
-        icons={[
-          'https://www.shareicon.net/data/128x128/2017/04/22/885104_food_512x512.png',
-          'https://www.shareicon.net/data/256x256/2016/05/04/759946_bar_512x512.png',
-          null,
-          'https://www.shareicon.net/data/512x512/2017/04/22/885110_food_512x512.png',
-          'https://www.shareicon.net/data/512x512/2017/04/22/885121_food_512x512.png'
-        ]}
-        leftRotation="-680deg"
-        rightRotation="360deg"
-        leftDistance={-180}
-        rightDistance={-250}
-        speed={1500}
-      />
-    </View>
-  );
+function Loading() {
+    return (
+      <View style={styles.container} >
+        <LottieView
+          style={{
+            width: 250,
+            height: 250,
+          }}
+          source={require('../assets/loading.json')}
+          autoPlay
+          loop
+        />
+        <Text style={styles.textStyle}>Loading, Please Wait ...</Text>
+      </View>
+    )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+		flex: 1,
+		flexDirection: 'column',
+		width: 360,
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+		backgroundColor: '#FFF'
+	},
+	textStyle: {
+		fontFamily: 'Oswald',
+		fontSize: 24,
+		color: '#FF9494',
+		textAlign: 'center'
+	}
 });
+
+export default Loading

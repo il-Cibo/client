@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'rea
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store'
 import { Button } from 'react-native-paper'
+import Constants from 'expo-constants'
 
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
@@ -52,10 +53,11 @@ const Login = ({ navigation }) => {
 	// 	return <Text>Loading ...</Text>
 	// 	// return <Loading />
 	// }
-
+	
 	if (loading) {
-		return <Text>Loading ...</Text>
-		// return <Loading />
+		return (
+			<Loading />
+		)
 	}
 
 	if (error) {
@@ -64,7 +66,6 @@ const Login = ({ navigation }) => {
 				<Text>{error.message}</Text>
 			</View>
 		)
-		// return <div>{error.message}</div>
 	}
 
 	function login(username, password) {
@@ -79,7 +80,6 @@ const Login = ({ navigation }) => {
 	}
 
 	return (
-		// <ImageBackground source={require('../assets/foad-roshan-9JbvVFJ1eLk-unsplash.jpg')}>
 		<View style={styles.container}>
 			<Text style={styles.title}>Mealo</Text>
 			<Text style={styles.h2}>Please login to continue</Text>
@@ -116,18 +116,14 @@ const Login = ({ navigation }) => {
 				Login
 			</Button>
 
-			{/* <TouchableOpacity style={styles.forgotButton} >
-				<Text style={styles.navButtonText}>Forgot Password? </Text>
-			</TouchableOpacity> */}
-
 			<View>
 
-				<SocialButton
+				{/* <SocialButton
 					buttonTitle="Sign in with Google"
 					btnType="google"
 					color="#de4d41"
 					backgroundColor="#f5e7ea"
-				/>
+				/> */}
 			</View>
 			<TouchableOpacity
 				style={styles.forgotButton}
@@ -149,11 +145,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 20,
-		paddingTop: 10,
+		marginTop: Constants.statusBarHeight
 	},
 	title: {
 		fontFamily: 'Oswald',
-		fontSize: 40,
+		fontSize: 60,
 		marginBottom: 10,
 		color: 'black',
 		alignSelf: 'flex-start',
