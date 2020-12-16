@@ -4,22 +4,18 @@ import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
-import { ADD_TO_FAVORITE_RECIPE, DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE } from '../config/queries'
+import { ADD_TO_FAVORITE_RECIPE, LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
-import { Ionicons, FontAwesome } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
 import { ModalAddPlan } from './'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { tokenVar } from '../store/makeVar'
 
 function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const [showModal, setShowModal] = useState(false)
-	const [userId, setUserId] = useState();
-	const [recipeId, setRecipeId] = useState();
-	const [status, setStatus] = useState(false);
 	const [tags, setTags] = useState()
 
 	useEffect(() => {
@@ -106,14 +102,9 @@ function RecipeCard({ navigation, recipe }) {
 	})
 
 	useEffect(() => {
-		// if (data) {
-		// 	const allUserFav = data.findFav.Recipes.map((el) => el.UserRecipe.favorites === true ? true : false)
-		// 	console.log({allUserFav});
-		// 	setLike(allUserFav);
-		// }
+
 		if (data) {
 			const allUserFav = data.findFav.Recipes.filter((el) => el.id === recipe.id)
-			// console.log({ allUserFav });
 			setLike(allUserFav[0]?.UserRecipe?.favorites);
 		}
 	}, [data])
@@ -139,10 +130,9 @@ function RecipeCard({ navigation, recipe }) {
 				paddingTop: 10
 			}}>
 				{!like && <MaterialIcons onPress={addToFav} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />}
-				{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
+				{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id}  style={styles.favoriteButton}/>}
 				<MaterialCommunityIcons onPress={openModal} name="bookmark-outline" size={24} color="black" />
 			</View>
-				{/* source={{ uri: recipe.image }} resizeMode="cover" /> */}
 			<Text
 				style={styles.recipeTitle}
 				onPress={goToRecipeDetail}
@@ -167,11 +157,6 @@ function RecipeCard({ navigation, recipe }) {
 						initialTags={tags}
 						readonly
 						deleteTagOnPress={false}
-						// renderTag={({tag, index}) => (
-						// 	<TouchableOpacity key={`${tag}-${index}`} >
-						// 		<Text>{tag}</Text>
-						// 	</TouchableOpacity>
-						// )}
 					/>
 				</View>
 			</View>
@@ -226,7 +211,6 @@ const styles = StyleSheet.create({
 		letterSpacing: 1.5
 	},
 	favoriteButton: {
-		// marginTop: 5,
 		marginLeft: 5
 	},
 	recipeTitle: {

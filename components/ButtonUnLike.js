@@ -1,9 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV, GET_ALL_RECIPES} from '../config/queries'
-import {useSelector} from "react-redux"
-import {useMutation, useQuery} from '@apollo/client'
+import { DELETE_RECIPE_FAV} from '../config/queries'
+import {useMutation} from '@apollo/client'
 import { tokenVar } from '../store/makeVar'
 
 export default function ButtonUnLike({setLike, recipeId}) {
@@ -34,7 +33,6 @@ export default function ButtonUnLike({setLike, recipeId}) {
 
 const styles = StyleSheet.create({
   deleteButton: {
-    marginTop: 5,
     marginLeft: 5,
   }
 })

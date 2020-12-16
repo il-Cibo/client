@@ -9,13 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Loading } from '../components'
 
 const UserProfile = ({ navigation }) => {
-  const { loading, error, data } = useQuery(GET_PROFILE, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    }
-  })
+  const { loading, error, data } = useQuery(GET_PROFILE)
 
   const logout = () => {
     Alert.alert(
@@ -36,8 +30,6 @@ const UserProfile = ({ navigation }) => {
         },
       ],
     )
-    await AsyncStorage.removeItem('token');
-    tokenVar('');
   }
 
   if (loading) {

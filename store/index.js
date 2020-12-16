@@ -9,7 +9,6 @@ const initialState = {
 }
 
 export const setToken = (token) => {
-  console.log(token);
   return (dispatch) => {
     dispatch({
       type: 'SET_TOKEN',

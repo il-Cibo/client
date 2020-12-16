@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
-import { GET_ALL_RECIPES, GET_PROFILE } from '../config/queries'
-import { useDispatch } from 'react-redux'
+import { GET_ALL_RECIPES } from '../config/queries'
 import { RecipeCard, Loading } from '../components'
 import Constants from 'expo-constants'
 import { Octicons } from '@expo/vector-icons'
-import { tokenVar } from '../store/makeVar'
 import { useFonts } from 'expo-font'
 import AppLoading from 'expo-app-loading'
 
@@ -18,22 +16,9 @@ const wait = timeout => {
 };
 
 function Home({ navigation }) {
-	const UserId = data?.user?.id
-	const dispatch = useDispatch()
-
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES)
 
-	const [getUser] = useLazyQuery(GET_PROFILE, {
-		onCompleted: ((dataUser) => {
-			dispatch({
-				type: 'SET_USER',
-				payload: dataUser.user
-			})
-		})
-	})
-
 	useEffect(() => {
-		getUser()
 		refetch()
 	}, [])
 

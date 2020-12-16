@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { FormInput, SocialButton, Loading } from '../components'
+import React, { useState } from 'react';
+import { FormInput, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER, {
+	const [getToken, { loading, error }] = useLazyQuery(LOGIN_USER, {
 		context: {
 			headers: {}
 		},
@@ -20,38 +20,6 @@ const Login = ({ navigation }) => {
 			tokenVar(data.login.token)
 		})
 	})
-
-	// const storeData = async (value) => {
-	// 	try {
-	// 		await AsyncStorage.setItem('token', value)
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// }
-
-	// if (data) {
-	// 	storeData(data.login.token)
-	// 		.then(res => {
-	// 			console.log(res);
-	// 		})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 		})
-	// 	// console.log(data);
-	// 	// const storeData = async (data) => {
-	// 	// 	try {
-	// 	// 		await AsyncStorage.setItem('token', data)
-	// 	// 	} catch (e) {
-	// 	// 		console.log(e);
-	// 	// 	}
-	// 	// }
-	// 	// await storeData(data.login.token)
-	// 	// AsyncStorage.setItem('token', data.login.token)
-	// 	// localStorage.setItem('token', data.login.token)
-	// 	navigation.navigate('Home')
-	// 	return <Text>Loading ...</Text>
-	// 	// return <Loading />
-	// }
 	
 	if (loading) {
 		return (

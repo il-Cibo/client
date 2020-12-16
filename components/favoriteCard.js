@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
-import { Card, BottomSheet, ListItem } from 'react-native-elements'
+import { Card } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV, GET_ALL_RECIPES } from '../config/queries'
+import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import { ModalAddPlan } from './'
 import Tags from "react-native-tags";
 import { tokenVar } from '../store/makeVar'
 import { Loading } from '../components'
 
-const tagUndefined = "recipe"
-
 function FavoriteCard({ navigation, recipe, username }) {
 	const [like, setLike] = useState(true)
-  const [isVisible, setIsVisible] = useState(false)
 	const [showModal, setShowModal] = useState(false)
 	const [tags, setTags] = useState()
+
 	const closeModal = () => {
 		setShowModal(false)
 	}
@@ -28,17 +26,13 @@ function FavoriteCard({ navigation, recipe, username }) {
 	}
 
 	useEffect(() => {
-		// if(recipe.Tags) {
-		// 	const newTags = recipe.Tags.map((el) => {
-		// 		return el.name
-		// 	})
+		if(recipe.Tags) {
+			const newTags = recipe.Tags.map((el) => {
+				return el.name
+			})
 
-	// const [tagFood, setTagFood] = useState('')
-
-		// 	setTags(newTags)
-		// 	console.log(tags);
-		// 	// console.log(tags);
-		// }
+			setTags(newTags)
+		}
 	},[])
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
@@ -69,18 +63,6 @@ function FavoriteCard({ navigation, recipe, username }) {
 		)
 	}
 
-	// console.log({ recipe }, data);
-	// let tagFood
-
-	// useEffect(() => {
-	//     if (recipe.Tags[0] !== undefined) {
-	//         var tag = recipe.Tags[0].name
-	//         // tagFood = tag
-	//         setTagFood(tag)
-	//     }
-
-	// }, [])
-
 	const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
 		context: {
 			headers: {
@@ -105,71 +87,6 @@ function FavoriteCard({ navigation, recipe, username }) {
 		refetch()
 	}
 
-
-	// const tagUndefined = "recipe"
-	// let tagFood
-	// if (recipe.Tags[0] !== undefined) {
-	// 	var tag = recipe.Tags[0].name
-	// 	tagFood = tag
-
-	// }
-
-	console.log(recipe.Tags);
-
-    return (
-        <Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
-            <View style={styles.cardHeader}>
-                <View style={styles.userInfo}>
-                    <Image
-                        style={styles.userPic}
-                        source={require('../assets/woman.svg')}
-                    />
-                    <Text style={styles.usernameStyle}>{username}</Text>
-                </View>
-                {/* <MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" /> */}
-                {/* <MaterialIcons onPress={deleteThisFromFav} name="delete" size={24} color="black" style={styles.deleteButton} /> */}
-            </View>
-            <Card.Image
-                onPress={goToRecipeDetail}
-                source={{ uri: recipe.image }} />
-						
-						<View style={{
-							flexDirection: 'row'
-						}}>
-							{like && <MaterialIcons onPress={deleteThisFromFav} name="favorite" size={24} color="red" style={styles.deleteButton} />}
-							<MaterialCommunityIcons onPress={openModal} name="bookmark-outline" size={24} color="black" />
-						</View>
-						
-            {/* <MaterialIcons onPress={deleteFromFav(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} /> */}
-            <Text style={styles.recipeTitle}>{recipe.title}</Text>
-            <Text style={styles.recipeDescription}>
-                {recipe.description}
-            </Text>
-            <View style={styles.cookInfo}>
-                <View style={styles.row}>
-                    <MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
-                    <Text style={styles.info}>Serving: {recipe.serving}</Text>
-                </View>
-                <View style={styles.row}>
-                    <Ionicons name="timer-outline" size={16} color="#747d8c" />
-                    <Text style={styles.info}>Time Cook: {recipe.time} mins</Text>
-                </View>
-                <View style={styles.row}>
-                    <AntDesign name="tago" size={16} color="#747d8c" />
-                    {/* <Text style={styles.info}>Tags: {recipe.Tags[0] ? tagFood : tagUndefined}</Text> */}
-                </View>
-
-                {/* <MaterialIcons onPress={deleteThisFromFav(recipe.id)} name="delete" size={24} color="black" style={styles.favoriteButton} /> */}
-            </View>
-
-						<ModalAddPlan 
-							isVisible={showModal}
-							recipe={recipe}
-							onClose={closeModal}
-						/>
-        </Card>
-    )
-
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -180,12 +97,16 @@ function FavoriteCard({ navigation, recipe, username }) {
 					/>
 					<Text style={styles.usernameStyle}>{username}</Text>
 				</View>
-				{/* <MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" /> */}
-				<MaterialIcons onPress={deleteThisFromFav} name="delete" size={24} color="black" style={styles.deleteButton} />
 			</View>
 			<Card.Image
 				source={{ uri: recipe.image }} />
-			{/* <MaterialIcons onPress={deleteFromFav(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} /> */}
+				<View style={{
+					flexDirection: 'row',
+					paddingTop: 10
+				}}>
+					{like && <MaterialIcons onPress={deleteThisFromFav} name="favorite" size={24} color="red" style={styles.deleteButton} />}
+					<MaterialCommunityIcons onPress={openModal} name="bookmark-outline" size={24} color="black" />
+				</View>
 			<Text style={styles.recipeTitle} onPress={goToRecipeDetail}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
@@ -201,10 +122,21 @@ function FavoriteCard({ navigation, recipe, username }) {
 				</View>
 				<View style={styles.row}>
 					<AntDesign name="tago" size={16} color="#747d8c" />
-					{/* <Text style={styles.info}>Tags: {recipe.Tags[0] ? tagFood : tagUndefined}</Text> */}
+					<Text style={styles.info}>Tags: </Text>
+					<Tags
+						initialTags={tags}
+						readonly
+						deleteTagOnPress={false}
+					/>
 				</View>
 
 			</View>
+
+			<ModalAddPlan 
+				isVisible={showModal}
+				recipe={recipe}
+				onClose={closeModal}
+			/>
 		</Card>
 	)
 }

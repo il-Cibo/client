@@ -23,23 +23,12 @@ const EditRecipe = ({ navigation, route }) => {
   const [cookingTime, setCookingTime] = useState('')
   const [tag, setTags] = useState('')
   const { loading, error, data } = useQuery(GET_RECIPE, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    },
     variables: {
       id: recipeId
     }
   })
 
-  const [updateRecipe] = useMutation(EDIT_RECIPE, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    }
-  })
+  const [updateRecipe] = useMutation(EDIT_RECIPE)
 
   useEffect(() => {
     (async () => {
@@ -88,11 +77,10 @@ const EditRecipe = ({ navigation, route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
+    console.log(image, ' pas habis foto');
   };
 
   const checkImage = () => {
@@ -134,8 +122,6 @@ const EditRecipe = ({ navigation, route }) => {
       time: +cookingTime
     }
 
-    console.log(recipe, '<<< data recipe setelah update');
-
     const tagData = tag.split('\n')
 
     updateRecipe({
@@ -145,6 +131,8 @@ const EditRecipe = ({ navigation, route }) => {
         tags: tagData
       }
     })
+
+    navigation.navigate("Home")
   }
 
   return (
@@ -250,7 +238,7 @@ const EditRecipe = ({ navigation, route }) => {
               onChangeText={(input) => setTags(input)}
             />
           </View>
-          <Button mode="contained" style={styles.submitButtonStyle} onPress={editRecipe}>Add Recipe</Button>
+          <Button mode="contained" style={styles.submitButtonStyle} onPress={editRecipe}>Edit Recipe</Button>
         </View>
       </ScrollView>
     </View >

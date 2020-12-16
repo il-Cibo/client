@@ -53,7 +53,6 @@ const register = ({ navigation }) => {
     })
     navigation.navigate('Login')
   }
-  console.log(newUser)
 
   if (loading) {
     return <Text>Loading ...</Text>

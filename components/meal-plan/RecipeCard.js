@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { REMOVE_FROM_PLAN, GET_MEALPLAN } from '../../config/queries'
@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tokenVar } from '../../store/makeVar'
 
-function RecipeCard({ recipe, currentDate }) {
+function RecipeCard({ recipe, currentDate, refetch }) {
 	const [isVisible, setIsVisible] = useState(false)
 
 	const [removeFromPlan, { loading, error, data }] = useMutation(REMOVE_FROM_PLAN, {
@@ -15,12 +15,9 @@ function RecipeCard({ recipe, currentDate }) {
       headers: {
         token: tokenVar()
       }
-    }
-  }, {
-    refetchQueries: [
-      { query: GET_MEALPLAN }
-    ]
-	})
+		},
+		onCompleted: () => refetch()
+  })
 	
 	const list = [
 		{
@@ -58,7 +55,6 @@ function RecipeCard({ recipe, currentDate }) {
 	]
 
 	function goToRecipeDetail() {
-		console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
 			user: user,

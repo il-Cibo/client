@@ -6,7 +6,6 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Button
 } from "react-native";
 import { Octicons } from '@expo/vector-icons'
 import moment from 'moment-timezone'
@@ -18,13 +17,8 @@ import { tokenVar } from '../../store/makeVar'
 const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const [date, setDate] = useState(new Date());
   const [dayNow, setDayNow] = useState()
-
+  
   const [addToPlan] = useMutation(ADD_TO_PLAN, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    },
     onCompleted: (() => {
       onClose()
     })
@@ -62,7 +56,6 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const addNewPlan = () => {
     const plan = moment(date).tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-    console.log(recipe.id, plan);
     addToPlan({
       variables: {
         id: recipe.id,
@@ -77,9 +70,6 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
         transparent={true}
         visible={isVisible}
 
-        // onRequestClose={() => {
-        //   Alert.alert("Modal has been closed.");
-        // }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>

@@ -1,37 +1,46 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, ScrollView, SafeAreaView, Text, Platform, Button } from 'react-native'
-import { MealPlanCard, ModalAddPlan } from '../components'
+import { StyleSheet, View, ScrollView, SafeAreaView, Text, Platform, RefreshControl} from 'react-native'
+import { Loading, MealPlanCard } from '../components'
 import { GET_MEALPLAN } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import moment from 'moment-timezone'
 import { Octicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
+
+const wait = timeout => {
+	return new Promise(resolve => {
+		setTimeout(resolve, timeout);
+	});
+};
 
 const MealPlan = () => {
   const [dateNow, setDateNow] = useState()
   const [dayNow, setDayNow] = useState()
   const [todayPlan, setTodayPlan] = useState([])
-  
+  const [formattedDate, setFormattedDate] = useState()
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-  const { loading, error, data, refetch } = useQuery(GET_MEALPLAN, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    }
-  })
+  const { loading, data, refetch } = useQuery(GET_MEALPLAN)
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		refetch()
+		wait(500).then(() => setRefreshing(false));
+  }, []);
+  
   useEffect(() => {
     const date = new Date ()
-    const testDate = moment().tz('Asia/Jakarta')
     setDateNow(date)
+
     const newDate = moment(date).tz('Asia/Jakarta').format('YYYY-MM-DD')
+    setFormattedDate(newDate)
+
     const dayNow = moment(date).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
     setDayNow(dayNow)
+
     if(data) {
       const todayPlan = data.findPlan.Recipes.filter(el => {
         return el.UserRecipe.plan.indexOf(newDate) > -1
@@ -39,7 +48,7 @@ const MealPlan = () => {
       
       setTodayPlan(todayPlan)
     }
-  }, [])
+  }, [data])
   
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -80,7 +89,7 @@ const MealPlan = () => {
         {
           todayPlan.map(recipe => {
             return (
-              <MealPlanCard key={recipe.id} recipe={recipe} />
+              <MealPlanCard key={recipe.id} recipe={recipe} currentDate={formattedDate} refetch={refetch} />
             )
           })
         }
@@ -89,14 +98,9 @@ const MealPlan = () => {
   }
 
   if(loading) {
-    console.log('loading ...');
-    return <View><Text>LOADING ....</Text></View>
+    return <Loading/>
   }
   
-  const dataRecipes = {
-    id: 1,
-    title: "Judul Makanan"
-  }
   return (
     <SafeAreaView>
       <View style={style.calendarHeader}>
@@ -124,8 +128,9 @@ const MealPlan = () => {
           />
         )}
 
-      <ScrollView style={style.planBody}>
-        {/* <ModalAddPlan recipe={dataRecipes} /> */}
+      <ScrollView style={style.planBody}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         {renderMealPlanCard()}
       </ScrollView>
     </SafeAreaView>
@@ -136,16 +141,10 @@ export default MealPlan
 
 const style = StyleSheet.create({
   calendarHeader: {
-    // paddingTop: 30,
-    // padding: 30,
     justifyContent: 'space-between',
     flexDirection: 'row',
-		// marginTop: Constants.statusBarHeight,
-    // paddingLeft: 20,
-    // paddingRight: 20,
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center'
   },
   headerText: {
     fontSize: 25,

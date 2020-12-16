@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
@@ -7,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { FavoriteCard, Loading } from '../components'
 import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
-import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 

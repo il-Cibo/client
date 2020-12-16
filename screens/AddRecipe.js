@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, View, Platform, StyleSheet, Text, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { AddForm, Loading } from '../components'
+import { Loading } from '../components'
 import { UPLOAD_RECIPE, GET_ALL_RECIPES } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
@@ -64,8 +64,6 @@ const AddRecipe = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -111,9 +109,6 @@ const AddRecipe = ({ navigation }) => {
     }
 
     const tagData = tag.split('\n')
-
-    console.log(recipe);
-    console.log(tagData);
 
     uploadRecipe({
       variables: {
