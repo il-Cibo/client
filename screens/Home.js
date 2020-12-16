@@ -29,10 +29,10 @@ function Home({ navigation }) {
 	})
 
 	const [getUser] = useLazyQuery(GET_PROFILE, {
-    context: {
-      headers: {
-        token: token
-      }
+		context: {
+			headers: {
+				token: token
+			}
 		},
 		onCompleted: ((dataUser) => {
 			dispatch({
@@ -40,11 +40,10 @@ function Home({ navigation }) {
 				payload: dataUser.user
 			})
 		})
-  })
-	
+	})
+
 	useEffect(() => {
 		getUser()
-		
 		refetch()
 	}, [])
 

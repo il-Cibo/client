@@ -27,6 +27,8 @@ export default function DetailRecipe({ navigation, route }) {
     refetchQueries: [
       { query: GET_ALL_RECIPES }
     ]
+  }, {
+    fetchPolicy: 'network-only'
   })
 
   const list = [

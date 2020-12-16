@@ -12,4 +12,3 @@ export { default as MealPlanCard } from './meal-plan/RecipeCard'
 export { default as Gallery } from './users/Gallery'
 export { default as FavoriteCard } from './favoriteCard'
 export { default as ModalAddPlan } from './meal-plan/ModalAddPlan'
-

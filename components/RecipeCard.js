@@ -69,7 +69,6 @@ function RecipeCard({ navigation, recipe, user }) {
 	}
 	
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
-		
 		context: {
 			headers: {
 				token: token
@@ -77,10 +76,8 @@ function RecipeCard({ navigation, recipe, user }) {
 		}
 	})
 
-	// console.log(recipe, user, "======================= list recipe dan userid dari home ==============")
 
 	const onsubmit = () => {
-		
 		newFavRecipe({
 			variables: {
 				id: recipe.id,

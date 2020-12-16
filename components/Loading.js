@@ -14,7 +14,7 @@ function Loading() {
           autoPlay
           loop
         />
-        <Text style={styles.textStyle}>Loading, Please Wait a Moment..</Text>
+        <Text style={styles.textStyle}>Loading, Please Wait ...</Text>
       </View>
     )
 }

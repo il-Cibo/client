@@ -56,9 +56,9 @@ function HomeTabs() {
         inactiveTintColor: 'gray'
       }}
     >
+      <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Favorite" component={Favorite} />
-      <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
       <Tab.Screen name="Meal Plan" component={MealPlan} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={UserProfile} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -79,8 +79,8 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>

@@ -12,8 +12,8 @@ import { Button } from 'react-native-paper'
 import Constants from 'expo-constants'
 
 const EditRecipe = ({ route }) => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAzMTg0Mn0.s_2T4KCIkcjWY6HC1IZaUyshDHNFJHUzymftYk1w0mY"
-  // const token = useSelector((state) => state.token)
+  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAzMTg0Mn0.s_2T4KCIkcjWY6HC1IZaUyshDHNFJHUzymftYk1w0mY"
+  const token = useSelector((state) => state.token)
   const { recipeId } = route.params
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
