@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 
-const IP = '192.168.1.3'
+const IP = '192.168.1.8'
 const uri = `http://${IP}:4000/`;
 
 const authLink = setContext(async (_, { headers }) => {

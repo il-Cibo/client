@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { ProfileHeader, Gallery } from '../components'
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native'
+import { ScrollView, StyleSheet, View, Text } from 'react-native'
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
 import { tokenVar } from '../store/makeVar'
+import { Button } from 'react-native-elements'
+import { Loading } from '../components'
 
-const UserProfile = ({navigation}) => {
+const UserProfile = ({ navigation }) => {
   const { loading, error, data } = useQuery(GET_PROFILE, {
     context: {
       headers: {
@@ -20,17 +16,28 @@ const UserProfile = ({navigation}) => {
     }
   })
 
-  if(loading) {
-    return <View style={styles.container}><Text>Loading ...</Text></View>
-  }
+  if (loading) {
+		return (
+			<Loading />
+		)
+	}
+
+	if (error) {
+		return (
+			<View style={styles.container}>
+				<Text>{error.message}</Text>
+			</View>
+		)
+	}
 
   return (
     <View>
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
-          <ProfileHeader data={{username: data.user.username, name: data.user.name, avatar: data.user.avatar}}/>
+          <ProfileHeader data={{ username: data.user.username, name: data.user.name, avatar: data.user.avatar }} />
           <View style={styles.container}>
-            <Gallery data={data.user.Recipes} user={data.user.username} navigation={navigation}/>
+            <Button title="LOGOUT" mode="contained" />
+            <Gallery data={data.user.Recipes} user={data.user.username} navigation={navigation} />
           </View>
         </View>
       </ScrollView>

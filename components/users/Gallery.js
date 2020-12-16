@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
 import { View, FlatList, Dimensions, StyleSheet, Image, TouchableOpacity, Text } from 'react-native'
 const itemSize = (Dimensions.get('window').width - 12) / 3
+import { Loading } from '../Loading'
 
 const Gallery = ({ data, user, navigation }) => {
-  if(!data) {
-    return <Text>Loading ...</Text>
+  if (!data) {
+    return <Loading />
   }
 
   const renderItem = ({ item, index }) => {
+    function goToRecipeDetail() {
+      navigation.navigate('DetailRecipe', {
+        recipeData: item,
+        user: user
+      })
+    }
+
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('DetailRecipe', {data: data})} >
-        <Image 
+      <TouchableOpacity
+        onPress={goToRecipeDetail}
+      >
+        <Image
           style={styles.imageCollection}
-          source={{uri: item.image}}
+          source={{ uri: item.image }}
         />
       </TouchableOpacity>
     )
@@ -21,8 +31,8 @@ const Gallery = ({ data, user, navigation }) => {
   return (
     <View>
       <Text style={styles.username}>{user} Collection's</Text>
-      <View style={styles.images}> 
-        <FlatList 
+      <View style={styles.images}>
+        <FlatList
           data={data}
           numColumns={3}
           keyExtractor={(item, index) => String(index)}

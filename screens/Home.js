@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { GET_ALL_RECIPES, GET_PROFILE } from '../config/queries'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { RecipeCard, Loading } from '../components'
 import Constants from 'expo-constants'
 import { Octicons } from '@expo/vector-icons'
 import { tokenVar } from '../store/makeVar'
+import { useFonts } from 'expo-font'
+import AppLoading from 'expo-app-loading'
 
 const wait = timeout => {
 	return new Promise(resolve => {
@@ -43,14 +45,22 @@ function Home({ navigation }) {
 		wait(500).then(() => setRefreshing(false));
 	}, []);
 
+	const [loaded] = useFonts({
+		Oswald: require('../assets/fonts/Oswald-VariableFont_wght.ttf')
+	})
+
 	function goToSearch() {
 		navigation.navigate('Search')
 	}
 
-	if (loading) {
+	if (!loaded) {
 		return (
-			<Loading />
+			<AppLoading />
 		)
+	}
+
+	if (loading) {
+		return <Loading />
 	}
 
 	if (error) {
@@ -73,7 +83,7 @@ function Home({ navigation }) {
 				title="Please wait, refreshing.."
 			>
 				{data.recipes.map((recipePost, key) => (
-					<RecipeCard key={recipePost.id} index={key} user={data?.user?.id} recipe={recipePost} navigation={navigation} />
+					<RecipeCard key={recipePost.id} index={key} user={data.Users} recipe={recipePost} navigation={navigation} />
 				))}
 			</ScrollView>
 		</View>
@@ -95,6 +105,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 25,
 		paddingRight: 25,
 		paddingBottom: 35,
+		
 	},
 	headerText: {
 		fontWeight: 'bold',
