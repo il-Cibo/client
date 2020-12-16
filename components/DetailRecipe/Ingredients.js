@@ -10,7 +10,7 @@ export default function Ingredients(props) {
         {props.data.map((item, i) => (
           <View key={i} style={styles.ingredientItem}>
             <Entypo name="dot-single" size={24} color="black" />
-            <Text>{item}</Text>
+            <Text style={{ fontFamily: 'Oswald' }}>{item}</Text>
           </View>
         ))}
       </View>
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    letterSpacing: 1
   }
 })

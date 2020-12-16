@@ -13,7 +13,7 @@ import Tags from "react-native-tags";
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { tokenVar } from '../store/makeVar'
 
-function RecipeCard({ navigation, recipe, user }) {
+function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
 	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 	const token = useSelector((state) => state.token)
@@ -22,7 +22,6 @@ function RecipeCard({ navigation, recipe, user }) {
 	const [recipeId, setRecipeId] = useState();
 	const [status, setStatus] = useState(false);
 	const [tags, setTags] = useState()
-
 	useEffect(() => {
 		if(recipe.Tags) {
 			const newTags = recipe.Tags.map((el) => {
@@ -30,7 +29,6 @@ function RecipeCard({ navigation, recipe, user }) {
 			})
 
 			setTags(newTags)
-			// console.log(tags);
 		}
 	}, [])
 
@@ -67,10 +65,9 @@ function RecipeCard({ navigation, recipe, user }) {
 	]
 
 	function goToRecipeDetail() {
-		// console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
-			user: user
+			page: 'home'
 		})
 	}
 	
@@ -83,10 +80,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	})
 
 	const addToFav = () => {
-
-		// console.log("LIKE DULUU");
 		setLike(true)
-		// console.log(typeof recipe.id);
 		newFavRecipe({
 			variables: {
 				id: +recipe.id,
@@ -127,13 +121,12 @@ function RecipeCard({ navigation, recipe, user }) {
 						style={styles.userPic}
 						source={require('../assets/woman.svg')}
 					/>
-					<Text style={styles.usernameStyle}>{user.username}</Text>
+					<Text style={styles.usernameStyle}>{recipe.Users.map((user) => user.username)}</Text>
 				</View>
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
-
 				source={{ uri: recipe.image }} />
 
 			{!like && <MaterialIcons onPress={addToFav} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />}
@@ -187,8 +180,6 @@ function RecipeCard({ navigation, recipe, user }) {
 	)
 }
 
-
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -209,14 +200,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		width: 90,
 		marginTop: -5,
 		marginBottom: 5,
-		marginLeft: 10
+		marginLeft: 10,
 	},
 	usernameStyle: {
 		fontSize: 12,
-		fontFamily: 'Oswald',
 		letterSpacing: 1.5
 	},
 	favoriteButton: {

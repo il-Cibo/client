@@ -6,6 +6,7 @@ import { GET_PROFILE } from '../config/queries'
 import { tokenVar } from '../store/makeVar'
 import { Button } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Loading } from '../components'
 
 const UserProfile = ({ navigation }) => {
   const { loading, error, data } = useQuery(GET_PROFILE, {
@@ -40,16 +41,18 @@ const UserProfile = ({ navigation }) => {
   }
 
   if (loading) {
-    return <View style={styles.container}><Text>Loading ...</Text></View>
-  }
+		return (
+			<Loading />
+		)
+	}
 
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <Text>{error.message}</Text>
-      </View>
-    )
-  }
+	if (error) {
+		return (
+			<View style={styles.container}>
+				<Text>{error.message}</Text>
+			</View>
+		)
+	}
 
   return (
     <View>
