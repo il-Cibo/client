@@ -9,7 +9,6 @@ import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 
 function Search() {
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 	const [search, setSearch] = useState('');
 	const { data, error } = useQuery(QUERY_SEARCH_RECIPE, {
 		variables: {

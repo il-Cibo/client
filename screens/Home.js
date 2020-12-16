@@ -84,7 +84,7 @@ function Home({ navigation }) {
 				title="Please wait, refreshing.."
 			>
 				{data.recipes.map((recipePost, key) => (
-					<RecipeCard key={recipePost.id} index={key} user={data?.user?.id} recipe={recipePost} navigation={navigation} />
+					<RecipeCard key={recipePost.id} index={key} user={recipePost.Users[0]} recipe={recipePost} navigation={navigation} />
 				))}
 			</ScrollView>
 		</View>

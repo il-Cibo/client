@@ -11,24 +11,23 @@ import {
 import { Octicons } from '@expo/vector-icons'
 import moment from 'moment-timezone'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import { ADD_TO_PLAN, GET_MEALPLAN } from '../../config/queries'
+import { tokenVar } from '../../store/makeVar'
 
-const ModalAddPlan = ({ recipe }) => {
-  // const token = useSelector((token) => state.token)
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-
-  const [modalVisible, setModalVisible] = useState(false);
+const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const [date, setDate] = useState(new Date());
   const [dayNow, setDayNow] = useState()
 
   const [addToPlan] = useMutation(ADD_TO_PLAN, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
-    }
+    },
+    onCompleted: (() => {
+      onClose()
+    })
   }, {
     refetchQueries: [
       { query: GET_MEALPLAN }
@@ -63,6 +62,7 @@ const ModalAddPlan = ({ recipe }) => {
   const addNewPlan = () => {
     const plan = moment(date).tz('Asia/Jakarta').format('YYYY-MM-DD')
 
+    console.log(recipe.id, plan);
     addToPlan({
       variables: {
         id: recipe.id,
@@ -72,14 +72,14 @@ const ModalAddPlan = ({ recipe }) => {
   }
   
   return (
-    <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
+        visible={isVisible}
+
+        // onRequestClose={() => {
+        //   Alert.alert("Modal has been closed.");
+        // }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -112,7 +112,7 @@ const ModalAddPlan = ({ recipe }) => {
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
-                  setModalVisible(!modalVisible);
+                  onClose()
                 }}
               >
                 <Text style={styles.textStyle}>Cancel</Text>
@@ -131,16 +131,17 @@ const ModalAddPlan = ({ recipe }) => {
         
         </View>
       </Modal>
+    // <View style={styles.centeredView}>
 
-      <TouchableHighlight
-        style={styles.openButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </TouchableHighlight>
-    </View>
+      // {/* <TouchableHighlight
+      //   style={styles.openButton}
+      //   onPress={() => {
+      //     setModalVisible(true);
+      //   }}
+      // >
+      //   <Text style={styles.textStyle}>Show Modal</Text>
+      // </TouchableHighlight> */}
+    // {/* </View> */}
   );
 }
 

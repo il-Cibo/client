@@ -100,11 +100,18 @@ const MealPlan = () => {
   return (
     <SafeAreaView>
       <View style={style.calendarHeader}>
-          <Text style={style.headerText}>Meal Plan</Text>
-          <Octicons style={style.calendarIcon} name="calendar" size={24} color="black" onPress={showDatepicker} />
       </View>
 
       <View style={style.dateContainer}>
+          <View style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            marginTop: 30,
+            paddingRight: 30
+          }}>
+            <Text style={style.headerText}>Meal Plan</Text>
+            <Octicons style={style.calendarIcon} name="calendar" size={24} color="black" onPress={showDatepicker} />
+          </View>
         <Text style={style.currentDate}>{dayNow}</Text>
       </View>
         {show && (
@@ -129,13 +136,13 @@ export default MealPlan
 
 const style = StyleSheet.create({
   calendarHeader: {
-    paddingTop: 30,
-    padding: 30,
+    // paddingTop: 30,
+    // padding: 30,
     justifyContent: 'space-between',
     flexDirection: 'row',
-		marginTop: Constants.statusBarHeight,
-    paddingLeft: 20,
-    paddingRight: 20,
+		// marginTop: Constants.statusBarHeight,
+    // paddingLeft: 20,
+    // paddingRight: 20,
     flex: 1,
     justifyContent: 'center',
     // alignItems: 'center'

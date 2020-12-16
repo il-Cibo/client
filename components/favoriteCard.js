@@ -9,26 +9,46 @@ import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV, GET_ALL_RECIPES } from '../con
 import { useMutation, useQuery } from '@apollo/client'
 import { tokenVar } from '../store/makeVar'
 const tagUndefined = "recipe"
+import { ModalAddPlan } from './'
+import Tags from "react-native-tags";
 
 function FavoriteCard({ navigation, recipe, username }) {
 	const [like, setLike] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
+	const [showModal, setShowModal] = useState(false)
+	const [tags, setTags] = useState()
+	const closeModal = () => {
+		setShowModal(false)
+	}
 
+	const openModal = () => {
+		setShowModal(true)
+	}
 
+	useEffect(() => {
+		// if(recipe.Tags) {
+		// 	const newTags = recipe.Tags.map((el) => {
+		// 		return el.name
+		// 	})
+
+		// 	setTags(newTags)
+		// 	console.log(tags);
+		// 	// console.log(tags);
+		// }
+	})
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
 			recipeId: recipe.id
 		})
 	}
 
-    const { data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
-        context: {
-            headers: {
-                token: tokenVar()
-            }
-        }
-    })
-
+  const { data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
+  	context: {
+  	  headers: {
+  	    token: tokenVar()
+  	  }
+  	}
+   })
     // console.log({ recipe }, data);
     // let tagFood
 
@@ -43,28 +63,30 @@ function FavoriteCard({ navigation, recipe, username }) {
 
     const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
 
-        context: {
-            headers: {
-                token: tokenVar()
-            }
-        },
+      context: {
+          headers: {
+              token: tokenVar()
+          }
+      },
 
     })
 
-    const deleteThisFromFav = () => {
-        deleteFromFav({
-          variables: {
-              id: recipe.id,
-              // UserRecipe: {
-              //     UserId: data?.user?.id,
-              //     RecipeId: recipe.id,
-              //     favorites: false,
-              //     plan: []
-              // }
-          }
-        })
-        refetch()
-    }
+  const deleteThisFromFav = () => {
+      deleteFromFav({
+        variables: {
+            id: recipe.id,
+            // UserRecipe: {
+            //     UserId: data?.user?.id,
+            //     RecipeId: recipe.id,
+            //     favorites: false,
+            //     plan: []
+            // }
+        }
+      })
+      refetch()
+	}
+		
+
 
 	// const { data, } = useQuery(GET_ALL_RECIPES, {
 	// 	context: {
@@ -146,6 +168,8 @@ function FavoriteCard({ navigation, recipe, username }) {
 	// 				<Text style={styles.info}>Tags: {recipe.Tags[0] ? tagFood : tagUndefined}</Text>
 	// 			</View>
 
+	console.log(recipe.Tags);
+
     return (
         <Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
             <View style={styles.cardHeader}>
@@ -162,7 +186,14 @@ function FavoriteCard({ navigation, recipe, username }) {
             <Card.Image
                 onPress={goToRecipeDetail}
                 source={{ uri: recipe.image }} />
+						
+						<View style={{
+							flexDirection: 'row'
+						}}>
 							{like && <MaterialIcons onPress={deleteThisFromFav} name="favorite" size={24} color="red" style={styles.deleteButton} />}
+							<MaterialCommunityIcons onPress={openModal} name="bookmark-outline" size={24} color="black" />
+						</View>
+						
             {/* <MaterialIcons onPress={deleteFromFav(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} /> */}
             <Text style={styles.recipeTitle}>{recipe.title}</Text>
             <Text style={styles.recipeDescription}>
@@ -184,6 +215,12 @@ function FavoriteCard({ navigation, recipe, username }) {
 
                 {/* <MaterialIcons onPress={deleteThisFromFav(recipe.id)} name="delete" size={24} color="black" style={styles.favoriteButton} /> */}
             </View>
+
+						<ModalAddPlan 
+							isVisible={showModal}
+							recipe={recipe}
+							onClose={closeModal}
+						/>
         </Card>
     )
 }

@@ -65,10 +65,9 @@ export const GET_ALL_RECIPES = gql`
 			Tags {
 				name
 			}
-		}
-		user {
-			id
-			username
+			Users {
+				username
+			}
 		}
 	}
 `

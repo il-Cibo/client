@@ -21,7 +21,7 @@ function Favorite(props) {
 		}
 	})
 
-	console.log(data, 'cek fav');
+	// console.log(data, 'cek fav');
 	const isFocused = useIsFocused();
 
 	useEffect(() => { 
