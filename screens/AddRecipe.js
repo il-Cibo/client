@@ -78,14 +78,14 @@ const AddRecipe = ({ navigation }) => {
       return (
         <View style={styles.camera}>
           <Ionicons style={styles.cameraIcon} name='camera' />
-          <Button mode="contained" labelStyle={styles.buttonStyle} onPress={pickImage}>Take a Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Take a Photo</Button>
         </View>
       )
     } else if (image) {
       return (
         <View style={styles.camera}>
           <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
-          <Button mode="contained" labelStyle={styles.buttonStyle} onPress={pickImage}>Change Photo</Button>
+          <Button mode="contained" labelStyle={styles.buttonStyle} style={{backgroundColor: '#dcdde1'}} onPress={pickImage}>Change Photo</Button>
         </View>
       )
     }
@@ -144,6 +144,7 @@ const AddRecipe = ({ navigation }) => {
               placeholder="Insert title"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(title) => setTitle(title)}
             />
@@ -156,6 +157,7 @@ const AddRecipe = ({ navigation }) => {
               placeholder="Insert description"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(description) => setDescription(description)}
             />
@@ -169,6 +171,7 @@ const AddRecipe = ({ navigation }) => {
               selectionColor="#FF9494"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(serving) => setServing(serving)}
               keyboardType="number-pad"
@@ -182,6 +185,7 @@ const AddRecipe = ({ navigation }) => {
               placeholder="Insert cooking time"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(cookingTime) => setCookingTime(cookingTime)}
               keyboardType="number-pad"
@@ -194,6 +198,7 @@ const AddRecipe = ({ navigation }) => {
               label="Ingredients"
               placeholder="Insert ingredients"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(ingredients) => setIngredients(ingredients)}
             />
@@ -206,6 +211,7 @@ const AddRecipe = ({ navigation }) => {
               placeholder="Insert steps of cooking"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(cookingSteps) => setCookingSteps(cookingSteps)}
             />
@@ -218,6 +224,7 @@ const AddRecipe = ({ navigation }) => {
               placeholder="Insert tags"
               underlineColor="#FF9494"
               multiline={true}
+              mode="outlined"
               style={styles.inputFormStyle}
               onChangeText={(input) => setTags(input)}
             />
@@ -292,6 +299,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   buttonStyle: {
-    fontSize: 10
+    fontSize: 10,
+    color: 'black'
   }
 })
