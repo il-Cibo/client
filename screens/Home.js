@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
+import { GET_ALL_RECIPES, GET_PROFILE } from '../config/queries'
+import { useSelector, useDispatch } from 'react-redux'
 import { RecipeCard, Loading } from '../components'
-import { GET_ALL_RECIPES } from '../config/queries'
 import Constants from 'expo-constants'
-import { useQuery } from '@apollo/client'
-import { useSelector } from 'react-redux'
 import { Octicons } from '@expo/vector-icons'
 
 const wait = timeout => {
@@ -15,8 +15,8 @@ const wait = timeout => {
 };
 
 function Home({ navigation }) {
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAwNDM3NX0.e6SvCZB9cfxBGjpnrEwHIdiNcDNONp3YEo_ZLltC7JQ"
-	const token = useSelector((state) => state.token)
+	// const token = useSelector((state) => state.token)
+	const dispatch = useDispatch()
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -25,15 +25,31 @@ function Home({ navigation }) {
 		}
 	})
 
+	const [getUser] = useLazyQuery(GET_PROFILE, {
+    context: {
+      headers: {
+        token: token
+      }
+		},
+		onCompleted: ((dataUser) => {
+			dispatch({
+				type: 'SET_USER',
+				payload: dataUser.user
+			})
+		})
+  })
+	
 	useEffect(() => {
+		getUser()
+		
 		refetch()
-	}, [data])
+	}, [])
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
-
+		refetch()
 		wait(500).then(() => setRefreshing(false));
 	}, []);
 
@@ -67,7 +83,7 @@ function Home({ navigation }) {
 				title="Please wait, refreshing.."
 			>
 				{data.recipes.map((recipePost) => (
-					<RecipeCard key={recipePost.id} recipe={recipePost} navigation={navigation} />
+					<RecipeCard key={recipePost.id} recipe={recipePost} user={data.user} navigation={navigation} />
 				))}
 			</ScrollView>
 		</View>

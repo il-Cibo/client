@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
 
 const AddRecipe = ({ navigation }) => {
-  const token = useSelector((state) => state.token)
+  // const token = useSelector((state) => state.token)
   // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
@@ -100,16 +100,15 @@ const AddRecipe = ({ navigation }) => {
 
     const tagData = tag.split('\n')
 
-    console.log(recipe, '<< resep');
+    console.log(recipe);
     console.log(tagData);
-
     uploadRecipe({
       variables: {
         recipe: recipe,
         tags: tagData
       }
     })
-    navigation.navigate('Home')
+    // navigation.navigate('Home')
   }
 
   return (

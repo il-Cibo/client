@@ -1,22 +1,5 @@
 import { gql } from '@apollo/client'
 
-// export const GET_PROFILE = gql `
-//   query getUserProfile {
-//     user {
-//       username
-//       email
-//       gender
-//       name
-// 			avatar,
-// 			Recipes {
-// 				id
-// 				title
-// 				image
-// 			}
-// 		}
-//   }
-// `
-
 export const GET_PROFILE = gql`
   query getUserProfile {
     user {
@@ -43,13 +26,28 @@ export const GET_PROFILE = gql`
 
 // masih gak yakin sama querynya
 export const GET_MEALPLAN = gql`
-  query getUserMealPlan {
+	query findUserPlan {
 		findPlan {
-			User {
-				Recipes
+			id
+			name
+			Recipes {
+				id
+				title
+				ingredients
+				description
+				image
+				serving
+				step
+				time
+				 UserRecipe {
+						plan
+						RecipeId
+						UserId
+						favorites
+					}
 			}
 		}
-  }
+	}
 `
 
 //Recipes Queries
@@ -64,6 +62,9 @@ export const GET_ALL_RECIPES = gql`
 			step
 			serving
 			time
+			Tags {
+				name
+			}
 		}
 		user {
 			id
@@ -172,6 +173,22 @@ export const LIST_FAV_USER_RECIPE = gql`
 	}
 `;
 
+export const REMOVE_FROM_PLAN = gql `
+	mutation removeFromPlan($id: Int!, $plan: String!) {
+		removePlan (id: $id, plan: $plan) {
+			plan
+		}
+	}
+`
+
+export const ADD_TO_PLAN = gql `
+	mutation addToPlan($id: Int!, $plan: String!) {
+		addToPlan (id: $id, plan: $plan) {
+			plan
+		}
+	}
+`
+
 export const QUERY_SEARCH_RECIPE = gql`
   query searchRecipe($query: String!) {
     queryRecipes(query: $query) {
@@ -188,3 +205,4 @@ export const QUERY_SEARCH_RECIPE = gql`
     }
   }  
 `
+

@@ -14,6 +14,7 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 
 
 export default function DetailRecipe({ navigation, route }) {
+  const { recipeData, user } = route.params
   const token = useSelector((state) => state.token)
   const [isVisible, setIsVisible] = useState(false)
   const { recipeData } = route.params
@@ -69,6 +70,10 @@ export default function DetailRecipe({ navigation, route }) {
       onPress: () => setIsVisible(false)
     }
   ]
+  
+  // registerdemo
+  // registerdemo
+  // demoaccount@mail.com
 
   const deleteARecipe = () => {
     setIsVisible(false)
@@ -111,7 +116,7 @@ export default function DetailRecipe({ navigation, route }) {
           <Text style={styles.recipeTitle}>{recipeData.title}</Text>
           <SimpleLineIcons name="options" size={20} color="black" onPress={() => setIsVisible(true)} />
         </View>
-        <Text style={styles.userInfo}>mealo_user</Text>
+        <Text style={styles.userInfo}>Mealo User</Text>
 
         <View style={styles.cookInfo}>
           <View style={styles.row}>

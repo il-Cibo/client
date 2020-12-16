@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 
 const initialState = {
   token: '',
+  currentUser: {}
   loading: false,
   error: false
 }
@@ -17,6 +18,13 @@ export const setToken = (token) => {
   }
 }
 
+
+const reducer = (state = initialState, action) => {
+  if(action.type === 'SET_TOKEN') {
+    return {
+      ...state,
+      token: action.payload
+
 export const getToken = () => {
   return async (dispatch) => {
     try {
@@ -26,11 +34,21 @@ export const getToken = () => {
       
     } finally {
 
+
     }
 
   }
 }
 
+
+  if(action.type === 'SET_USER') {
+    return {
+      ...state,
+      user: action.payload
+    }
+  }
+
+  return state
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_TOKEN':

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -8,13 +8,29 @@ import { AntDesign } from '@expo/vector-icons'
 import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
+import Tags from "react-native-tags";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+// import LabelSelect from 'react-native-label-select';
 
-function RecipeCard({ navigation, recipe }) {
+function RecipeCard({ navigation, recipe, user }) {
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 	const [userId, setUserId] = useState();
 	const [recipeId, setRecipeId] = useState();
 	const [status, setStatus] = useState(false);
+	const [tags, setTags] = useState()
+
+	useEffect(() => {
+		if(recipe.Tags) {
+			const newTags = recipe.Tags.map((el) => {
+				return el.name
+			})
+
+			setTags(newTags)
+			console.log(tags);
+		}
+	}, [])
+
 	const list = [
 		{
 			title: 'Edit Recipe',
@@ -47,7 +63,8 @@ function RecipeCard({ navigation, recipe }) {
 	function goToRecipeDetail() {
 		console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
-			recipeData: recipe
+			recipeData: recipe,
+			user: user
 		})
 	}
 	
@@ -88,7 +105,7 @@ function RecipeCard({ navigation, recipe }) {
 						style={styles.userPic}
 						source={require('../assets/woman.svg')}
 					/>
-					<Text style={styles.usernameStyle}>username</Text>
+					<Text style={styles.usernameStyle}>{user.username}</Text>
 				</View>
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
@@ -114,7 +131,17 @@ function RecipeCard({ navigation, recipe }) {
 				</View>
 				<View style={styles.row}>
 					<AntDesign name="tago" size={16} color="#747d8c" />
-					<Text style={styles.info}>Tags: chicken</Text>
+					<Text style={styles.info}>Tags:</Text>
+					<Tags
+						initialTags={tags}
+						readonly
+						deleteTagOnPress={false}
+						// renderTag={({tag, index}) => (
+						// 	<TouchableOpacity key={`${tag}-${index}`} >
+						// 		<Text>{tag}</Text>
+						// 	</TouchableOpacity>
+						// )}
+					/>
 				</View>
 			</View>
 			<BottomSheet
