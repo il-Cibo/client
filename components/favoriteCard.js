@@ -22,7 +22,7 @@ function FavoriteCard({ navigation, recipe, username }) {
         })
     }
 
-    const { data, } = useQuery(GET_ALL_RECIPES, {
+    const { data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
         context: {
             headers: {
                 token: token
@@ -30,7 +30,7 @@ function FavoriteCard({ navigation, recipe, username }) {
         }
     })
 
-    console.log({ recipe });
+    console.log({ recipe }, data);
     // let tagFood
 
     useEffect(() => {
@@ -38,12 +38,10 @@ function FavoriteCard({ navigation, recipe, username }) {
             var tag = recipe.Tags[0].name
             // tagFood = tag
             setTagFood(tag)
-
         }
+        
     }, [])
 
-
-    // const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE)
     const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
 
         context: {
@@ -66,6 +64,7 @@ function FavoriteCard({ navigation, recipe, username }) {
                 }
             }
         })
+        refetch()
     }
 
 

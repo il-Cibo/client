@@ -11,7 +11,6 @@ import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 
 function Favorite(props) {
-	// const UserId = data?.user?.id
 	const [userFavo, setUserFavo] = useState([])
 	const token = useSelector((state) => state.token)
 	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
@@ -26,7 +25,6 @@ function Favorite(props) {
 
 	useEffect(() => { 
 		if (isFocused) {
-			console.log('===== BBBBB =======');
 			refetch()
 		} 
 	}, [isFocused]);
@@ -35,7 +33,6 @@ function Favorite(props) {
 		let isMounted = true;
 		if (data && isMounted) {
 			const allUserFav = data.findFav.Recipes.filter((el) => el.UserRecipe.favorites)
-			console.log('===== DATAAAAAA=======');
 			setUserFavo(allUserFav);
 		}
 		
@@ -55,7 +52,6 @@ function Favorite(props) {
 			</View>
 		)
 	}
-	// console.log(data, '<<< data favorite')
 
 	return (
 		<View style={styles.container}>
@@ -69,7 +65,6 @@ function Favorite(props) {
 				{userFavo.map((recipePost, i) => (
 					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} />
 				))}
-				{/* <Text>{JSON.stringify(data)}</Text> */}
 			</ScrollView>
 		</View>
 	)
