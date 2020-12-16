@@ -17,7 +17,6 @@ export default function DetailRecipe({ navigation, route }) {
   const { recipeData, user } = route.params
   const token = useSelector((state) => state.token)
   const [isVisible, setIsVisible] = useState(false)
-  const { recipeData } = route.params
   const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
     context: {
       headers: {

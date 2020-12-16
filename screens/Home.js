@@ -15,7 +15,7 @@ const wait = timeout => {
 };
 
 function Home({ navigation }) {
-	// const token = useSelector((state) => state.token)
+	const token = useSelector((state) => state.token)
 	const dispatch = useDispatch()
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {

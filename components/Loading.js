@@ -7,8 +7,8 @@ function Loading() {
       <View style={styles.container} >
         <LottieView
           style={{
-            width: 100,
-            height: 100,
+            width: 250,
+            height: 250,
           }}
           source={require('../assets/loading.json')}
           autoPlay

@@ -7,7 +7,6 @@ import moment from 'moment-timezone'
 import { Octicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux'
-import moment from 'moment'
 import CalendarStrip from 'react-native-calendar-strip';
 import Constants from 'expo-constants'
 
@@ -136,7 +135,7 @@ const style = StyleSheet.create({
     paddingTop: 30,
     padding: 30,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    flexDirection: 'row',
 		marginTop: Constants.statusBarHeight,
     paddingLeft: 20,
     paddingRight: 20,
