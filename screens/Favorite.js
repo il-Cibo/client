@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
+
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,11 +10,11 @@ import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 
-function Favorite() {
+function Favorite(props) {
 	// const UserId = data?.user?.id
 	const [userFavo, setUserFavo] = useState([])
 	const token = useSelector((state) => state.token)
-	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
+	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
 			headers: {
 				token: token
@@ -19,13 +22,28 @@ function Favorite() {
 		}
 	})
 
+	const isFocused = useIsFocused();
+
+	useEffect(() => { 
+		if (isFocused) {
+			console.log('===== BBBBB =======');
+			refetch()
+		} 
+	}, [isFocused]);
+
 	useEffect(() => {
-		if (data) {
+		let isMounted = true;
+		if (data && isMounted) {
 			const allUserFav = data.findFav.Recipes.filter((el) => el.UserRecipe.favorites)
+			console.log('===== DATAAAAAA=======');
 			setUserFavo(allUserFav);
 		}
+		
+		return () => {
+			isMounted = false
+		}
 	}, [data])
-
+	
 	if (loading) {
 		return <Text>Loading ...</Text>
 	}
@@ -37,7 +55,7 @@ function Favorite() {
 			</View>
 		)
 	}
-	console.log(data, '<<< data favorite')
+	// console.log(data, '<<< data favorite')
 
 	return (
 		<View style={styles.container}>

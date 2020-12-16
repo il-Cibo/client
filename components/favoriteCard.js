@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV, GET_ALL_RECIPES} from '../config/queries'
+import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV, GET_ALL_RECIPES } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 
-function FavoriteCard({ navigation, recipe, username }) {
+const tagUndefined = "recipe"
 
+function FavoriteCard({ navigation, recipe, username }) {
+    const [tagFood, setTagFood] = useState('')
     const token = useSelector((state) => state.token)
     const [isVisible, setIsVisible] = useState(false)
 
@@ -21,45 +23,48 @@ function FavoriteCard({ navigation, recipe, username }) {
     }
 
     const { data, } = useQuery(GET_ALL_RECIPES, {
-		context: {
-			headers: {
-				token: token
-			}
-		}
+        context: {
+            headers: {
+                token: token
+            }
+        }
     })
-    
-    console.log({recipe});
 
-    const tagUndefined = "recipe"
-    let tagFood
-    if (recipe.Tags[0] !== undefined) {
-        var tag = recipe.Tags[0].name
-        tagFood = tag
+    console.log({ recipe });
+    // let tagFood
 
-    }
+    useEffect(() => {
+        if (recipe.Tags[0] !== undefined) {
+            var tag = recipe.Tags[0].name
+            // tagFood = tag
+            setTagFood(tag)
+
+        }
+    }, [])
+
 
     // const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE)
     const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
 
         context: {
-			headers: {
-				token: token
-			}
-		},
-       
+            headers: {
+                token: token
+            }
+        },
+
     })
 
     const deleteThisFromFav = () => {
         deleteFromFav({
             variables: {
-				id: recipe.id,
-				UserRecipe: {
-					UserId: data?.user?.id,
-					RecipeId: recipe.id,
-					favorites: false,
-					plan: []
-				}
-			}
+                id: recipe.id,
+                UserRecipe: {
+                    UserId: data?.user?.id,
+                    RecipeId: recipe.id,
+                    favorites: false,
+                    plan: []
+                }
+            }
         })
     }
 
@@ -99,7 +104,7 @@ function FavoriteCard({ navigation, recipe, username }) {
                     <AntDesign name="tago" size={16} color="#747d8c" />
                     <Text style={styles.info}>Tags: {recipe.Tags[0] ? tagFood : tagUndefined}</Text>
                 </View>
-                
+
                 {/* <MaterialIcons onPress={deleteThisFromFav(recipe.id)} name="delete" size={24} color="black" style={styles.favoriteButton} /> */}
             </View>
         </Card>
