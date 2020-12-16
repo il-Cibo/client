@@ -5,16 +5,17 @@ import { Divider } from 'react-native-elements'
 import { Ingredients, CookingStep } from '../components/DetailRecipe'
 import { Loading } from '../components'
 import { DELETE_RECIPE, GET_ALL_RECIPES } from '../config/queries'
-import { useMutation, useReactiveVar } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { tokenVar } from '../store/makeVar'
 import { ModalAddPlan } from '../components'
+import Constants from 'expo-constants'
 
 export default function DetailRecipe({ navigation, route }) {
-  const { recipeData, user } = route.params
+  const { recipeData, page, user } = route.params
   const [isVisible, setIsVisible] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
@@ -61,7 +62,9 @@ export default function DetailRecipe({ navigation, route }) {
       },
       onPress: () => {
         setIsVisible(false)
-        navigation.navigate('EditRecipe')
+        navigation.navigate('EditRecipe', {
+          recipeId: recipeData.id
+        })
       }
     },
     {
@@ -90,10 +93,6 @@ export default function DetailRecipe({ navigation, route }) {
     }
   ]
   
-  // registerdemo
-  // registerdemo
-  // demoaccount@mail.com
-
   const deleteARecipe = () => {
     setIsVisible(false)
     deleteRecipe({
@@ -102,22 +101,21 @@ export default function DetailRecipe({ navigation, route }) {
       }
     })
     navigation.navigate('Home')
-    console.log(`delete recipe with id ${recipeData.id}`)
   }
 
   if (loading) {
-		return (
-			<Loading />
-		)
-	}
+    return (
+      <Loading />
+    )
+  }
 
-	if (error) {
-		return (
-			<View style={styles.container}>
-				<Text>{error.message}</Text>
-			</View>
-		)
-	}
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>{error.message}</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -135,8 +133,8 @@ export default function DetailRecipe({ navigation, route }) {
           <Text style={styles.recipeTitle}>{recipeData.title}</Text>
           <SimpleLineIcons name="options" size={20} color="black" onPress={() => setIsVisible(true)} />
         </View>
-        <Text style={styles.userInfo}>Mealo User</Text>
-
+        {page === 'home' ? <Text style={styles.userInfo}>By: {recipeData.Users.map((user) => user.username)}</Text> : <Text style={styles.userInfo}>By: {user}</Text>
+        }
         <View style={styles.cookInfo}>
           <View style={styles.row}>
             <MaterialCommunityIcons name="bowl-mix-outline" size={16} color="#747d8c" />
@@ -184,7 +182,8 @@ export default function DetailRecipe({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    marginTop: Constants.statusBarHeight
   },
   imageContainer: {
     width: '100%',
@@ -205,13 +204,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF9494'
   },
   recipeTitle: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    padding: 15
+    padding: 15,
+    fontFamily: 'Oswald'
   },
   userInfo: {
     fontSize: 14,
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontFamily: 'Oswald',
+    letterSpacing: 1
   },
   cookInfo: {
     height: 80,
@@ -225,12 +227,16 @@ const styles = StyleSheet.create({
   },
   info: {
     color: "#747d8c",
-    fontSize: 9,
-    marginLeft: 5
+    fontSize: 10,
+    marginLeft: 5,
+    fontFamily: 'Oswald',
+    letterSpacing: 1
   },
   recipeDescription: {
     margin: 15,
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Oswald',
+    letterSpacing: 1
   },
   divider: {
     height: 1.5,

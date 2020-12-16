@@ -4,14 +4,14 @@ import { useIsFocused } from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
-import { FavoriteCard } from '../components'
+import { FavoriteCard, Loading } from '../components'
 import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 
-function Favorite(props) {
+function Favorite({ navigation }) {
 	const [userFavo, setUserFavo] = useState([])
 	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
@@ -21,13 +21,12 @@ function Favorite(props) {
 		}
 	})
 
-	// console.log(data, 'cek fav');
 	const isFocused = useIsFocused();
 
-	useEffect(() => { 
+	useEffect(() => {
 		if (isFocused) {
 			refetch()
-		} 
+		}
 	}, [isFocused]);
 
 	useEffect(() => {
@@ -36,20 +35,22 @@ function Favorite(props) {
 			const allUserFav = data.findFav.Recipes.filter((el) => el.UserRecipe.favorites)
 			setUserFavo(allUserFav);
 		}
-		
+
 		return () => {
 			isMounted = false
 		}
 	}, [data])
-	
+
 	if (loading) {
-		return <Text>Loading ...</Text>
+		return (
+			<Loading />
+		)
 	}
 
 	if (error) {
 		return (
 			<View style={styles.container}>
-				<Text>{JSON.stringify(error.message)}</Text>
+				<Text>{error.message}</Text>
 			</View>
 		)
 	}
@@ -64,7 +65,7 @@ function Favorite(props) {
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView style={styles.content}>
 				{userFavo.map((recipePost, i) => (
-					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} />
+					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} navigation={navigation} />
 				))}
 			</ScrollView>
 		</View>
@@ -86,13 +87,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		marginTop: 25,
 		marginLeft: 25,
-		paddingBottom: 35
+		paddingBottom: 35,
 	},
 	headerText: {
 		fontWeight: 'bold',
 		fontSize: 22,
 		color: 'black',
-		letterSpacing: 1
+		letterSpacing: 1,
+		fontFamily: 'Oswald',
 	},
 	content: {
 		marginBottom: 20,

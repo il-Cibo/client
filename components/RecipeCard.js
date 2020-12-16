@@ -9,10 +9,11 @@ import { useMutation, useQuery } from '@apollo/client'
 import { Ionicons, FontAwesome } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
-import { tokenVar } from '../store/makeVar'
 import { ModalAddPlan } from './'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { tokenVar } from '../store/makeVar'
 
-function RecipeCard({ navigation, recipe, user }) {
+function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const [showModal, setShowModal] = useState(false)
@@ -21,7 +22,6 @@ function RecipeCard({ navigation, recipe, user }) {
 	const [status, setStatus] = useState(false);
 	const [tags, setTags] = useState()
 
-	// console.log(recipe, "<<<<<<<<<< INDIVIDUAL RECIPES");
 	useEffect(() => {
 		if(recipe.Tags) {
 			const newTags = recipe.Tags.map((el) => {
@@ -29,7 +29,6 @@ function RecipeCard({ navigation, recipe, user }) {
 			})
 
 			setTags(newTags)
-			// console.log(tags);
 		}
 	}, [])
 
@@ -75,10 +74,9 @@ function RecipeCard({ navigation, recipe, user }) {
 	]
 
 	function goToRecipeDetail() {
-		// console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
-			// user: user
+			page: 'home'
 		})
 	}
 	
@@ -91,10 +89,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	})
 
 	const addToFav = () => {
-
-		// console.log("LIKE DULUU");
 		setLike(true)
-		// console.log(typeof recipe.id);
 		newFavRecipe({
 			variables: {
 				id: +recipe.id,
@@ -123,10 +118,6 @@ function RecipeCard({ navigation, recipe, user }) {
 		}
 	}, [data])
 
-	// console.log(data?.findFav?.Recipes[0]?.UserRecipe, "======================= list recipe dan userid dari home ==============")
-	// console.log(like);
-	// console.log({ recipe });
-
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
@@ -135,13 +126,12 @@ function RecipeCard({ navigation, recipe, user }) {
 						style={styles.userPic}
 						source={require('../assets/woman.svg')}
 					/>
-					{/* <Text style={styles.usernameStyle}>{user.username}</Text> */}
+					<Text style={styles.usernameStyle}>{recipe.Users.map((user) => user.username)}</Text>
 				</View>
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
-
 				source={{ uri: recipe.image }} />
 			
 			<View style={{
@@ -207,8 +197,6 @@ function RecipeCard({ navigation, recipe, user }) {
 	)
 }
 
-
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -229,14 +217,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		width: 90,
 		marginTop: -5,
 		marginBottom: 5,
-		marginLeft: 10
+		marginLeft: 10,
 	},
 	usernameStyle: {
 		fontSize: 12,
-		fontFamily: 'Oswald',
 		letterSpacing: 1.5
 	},
 	favoriteButton: {

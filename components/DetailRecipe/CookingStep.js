@@ -27,12 +27,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     letterSpacing: 1.5,
-    marginLeft: 15
+    marginLeft: 15,
+    fontFamily: 'Oswald',
   },
   stepList: {
     marginLeft: 20
   },
   stepItem: {
-    marginTop: 10
+    marginTop: 10,
+    fontFamily: 'Oswald',
+    letterSpacing: 1
   }
 })

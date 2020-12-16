@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'rea
 import { Button } from 'react-native-paper'
 import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
@@ -14,10 +15,9 @@ const Login = ({ navigation }) => {
 		context: {
 			headers: {}
 		},
-		onCompleted: ((data) => {
-			console.log(data);
+		onCompleted: (async (data) => {
+      await AsyncStorage.setItem('token', data.login.token);
 			tokenVar(data.login.token)
-			// navigation.navigate('Home')
 		})
 	})
 

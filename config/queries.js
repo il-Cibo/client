@@ -12,6 +12,7 @@ export const GET_PROFILE = gql`
 				id
 				title
 				image
+				description
 				serving
 				time
 				ingredients
@@ -63,7 +64,7 @@ export const GET_ALL_RECIPES = gql`
 			serving
 			time
 			Tags {
-				name
+					name
 			}
 			Users {
 				username
@@ -174,7 +175,9 @@ export const LIST_FAV_USER_RECIPE = gql`
 			  id
 			  title
 			  description
-			  image
+				image
+				ingredients
+				step
 			  serving
 			  time
 			  Tags { name }
@@ -183,7 +186,7 @@ export const LIST_FAV_USER_RECIPE = gql`
 	}
 `;
 
-export const REMOVE_FROM_PLAN = gql `
+export const REMOVE_FROM_PLAN = gql`
 	mutation removeFromPlan($id: Int!, $plan: String!) {
 		removePlan (id: $id, plan: $plan) {
 			plan
@@ -191,7 +194,7 @@ export const REMOVE_FROM_PLAN = gql `
 	}
 `
 
-export const ADD_TO_PLAN = gql `
+export const ADD_TO_PLAN = gql`
 	mutation addToPlan($id: Int!, $plan: String!) {
 		addToPlan (id: $id, plan: $plan) {
 			plan
@@ -211,7 +214,9 @@ export const QUERY_SEARCH_RECIPE = gql`
       serving
       time
       Tags { name }
-      UserRecipe { favorites plan }
+      Users {
+				username
+			}
     }
   }  
 `

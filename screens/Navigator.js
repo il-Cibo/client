@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -9,6 +9,7 @@ import { useFonts } from 'expo-font'
 import AppLoading from 'expo-app-loading'
 import { useReactiveVar } from '@apollo/client'
 import { tokenVar } from '../store/makeVar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Navigator() {
   const token = useReactiveVar(tokenVar)
@@ -16,6 +17,14 @@ function Navigator() {
   const Stack = createStackNavigator();
   const HomeStack = createStackNavigator();
   const Tab = createBottomTabNavigator();
+
+  useEffect(() => {
+    const getToken = async () => {
+      const initToken = await AsyncStorage.getItem('token');
+      tokenVar(initToken)
+    }
+    getToken()
+  }, [])
 
   function HomeStackScreen() {
     return (
