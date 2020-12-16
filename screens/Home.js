@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { StyleSheet, Text, View, RefreshControl, ScrollView } from 'react-native'
-import { RecipeCard, Loading } from '../components'
 import { Divider } from 'react-native-elements'
-import { GET_ALL_RECIPES } from '../config/queries'
-import { Octicons } from '@expo/vector-icons'
-import { useSelector } from 'react-redux'
+import { GET_ALL_RECIPES, GET_PROFILE } from '../config/queries'
+import { useSelector, useDispatch } from 'react-redux'
+import { RecipeCard, Loading } from '../components'
 import Constants from 'expo-constants'
+import { Octicons } from '@expo/vector-icons'
 
 const wait = timeout => {
 	return new Promise(resolve => {
@@ -18,6 +18,8 @@ function Home({ navigation }) {
 	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
 	const UserId = data?.user?.id
 	const token = useSelector((state) => state.token)
+	const dispatch = useDispatch()
+
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
@@ -26,33 +28,50 @@ function Home({ navigation }) {
 		}
 	})
 
+	const [getUser] = useLazyQuery(GET_PROFILE, {
+    context: {
+      headers: {
+        token: token
+      }
+		},
+		onCompleted: ((dataUser) => {
+			dispatch({
+				type: 'SET_USER',
+				payload: dataUser.user
+			})
+		})
+  })
+	
 	useEffect(() => {
+		getUser()
+		
 		refetch()
-	}, [data])
+	}, [])
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
-
+		refetch()
 		wait(500).then(() => setRefreshing(false));
 	}, []);
 
+	function goToSearch() {
+		navigation.navigate('Search')
+	}
 
 	if (loading) {
-		return <Text>Loading ...</Text>
+		return (
+			<Loading />
+		)
 	}
 
 	if (error) {
 		return (
 			<View style={styles.container}>
-				<Text>{JSON.stringify(error.message)}</Text>
+				<Text>{error.message}</Text>
 			</View>
 		)
-	}
-
-	function goToSearch() {
-		navigation.navigate('Search')
 	}
 
 	return (
@@ -78,24 +97,24 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		// justifyContent: 'flex-start',
-		marginTop: Constants.statusBarHeight,
+		marginTop: Constants.statusBarHeight
 	},
 	header: {
-		height: '5%',
+		height: '8%',
 		flexDirection: 'row',
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginTop: 25,
-		marginLeft: 25,
-		marginRight: 25,
+		paddingTop: 35,
+		paddingLeft: 25,
+		paddingRight: 25,
 		paddingBottom: 35,
 	},
 	headerText: {
 		fontWeight: 'bold',
-		fontSize: 20,
+		fontSize: 26,
 		color: 'black',
-		letterSpacing: 1
+		letterSpacing: 1,
+		fontFamily: 'Oswald',
 	}
 });
 

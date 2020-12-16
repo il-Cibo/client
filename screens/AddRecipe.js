@@ -8,18 +8,18 @@ import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
 import { useSelector } from 'react-redux'
+import Constants from 'expo-constants'
 
 const AddRecipe = ({ navigation }) => {
-  const token = useSelector((state) => state.token)
+  // const token = useSelector((state) => state.token)
   // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-
-  const [image, setImage] = useState(null)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
-  const [serving, setServing] = useState()
-  const [cookingTime, setCookingTime] = useState()
+  const [image, setImage] = useState(null)
   const [ingredients, setIngredients] = useState()
   const [cookingSteps, setCookingSteps] = useState()
+  const [serving, setServing] = useState()
+  const [cookingTime, setCookingTime] = useState()
   const [tag, setTags] = useState()
 
 
@@ -92,24 +92,23 @@ const AddRecipe = ({ navigation }) => {
       title: title,
       description: description,
       image: file,
+      ingredients: ingredients.split('\n'),
+      step: cookingSteps.split('\n'),
       serving: +serving,
       time: +cookingTime,
-      step: cookingSteps.split('\n'),
-      ingredients: ingredients.split('\n')
     }
 
     const tagData = tag.split('\n')
 
-    console.log(recipe, '<< resep');
+    console.log(recipe);
     console.log(tagData);
-
     uploadRecipe({
       variables: {
         recipe: recipe,
         tags: tagData
       }
     })
-    navigation.navigate('Home')
+    // navigation.navigate('Home')
   }
 
   return (
@@ -188,7 +187,7 @@ const AddRecipe = ({ navigation }) => {
             />
 
           </View>
-          <Button title='Add new recipe' style={styles.submit} onPress={addNewRecipe} />
+          <Button title='Add New Recipe' style={styles.submit} onPress={addNewRecipe} />
         </View>
 
       </ScrollView>
@@ -200,14 +199,13 @@ export default AddRecipe
 
 const styles = StyleSheet.create({
   inputForm: {
-    // paddingTop: 100,
     paddingLeft: 20,
     paddingRight: 20,
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   inputLabel: {
     fontSize: 10
@@ -221,11 +219,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    paddingTop: 20,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    marginTop: Constants.statusBarHeight
   },
   textStyle: {
     color: 'black',

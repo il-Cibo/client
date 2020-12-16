@@ -3,8 +3,6 @@ import { View, FlatList, Dimensions, StyleSheet, Image, TouchableOpacity, Text }
 const itemSize = (Dimensions.get('window').width - 12) / 3
 
 const Gallery = ({ data, user }) => {
-  const [total, setTotal] = useState(data.length)
-
   if(!data) {
     return <Text>Loading ...</Text>
   }
@@ -21,7 +19,7 @@ const Gallery = ({ data, user }) => {
   }
   return (
     <View>
-      <Text style={styles.username}>{user.username} Collection's</Text>
+      <Text style={styles.username}>{user} Collection's</Text>
       <View style={styles.images}> 
         <FlatList 
           data={data}

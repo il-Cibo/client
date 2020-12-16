@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -8,45 +8,66 @@ import { AntDesign } from '@expo/vector-icons'
 import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
+import Tags from "react-native-tags";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+// import LabelSelect from 'react-native-label-select';
 
-function RecipeCard({ navigation, recipe, user}) {
-	
+function RecipeCard({ navigation, recipe, user }) {
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
+	const [userId, setUserId] = useState();
+	const [recipeId, setRecipeId] = useState();
+	const [status, setStatus] = useState(false);
+	const [tags, setTags] = useState()
+
+	useEffect(() => {
+		if(recipe.Tags) {
+			const newTags = recipe.Tags.map((el) => {
+				return el.name
+			})
+
+			setTags(newTags)
+			console.log(tags);
+		}
+	}, [])
+
 	const list = [
 		{
 			title: 'Edit Recipe',
-			containerStyle: { 
+			containerStyle: {
 				backgroundColor: '#FFF',
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
 			onPress: () => {
 				setIsVisible(false)
-				navigation.navigate('EditRecipe')
-			} 
+				navigation.navigate('EditRecipe', {
+					recipeId: recipe.id
+				})
+			}
 		},
 		{
 			title: 'Cancel',
-			containerStyle: { 
-				backgroundColor: '#FFF' 
+			containerStyle: {
+				backgroundColor: '#FFF'
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
-			onPress: () => setIsVisible(false)
 		}
 	]
-	
+
 	function goToRecipeDetail() {
+		console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
-			recipeId: recipe.id
+			recipeData: recipe,
+			user: user
 		})
 	}
-
+	
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
 		
 		context: {
@@ -82,15 +103,19 @@ function RecipeCard({ navigation, recipe, user}) {
 						style={styles.userPic}
 						source={require('../assets/woman.svg')}
 					/>
-					<Text style={styles.usernameStyle}>username</Text>
+					<Text style={styles.usernameStyle}>{user.username}</Text>
 				</View>
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
-				source={{ uri: recipe.image }} />
-			<MaterialIcons onPress={onsubmit} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
-			<Text style={styles.recipeTitle}>{recipe.title}</Text>
+				source={{ uri: recipe.image }} resizeMode="cover" />
+			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
+			<Text
+				style={styles.recipeTitle}
+				onPress={goToRecipeDetail}
+			>
+				{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
 			</Text>
@@ -105,12 +130,22 @@ function RecipeCard({ navigation, recipe, user}) {
 				</View>
 				<View style={styles.row}>
 					<AntDesign name="tago" size={16} color="#747d8c" />
-					<Text style={styles.info}>Tags: chicken</Text>
+					<Text style={styles.info}>Tags:</Text>
+					<Tags
+						initialTags={tags}
+						readonly
+						deleteTagOnPress={false}
+						// renderTag={({tag, index}) => (
+						// 	<TouchableOpacity key={`${tag}-${index}`} >
+						// 		<Text>{tag}</Text>
+						// 	</TouchableOpacity>
+						// )}
+					/>
 				</View>
 			</View>
-			<BottomSheet 
-			transparent={true}
-			isVisible={isVisible}>
+			<BottomSheet
+				transparent={true}
+				isVisible={isVisible}>
 				{list.map((l, i) => (
 					<ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
 						<ListItem.Content>
@@ -149,7 +184,9 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	usernameStyle: {
-		fontSize: 12
+		fontSize: 12,
+		fontFamily: 'Oswald',
+		letterSpacing: 1.5
 	},
 	favoriteButton: {
 		marginTop: 5,
@@ -158,11 +195,14 @@ const styles = StyleSheet.create({
 	recipeTitle: {
 		marginTop: 10,
 		fontWeight: 'bold',
-		fontSize: 12
+		fontSize: 16,
+		fontFamily: 'Oswald',
 	},
 	recipeDescription: {
 		marginTop: 5,
-		fontSize: 10
+		fontSize: 12,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	cookInfo: {
 		height: 60,
@@ -172,7 +212,9 @@ const styles = StyleSheet.create({
 	info: {
 		color: "#747d8c",
 		fontSize: 9,
-		marginLeft: 5
+		marginLeft: 5,
+		fontFamily: 'Oswald',
+		letterSpacing: 1
 	},
 	row: {
 		flexDirection: 'row',
