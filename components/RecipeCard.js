@@ -3,16 +3,17 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
-import { useMutation } from '@apollo/client'
+import { ADD_TO_FAVORITE_RECIPE, DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE } from '../config/queries'
+import { useMutation, useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
+import { Ionicons, FontAwesome } from '@expo/vector-icons'
+import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
-import { TouchableOpacity } from 'react-native-gesture-handler';
-// import LabelSelect from 'react-native-label-select';
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function RecipeCard({ navigation, recipe, user }) {
+	const [like, setLike] = useState(false)
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 	const [userId, setUserId] = useState();
@@ -76,8 +77,10 @@ function RecipeCard({ navigation, recipe, user }) {
 		}
 	})
 
-
 	const onsubmit = () => {
+
+		console.log("LIKE DULUU");
+		setLike(true)
 		newFavRecipe({
 			variables: {
 				id: recipe.id,
@@ -90,7 +93,32 @@ function RecipeCard({ navigation, recipe, user }) {
 			}
 		})
 	}
-	
+
+
+	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
+
+	useEffect(() => {
+		// if (data) {
+		// 	const allUserFav = data.findFav.Recipes.map((el) => el.UserRecipe.favorites === true ? true : false)
+		// 	console.log({allUserFav});
+		// 	setLike(allUserFav);
+		// }
+		if (data) {
+			const allUserFav = data.findFav.Recipes.filter((el) => el.id === recipe.id)
+			console.log({ allUserFav });
+			setLike(allUserFav[0]?.UserRecipe?.favorites);
+		}
+	}, [data])
+
+	// console.log(data?.findFav?.Recipes[0]?.UserRecipe, "======================= list recipe dan userid dari home ==============")
+	// console.log(like);
+	// console.log({ recipe });
 
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
@@ -106,8 +134,15 @@ function RecipeCard({ navigation, recipe, user }) {
 			</View>
 			<Card.Image
 				onPress={goToRecipeDetail}
+
+				source={{ uri: recipe.image }} />
+
+			{!like && <MaterialIcons onPress={onsubmit} name="favorite" size={24} color="black" style={styles.favoriteButton} />}
+			{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
+
+			<Text style={styles.recipeTitle}>{recipe.title}</Text>
+
 				source={{ uri: recipe.image }} resizeMode="cover" />
-			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text
 				style={styles.recipeTitle}
 				onPress={goToRecipeDetail}
@@ -154,6 +189,8 @@ function RecipeCard({ navigation, recipe, user }) {
 		</Card>
 	)
 }
+
+
 
 const styles = StyleSheet.create({
 	container: {
