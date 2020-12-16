@@ -19,20 +19,9 @@ function Home({ navigation }) {
 	const UserId = data?.user?.id
 	const dispatch = useDispatch()
 
-	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		}
-	})
+	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES)
 
 	const [getUser] = useLazyQuery(GET_PROFILE, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		},
 		onCompleted: ((dataUser) => {
 			dispatch({
 				type: 'SET_USER',
