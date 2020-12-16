@@ -28,8 +28,7 @@ function FavoriteCard({ navigation, recipe, username }) {
 		}
     })
     
-    console.log({data}, data?.user?.id);
-    console.log({id: recipe.id});
+    console.log({recipe});
 
     const tagUndefined = "recipe"
     let tagFood

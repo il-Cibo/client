@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image, Form, Item, Spinner, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Picker, Form, Item, Spinner, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native';
 import FormInput from '../components/FormInput';
 import { Button } from 'react-native-paper'
 import SocialButton from '../components/SocialButton';
@@ -15,7 +15,16 @@ const register = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [gender, setGender] = useState('');
 
+  const [genderData] = useState([
+    'select gender',
+    'male',
+    'female'
+  ])
 
+  const onSelectGender = (val) => {
+    setGender(val)
+ 
+  }
   const onsubmit = (event) => {
     event.preventDefault()
     let avatar = ''
@@ -44,7 +53,7 @@ const register = ({ navigation }) => {
     navigation.navigate('Login')
   }
   console.log(newUser)
-  
+
   if (loading) {
     return <Text>Loading ...</Text>
     // return <Loading />
@@ -101,14 +110,35 @@ const register = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
-        <FormInput
+        {/* <FormInput
           name="gender"
           labelValue={gender}
           onChangeText={(userGender) => setGender(userGender)}
           placeholderText="gender"
           iconType="user"
           secureTextEntry={true}
-        />
+        /> */}
+        <View style={{ backgroundColor: '#FFFFFF', border: '1px solid black' }}>
+          <Picker
+            selectedValue={gender}
+            onValueChange={(val) => {
+              onSelectGender(val)
+            }}
+
+          >
+            {
+              genderData.map((el, i) => (
+                <Picker.Item
+                  key={i}
+                  placeholderText=" select gender"
+                  style={{ fontSize: 33, marginVertical: 10 }}
+                  label={el} value={el}
+                />
+              ))
+            }
+          </Picker>
+        </View>
+
         {/* <RadioButton
                     value="Male"
                     status={gender === 'Male' ? 'checked' : 'unchecked'}

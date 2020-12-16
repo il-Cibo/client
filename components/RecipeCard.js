@@ -1,46 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card, BottomSheet, ListItem } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { ADD_TO_FAVORITE_RECIPE } from '../config/queries'
-import { useMutation } from '@apollo/client'
+import { ADD_TO_FAVORITE_RECIPE, DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE } from '../config/queries'
+import { useMutation, useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
+import { Ionicons, FontAwesome } from '@expo/vector-icons'
+import ButtonUnLike from './ButtonUnLike';
 
-function RecipeCard({ navigation, recipe, user}) {
-	
+function RecipeCard({ navigation, recipe, user }) {
+
+	const [like, setLike] = useState(false)
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 	const list = [
 		{
 			title: 'Edit Recipe',
-			containerStyle: { 
+			containerStyle: {
 				backgroundColor: '#FFF',
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
 			onPress: () => {
 				setIsVisible(false)
 				navigation.navigate('EditRecipe')
-			} 
+			}
 		},
 		{
 			title: 'Cancel',
-			containerStyle: { 
-				backgroundColor: '#FFF' 
+			containerStyle: {
+				backgroundColor: '#FFF'
 			},
-			titleStyle: { 
+			titleStyle: {
 				color: 'black',
 				marginLeft: 30,
 			},
 			onPress: () => setIsVisible(false)
 		}
 	]
-	
+
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
 			recipeId: recipe.id
@@ -48,7 +50,6 @@ function RecipeCard({ navigation, recipe, user}) {
 	}
 
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
-		
 		context: {
 			headers: {
 				token: token
@@ -56,10 +57,12 @@ function RecipeCard({ navigation, recipe, user}) {
 		}
 	})
 
-	// console.log(recipe, user, "======================= list recipe dan userid dari home ==============")
+
 
 	const onsubmit = () => {
-		
+
+		console.log("LIKE DULUU");
+		setLike(true)
 		newFavRecipe({
 			variables: {
 				id: recipe.id,
@@ -72,7 +75,32 @@ function RecipeCard({ navigation, recipe, user}) {
 			}
 		})
 	}
-	
+
+
+	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
+		context: {
+			headers: {
+				token: token
+			}
+		}
+	})
+
+	useEffect(() => {
+		// if (data) {
+		// 	const allUserFav = data.findFav.Recipes.map((el) => el.UserRecipe.favorites === true ? true : false)
+		// 	console.log({allUserFav});
+		// 	setLike(allUserFav);
+		// }
+		if (data) {
+			const allUserFav = data.findFav.Recipes.filter((el) => el.id === recipe.id)
+			console.log({ allUserFav });
+			setLike(allUserFav[0]?.UserRecipe?.favorites);
+		}
+	}, [data])
+
+	// console.log(data?.findFav?.Recipes[0]?.UserRecipe, "======================= list recipe dan userid dari home ==============")
+	// console.log(like);
+	// console.log({ recipe });
 
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
@@ -89,7 +117,10 @@ function RecipeCard({ navigation, recipe, user}) {
 			<Card.Image
 				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} />
-			<MaterialIcons onPress={onsubmit} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
+
+			{!like && <MaterialIcons onPress={onsubmit} name="favorite" size={24} color="black" style={styles.favoriteButton} />}
+			{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
+
 			<Text style={styles.recipeTitle}>{recipe.title}</Text>
 			<Text style={styles.recipeDescription}>
 				{recipe.description}
@@ -108,9 +139,9 @@ function RecipeCard({ navigation, recipe, user}) {
 					<Text style={styles.info}>Tags: chicken</Text>
 				</View>
 			</View>
-			<BottomSheet 
-			transparent={true}
-			isVisible={isVisible}>
+			<BottomSheet
+				transparent={true}
+				isVisible={isVisible}>
 				{list.map((l, i) => (
 					<ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
 						<ListItem.Content>
@@ -122,6 +153,8 @@ function RecipeCard({ navigation, recipe, user}) {
 		</Card>
 	)
 }
+
+
 
 const styles = StyleSheet.create({
 	container: {
