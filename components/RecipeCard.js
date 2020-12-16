@@ -6,16 +6,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { ADD_TO_FAVORITE_RECIPE, DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
-import { useSelector } from 'react-redux'
 import { Ionicons, FontAwesome } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { tokenVar } from '../store/makeVar'
 
 function RecipeCard({ navigation, recipe, user }) {
 	const [like, setLike] = useState(false)
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
-	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 	const [userId, setUserId] = useState();
 	const [recipeId, setRecipeId] = useState();
@@ -34,6 +31,22 @@ function RecipeCard({ navigation, recipe, user }) {
 	}, [])
 
 	const list = [
+		{
+			title: 'Add Recipe to your Meal Plan',
+			containerStyle: {
+				backgroundColor: '#FFF',
+			},
+			titleStyle: {
+				color: 'black',
+				marginLeft: 30,
+			},
+			onPress: () => {
+				// setIsVisible(false)
+				// navigation.navigate('EditRecipe', {
+				// 	recipeId: recipe.id
+				// })
+			}
+		},
 		{
 			title: 'Edit Recipe',
 			containerStyle: {
@@ -76,7 +89,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
@@ -96,7 +109,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
