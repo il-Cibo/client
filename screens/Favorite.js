@@ -1,25 +1,30 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
-import { RecipeCard } from '../components'
+import { FavoriteCard } from '../components'
 import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 
 function Favorite() {
-	const UserId = data?.user?.id
+	// const UserId = data?.user?.id
+	const [userFavo, setUserFavo] = useState([])
 	const token = useSelector((state) => state.token)
 	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
-		variables: {
-			UserId
-		},
 		context: {
 			headers: {
 				token: token
 			}
 		}
 	})
+
+	useEffect(() => {
+		if (data) {
+			const allUserFav = data.findFav.Recipes.filter((el) => el.UserRecipe.favorites)
+			setUserFavo(allUserFav);
+		}
+	}, [data])
 
 	if (loading) {
 		return <Text>Loading ...</Text>
@@ -38,15 +43,15 @@ function Favorite() {
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<View>
-					<Text style={styles.headerText}>Username's Favorites</Text>
+					<Text style={styles.headerText}>{data.findFav.username}'s Favorites</Text>
 				</View>
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView style={styles.content}>
-				{/* {data.recipes.map((recipePost) => (
-					<RecipeCard key={recipePost.id} recipe={recipePost} />
-				))} */}
-				<Text>{JSON.stringify(data)}</Text>
+				{userFavo.map((recipePost, i) => (
+					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} />
+				))}
+				{/* <Text>{JSON.stringify(data)}</Text> */}
 			</ScrollView>
 		</View>
 	)

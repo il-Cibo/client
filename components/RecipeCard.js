@@ -69,6 +69,7 @@ function RecipeCard({ navigation, recipe, user }) {
 	}
 	
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
+		
 		context: {
 			headers: {
 				token: token
@@ -76,26 +77,23 @@ function RecipeCard({ navigation, recipe, user }) {
 		}
 	})
 
-	const onsubmit = (event) => {
-		event.preventDefault()
+	// console.log(recipe, user, "======================= list recipe dan userid dari home ==============")
+
+	const onsubmit = () => {
+		
 		newFavRecipe({
 			variables: {
-				user: {
-					UserId: userId,
-					RecipeId: recipeId,
-					Favorite: status,
+				id: recipe.id,
+				UserRecipe: {
+					UserId: user,
+					RecipeId: recipe.id,
+					favorites: true,
 					plan: []
 				}
 			}
 		})
 	}
-
-	const addFavorite = (recipeId) => {
-		setUserId(data?.user?.id)
-		setRecipeId(recipeId)
-		setStatus(!status)
-		onsubmit()
-	}
+	
 
 	return (
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
@@ -110,6 +108,7 @@ function RecipeCard({ navigation, recipe, user }) {
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
+				onPress={goToRecipeDetail}
 				source={{ uri: recipe.image }} resizeMode="cover" />
 			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text
