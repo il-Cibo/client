@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 
 const tagUndefined = "recipe"
 
-function FavoriteCard({ navigation, recipe, username }) {
+function FavoriteCard({ navigation, recipe, username, fetch }) {
     const [tagFood, setTagFood] = useState('')
     const token = useSelector((state) => state.token)
     const [isVisible, setIsVisible] = useState(false)
@@ -64,7 +64,7 @@ function FavoriteCard({ navigation, recipe, username }) {
                 }
             }
         })
-        refetch()
+        fetch()
     }
 
 

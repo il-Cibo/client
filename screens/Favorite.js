@@ -63,7 +63,7 @@ function Favorite(props) {
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView style={styles.content}>
 				{userFavo.map((recipePost, i) => (
-					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} />
+					<FavoriteCard fetch={refetch} key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} />
 				))}
 			</ScrollView>
 		</View>
