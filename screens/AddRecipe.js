@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
 import { useSelector } from 'react-redux'
+import Constants from 'expo-constants'
 
 const AddRecipe = ({ navigation }) => {
   const token = useSelector((state) => state.token)
@@ -199,14 +200,13 @@ export default AddRecipe
 
 const styles = StyleSheet.create({
   inputForm: {
-    // paddingTop: 100,
     paddingLeft: 20,
     paddingRight: 20,
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   inputLabel: {
     fontSize: 10
@@ -220,11 +220,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    paddingTop: 20,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    marginTop: Constants.statusBarHeight
   },
   textStyle: {
     color: 'black',

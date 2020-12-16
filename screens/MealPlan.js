@@ -5,8 +5,7 @@ import { GET_MEALPLAN } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import moment from 'moment'
 import CalendarStrip from 'react-native-calendar-strip';
-
-
+import Constants from 'expo-constants'
 
 const MealPlan = () => {
   const [dateNow, setDateNow] = useState()
@@ -127,7 +126,7 @@ export default MealPlan
 
 const style = StyleSheet.create({
   calendarHeader: {
-    paddingTop: 100,
+		marginTop: Constants.statusBarHeight,
     paddingLeft: 20,
     paddingRight: 20,
     flex: 1,

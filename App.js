@@ -52,7 +52,7 @@ function HomeTabs() {
         }
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: '#FF9494',
         inactiveTintColor: 'gray'
       }}
     >
@@ -79,8 +79,8 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>

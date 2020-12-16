@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper'
+import Constants from 'expo-constants'
 
 const EditRecipe = ({ route }) => {
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAzMTg0Mn0.s_2T4KCIkcjWY6HC1IZaUyshDHNFJHUzymftYk1w0mY"
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    paddingTop: 20,
+    marginTop: Constants.statusBarHeight,
     flex: 1,
     justifyContent: 'space-between',
     backgroundColor: '#FFF'

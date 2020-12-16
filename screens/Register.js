@@ -6,6 +6,7 @@ import SocialButton from '../components/SocialButton';
 import { useMutation } from '@apollo/client'
 import { REGISTER_USER } from '../config/queries'
 import { RadioButton } from 'react-native-paper'
+import Constants from 'expo-constants'
 
 const register = ({ navigation }) => {
   const [newUser, { data, error, loading }] = useMutation(REGISTER_USER)
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 20,
+		marginTop: Constants.statusBarHeight
   },
   title: {
     fontFamily: 'Oswald',

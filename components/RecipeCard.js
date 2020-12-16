@@ -45,11 +45,12 @@ function RecipeCard({ navigation, recipe }) {
 	]
 
 	function goToRecipeDetail() {
+		console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
-			recipeId: recipe.id
+			recipeData: recipe
 		})
 	}
-
+	
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
 		context: {
 			headers: {
@@ -92,7 +93,7 @@ function RecipeCard({ navigation, recipe }) {
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>
 			<Card.Image
-				source={{ uri: recipe.image }} />
+				source={{ uri: recipe.image }} resizeMode="cover" />
 			<MaterialIcons onPress={() => addFavorite(recipe.id)} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />
 			<Text
 				style={styles.recipeTitle}
@@ -168,12 +169,12 @@ const styles = StyleSheet.create({
 	recipeTitle: {
 		marginTop: 10,
 		fontWeight: 'bold',
-		fontSize: 14,
+		fontSize: 16,
 		fontFamily: 'Oswald',
 	},
 	recipeDescription: {
 		marginTop: 5,
-		fontSize: 10,
+		fontSize: 12,
 		fontFamily: 'Oswald',
 		letterSpacing: 1
 	},
