@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { View, FlatList, Dimensions, StyleSheet, Image, TouchableOpacity, Text } from 'react-native'
 const itemSize = (Dimensions.get('window').width - 12) / 3
 
-const Gallery = ({ data, user }) => {
+const Gallery = ({ data, user, navigation }) => {
   if(!data) {
     return <Text>Loading ...</Text>
   }
 
   const renderItem = ({ item, index }) => {
     return (
-      <TouchableOpacity onPress={() => console.log(item)} >
+      <TouchableOpacity onPress={() => navigation.navigate('DetailRecipe', {data: data})} >
         <Image 
           style={styles.imageCollection}
           source={{uri: item.image}}
@@ -17,6 +17,7 @@ const Gallery = ({ data, user }) => {
       </TouchableOpacity>
     )
   }
+
   return (
     <View>
       <Text style={styles.username}>{user} Collection's</Text>

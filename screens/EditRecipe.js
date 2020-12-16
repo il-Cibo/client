@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Image, Platform } from 'react-native';
 import { AddForm } from '../components'
-import { EDIT_RECIPE, GET_ALL_RECIPES, GET_RECIPE } from '../config/queries'
+import { EDIT_RECIPE, GET_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
-import { useSelector } from 'react-redux'
 import * as mime from 'react-native-mime-types';
 import * as ImagePicker from 'expo-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper'
 import Constants from 'expo-constants'
+import { tokenVar } from '../store/makeVar'
+
 
 const EditRecipe = ({ route }) => {
-  // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODAzMTg0Mn0.s_2T4KCIkcjWY6HC1IZaUyshDHNFJHUzymftYk1w0mY"
-  const token = useSelector((state) => state.token)
   const { recipeId } = route.params
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -26,7 +25,7 @@ const EditRecipe = ({ route }) => {
   const { loading, error, data } = useQuery(GET_RECIPE, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     },
     variables: {
@@ -37,7 +36,7 @@ const EditRecipe = ({ route }) => {
   const [updateRecipe] = useMutation(EDIT_RECIPE, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     }
   })

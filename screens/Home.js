@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RecipeCard, Loading } from '../components'
 import Constants from 'expo-constants'
 import { Octicons } from '@expo/vector-icons'
+import { tokenVar } from '../store/makeVar'
 
 const wait = timeout => {
 	return new Promise(resolve => {
@@ -15,15 +16,13 @@ const wait = timeout => {
 };
 
 function Home({ navigation }) {
-	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwNzkyNjM1N30.ei4NpaGVR8b6kkP5DwYJUrlZuCZjdxdTorX0iP6eEik"
 	const UserId = data?.user?.id
-	const token = useSelector((state) => state.token)
 	const dispatch = useDispatch()
 
 	const { loading, error, data, refetch } = useQuery(GET_ALL_RECIPES, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
@@ -31,7 +30,7 @@ function Home({ navigation }) {
 	const [getUser] = useLazyQuery(GET_PROFILE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		},
 		onCompleted: ((dataUser) => {

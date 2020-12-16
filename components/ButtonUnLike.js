@@ -6,7 +6,7 @@ import {useSelector} from "react-redux"
 import {useMutation, useQuery} from '@apollo/client'
 
 export default function ButtonUnLike({setLike, recipeId}) {
-
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
     const token = useSelector((state) => state.token)
 
     const { data, } = useQuery(GET_ALL_RECIPES, {
@@ -33,13 +33,7 @@ export default function ButtonUnLike({setLike, recipeId}) {
         setLike(false)
         deleteFromFav({
             variables: {
-				id: recipeId,
-				UserRecipe: {
-					UserId: data?.user?.id,
-					RecipeId: recipeId,
-					favorites: false,
-					plan: []
-				}
+				id: recipeId
 			}
         })
     }
@@ -54,6 +48,6 @@ const styles = StyleSheet.create({
     deleteeButton: {
         marginTop: 5,
         marginLeft: 5,
-        alignContent: 'flex-end'
+        // alignContent: 'flex-end'
     }
 })

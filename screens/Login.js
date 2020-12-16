@@ -3,22 +3,21 @@ import { FormInput, SocialButton, Loading } from '../components'
 import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '../config/queries'
 import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../store'
 import { Button } from 'react-native-paper'
 import Constants from 'expo-constants'
+import { tokenVar } from '../store/makeVar'
 
 const Login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const dispatch = useDispatch()
 	const [getToken, { loading, error, data }] = useLazyQuery(LOGIN_USER, {
 		context: {
 			headers: {}
 		},
 		onCompleted: ((data) => {
-			dispatch(setToken(data.login.token))
-			navigation.navigate('Home')
+			console.log(data);
+			tokenVar(data.login.token)
+			// navigation.navigate('Home')
 		})
 	})
 
@@ -77,6 +76,7 @@ const Login = ({ navigation }) => {
 				}
 			}
 		})
+
 	}
 
 	return (

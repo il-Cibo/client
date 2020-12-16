@@ -6,13 +6,10 @@ import { useQuery } from '@apollo/client'
 import moment from 'moment-timezone'
 import { Octicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useSelector } from 'react-redux'
-import CalendarStrip from 'react-native-calendar-strip';
 import Constants from 'expo-constants'
+import { tokenVar } from '../store/makeVar'
 
 const MealPlan = () => {
-  // const token = useSelector((token) => state.token)
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
   const [dateNow, setDateNow] = useState()
   const [dayNow, setDayNow] = useState()
   const [todayPlan, setTodayPlan] = useState([])
@@ -23,7 +20,7 @@ const MealPlan = () => {
   const { loading, error, data, refetch } = useQuery(GET_MEALPLAN, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     }
   })
@@ -121,7 +118,7 @@ const MealPlan = () => {
         )}
 
       <ScrollView style={style.planBody}>
-        <ModalAddPlan recipe={dataRecipes} />
+        {/* <ModalAddPlan recipe={dataRecipes} /> */}
         {renderMealPlanCard()}
       </ScrollView>
     </SafeAreaView>

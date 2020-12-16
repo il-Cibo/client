@@ -9,32 +9,16 @@ import {
 } from 'react-native'
 import { useQuery } from '@apollo/client'
 import { GET_PROFILE } from '../config/queries'
-import { useSelector } from 'react-redux'
+import { tokenVar } from '../store/makeVar'
 
-const UserProfile = () => {
-  // const [userProfile, setUserProfile] = useState()
-  // const [userRecipe, setUserRecipe] = useState()
-  const token = useSelector((state) => state.token)
-  const user = useSelector((state) => state.user)
-
+const UserProfile = ({navigation}) => {
   const { loading, error, data } = useQuery(GET_PROFILE, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     }
   })
-
-  console.log(user);
-
-  // if(error) {
-  //   console.log(error);
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>{JSON.stringify(error.message)}</Text>
-  //     </View>
-  //   )
-  // }
 
   if(loading) {
     return <View style={styles.container}><Text>Loading ...</Text></View>
@@ -46,7 +30,7 @@ const UserProfile = () => {
         <View style={styles.container}>
           <ProfileHeader data={{username: data.user.username, name: data.user.name, avatar: data.user.avatar}}/>
           <View style={styles.container}>
-            <Gallery data={data.user.Recipes} user={data.user.username}/>
+            <Gallery data={data.user.Recipes} user={data.user.username} navigation={navigation}/>
           </View>
         </View>
       </ScrollView>

@@ -14,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function RecipeCard({ navigation, recipe, user }) {
 	const [like, setLike] = useState(false)
+	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 	const token = useSelector((state) => state.token)
 	const [isVisible, setIsVisible] = useState(false)
 	const [userId, setUserId] = useState();
@@ -28,7 +29,7 @@ function RecipeCard({ navigation, recipe, user }) {
 			})
 
 			setTags(newTags)
-			console.log(tags);
+			// console.log(tags);
 		}
 	}, [])
 
@@ -58,11 +59,14 @@ function RecipeCard({ navigation, recipe, user }) {
 				color: 'black',
 				marginLeft: 30,
 			},
+			onPress: () => {
+				setIsVisible(false)
+			}
 		}
 	]
 
 	function goToRecipeDetail() {
-		console.log(recipe.id, '<<< id resep')
+		// console.log(recipe.id, '<<< id resep')
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
 			user: user
@@ -77,23 +81,17 @@ function RecipeCard({ navigation, recipe, user }) {
 		}
 	})
 
-	const onsubmit = () => {
+	const addToFav = () => {
 
-		console.log("LIKE DULUU");
+		// console.log("LIKE DULUU");
 		setLike(true)
+		// console.log(typeof recipe.id);
 		newFavRecipe({
 			variables: {
-				id: recipe.id,
-				UserRecipe: {
-					UserId: user,
-					RecipeId: recipe.id,
-					favorites: true,
-					plan: []
-				}
+				id: +recipe.id,
 			}
 		})
 	}
-
 
 	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
@@ -111,7 +109,7 @@ function RecipeCard({ navigation, recipe, user }) {
 		// }
 		if (data) {
 			const allUserFav = data.findFav.Recipes.filter((el) => el.id === recipe.id)
-			console.log({ allUserFav });
+			// console.log({ allUserFav });
 			setLike(allUserFav[0]?.UserRecipe?.favorites);
 		}
 	}, [data])
@@ -137,12 +135,10 @@ function RecipeCard({ navigation, recipe, user }) {
 
 				source={{ uri: recipe.image }} />
 
-			{!like && <MaterialIcons onPress={onsubmit} name="favorite" size={24} color="black" style={styles.favoriteButton} />}
+			{!like && <MaterialIcons onPress={addToFav} name="favorite-outline" size={24} color="black" style={styles.favoriteButton} />}
 			{like && <ButtonUnLike setLike={setLike} recipeId={recipe.id} />}
 
-			<Text style={styles.recipeTitle}>{recipe.title}</Text>
-
-				source={{ uri: recipe.image }} resizeMode="cover" />
+				{/* source={{ uri: recipe.image }} resizeMode="cover" /> */}
 			<Text
 				style={styles.recipeTitle}
 				onPress={goToRecipeDetail}

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe, EditRecipe } from './screens'
+import { Navigator, Login, Register, Home, Favorite, Search, AddRecipe, MealPlan, UserProfile, DetailRecipe, EditRecipe } from './screens'
 import { Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { AppRegistry } from 'react-native'
@@ -56,9 +56,9 @@ function HomeTabs() {
         inactiveTintColor: 'gray'
       }}
     >
-      <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Favorite" component={Favorite} />
+      {/* <Tab.Screen name="Favorite" component={Favorite} /> */}
+      <Tab.Screen name="Add Recipe" component={AddRecipe} options={{ headerShown: false }} />
       <Tab.Screen name="Meal Plan" component={MealPlan} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={UserProfile} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -77,13 +77,14 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <NavigationContainer>
+        <Navigator/>
+        {/* <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
           </Stack.Navigator>
-        </NavigationContainer>
+        </NavigationContainer> */}
       </Provider>
     </ApolloProvider>
   );

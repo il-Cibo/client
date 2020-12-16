@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from "@react-navigation/native";
-
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,18 +9,21 @@ import { LIST_FAV_USER_RECIPE } from '../config/queries'
 import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
+import { tokenVar } from '../store/makeVar'
 
 function Favorite(props) {
+	// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJ0ZXN0bG9naW4iLCJpYXQiOjE2MDc4NjMzMzZ9.cAErNfgFsC2y9VAuO3xvAU1-KoB7k83-Vbf2CzL9muY"
 	const [userFavo, setUserFavo] = useState([])
 	const token = useSelector((state) => state.token)
 	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
 		context: {
 			headers: {
-				token: token
+				token: tokenVar()
 			}
 		}
 	})
 
+	console.log(data, 'cek fav');
 	const isFocused = useIsFocused();
 
 	useEffect(() => { 

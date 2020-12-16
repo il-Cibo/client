@@ -143,7 +143,7 @@ export const REGISTER_USER = gql`
 //====== ini ====
 export const ADD_TO_FAVORITE_RECIPE = gql`
 	mutation userRecipe ($id : Int!) {
-		addFav(id: $id){
+		addFav(id: $id) {
 			UserId
 			RecipeId
 			favorites

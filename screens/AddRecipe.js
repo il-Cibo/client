@@ -7,14 +7,12 @@ import { UPLOAD_RECIPE, GET_ALL_RECIPES } from '../config/queries'
 import { useMutation } from '@apollo/client'
 import { ReactNativeFile } from 'apollo-upload-client';
 import * as mime from 'react-native-mime-types';
-import { useSelector } from 'react-redux'
 import Constants from 'expo-constants'
 import { Button, TextInput } from 'react-native-paper'
 import { Divider } from 'react-native-elements'
+import { tokenVar } from '../store/makeVar'
 
 const AddRecipe = ({ navigation }) => {
-  // const token = useSelector((state) => state.token)
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFuZGFqZWhhbiIsImlhdCI6MTYwODA5Mjk4NX0.VCfMNg0uiit-7m5WRpU8ztGYs75QG5DeSIWhmV1RlM0"
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [image, setImage] = useState(null)
@@ -26,7 +24,7 @@ const AddRecipe = ({ navigation }) => {
   const [uploadRecipe, { loading, error, data }] = useMutation(UPLOAD_RECIPE, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     }
   }, {

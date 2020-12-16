@@ -5,22 +5,20 @@ import { Divider } from 'react-native-elements'
 import { Ingredients, CookingStep } from '../components/DetailRecipe'
 import { Loading } from '../components'
 import { DELETE_RECIPE, GET_ALL_RECIPES } from '../config/queries'
-import { useMutation } from '@apollo/client'
-import { useSelector } from 'react-redux'
+import { useMutation, useReactiveVar } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { SimpleLineIcons } from '@expo/vector-icons'
-
+import { tokenVar } from '../store/makeVar'
 
 export default function DetailRecipe({ navigation, route }) {
   const { recipeData, user } = route.params
-  const token = useSelector((state) => state.token)
   const [isVisible, setIsVisible] = useState(false)
   const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
     context: {
       headers: {
-        token: token
+        token: tokenVar()
       }
     }
   }, {
