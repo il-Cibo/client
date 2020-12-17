@@ -10,7 +10,7 @@ import {
 import { Octicons } from '@expo/vector-icons'
 import moment from 'moment-timezone'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { ADD_TO_PLAN, GET_MEALPLAN } from '../../config/queries'
 import { tokenVar } from '../../store/makeVar'
 
@@ -18,9 +18,11 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const [date, setDate] = useState(new Date());
   const [dayNow, setDayNow] = useState()
   
+  const { refetch } = useQuery(GET_MEALPLAN)
   const [addToPlan] = useMutation(ADD_TO_PLAN, {
     onCompleted: (() => {
       onClose()
+      refetch()
     })
   }, {
     refetchQueries: [

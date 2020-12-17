@@ -32,6 +32,7 @@ const MealPlan = () => {
   }, []);
   
   useEffect(() => {
+    refetch()
     const date = new Date ()
     setDateNow(date)
 
@@ -51,6 +52,7 @@ const MealPlan = () => {
   }, [data])
   
   const onChange = (event, selectedDate) => {
+    refetch()
     const currentDate = selectedDate;
 
     const dayNow = moment(currentDate).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
@@ -64,6 +66,7 @@ const MealPlan = () => {
     setTodayPlan(todayPlan)
     setShow(Platform.OS === 'ios');
     setDateNow(currentDate);
+    setFormattedDate(formattedDate)
   };
   
   const showMode = (currentMode) => {
