@@ -10,7 +10,6 @@ import * as mime from 'react-native-mime-types';
 import Constants from 'expo-constants'
 import { Button, TextInput } from 'react-native-paper'
 import { Divider } from 'react-native-elements'
-import { tokenVar } from '../store/makeVar'
 
 const AddRecipe = ({ navigation }) => {
   const [title, setTitle] = useState()
@@ -21,13 +20,7 @@ const AddRecipe = ({ navigation }) => {
   const [serving, setServing] = useState()
   const [cookingTime, setCookingTime] = useState()
   const [tag, setTags] = useState()
-  const [uploadRecipe, { loading, error, data }] = useMutation(UPLOAD_RECIPE, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    }
-  }, {
+  const [uploadRecipe, { loading, error }] = useMutation(UPLOAD_RECIPE, {
     refetchQueries: [
       { query: GET_ALL_RECIPES }
     ]

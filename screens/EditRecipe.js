@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Image, Platform } from 'react-native';
-import { EDIT_RECIPE, GET_RECIPE } from '../config/queries'
+import { EDIT_RECIPE, GET_ALL_RECIPES, GET_RECIPE } from '../config/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import * as mime from 'react-native-mime-types';
 import * as ImagePicker from 'expo-image-picker';
@@ -28,7 +28,11 @@ const EditRecipe = ({ navigation, route }) => {
     }
   })
 
-  const [updateRecipe] = useMutation(EDIT_RECIPE)
+  const [updateRecipe] = useMutation(EDIT_RECIPE, {
+    refetchQueries: [
+      { query: GET_ALL_RECIPES }
+    ]
+  })
 
   useEffect(() => {
     (async () => {
@@ -72,15 +76,22 @@ const EditRecipe = ({ navigation, route }) => {
   }
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
+    let result;
+    try {
+    result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-
-    if (!result.cancelled) {
-      setImage(result.uri);
+      
+    } catch (err) {
+      console.log(err);
+    } finally {
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+      console.log(image, ' pas habis foto');
+  
     }
-    console.log(image, ' pas habis foto');
   };
 
   const checkImage = () => {
@@ -115,18 +126,20 @@ const EditRecipe = ({ navigation, route }) => {
     const recipe = {
       title: title,
       description: description,
-      image: file,
+      image: image.includes('http') ? undefined : file,
       ingredients: ingredients.split('\n'),
       step: cookingSteps.split('\n'),
       serving: +serving,
       time: +cookingTime
     }
 
+    // console.log(data);
+
     const tagData = tag.split('\n')
 
     updateRecipe({
       variables: {
-        id: data.recipeid,
+        id: +data.recipe.id,
         recipe: recipe,
         tags: tagData
       }
