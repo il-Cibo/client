@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tokenVar } from '../../store/makeVar'
 
-function RecipeCard({ recipe, currentDate }) {
+function RecipeCard({ recipe, currentDate, navigation }) {
 	const [isVisible, setIsVisible] = useState(false)
 
 	const [removeFromPlan, { loading, error, data }] = useMutation(REMOVE_FROM_PLAN, {
@@ -54,7 +54,6 @@ function RecipeCard({ recipe, currentDate }) {
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
-			user: user,
 			recipeId: recipe.id,
 		})
 	}

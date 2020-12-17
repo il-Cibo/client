@@ -14,7 +14,7 @@ const wait = timeout => {
 	});
 };
 
-const MealPlan = () => {
+const MealPlan = ({ navigation }) => {
   const [dateNow, setDateNow] = useState(new Date ())
   const [dayNow, setDayNow] = useState()
   const [mode, setMode] = useState('date');
@@ -93,7 +93,7 @@ const MealPlan = () => {
                   </View> : 
 
           data.findPlan.Recipes.filter(el =>el.UserRecipe.plan.indexOf(formatDate(dateNow)) > -1).map(recipe => (
-            <MealPlanCard key={recipe.id} recipe={recipe} currentDate={formatDate(dateNow)}/> 
+            <MealPlanCard navigation={navigation} key={recipe.id} recipe={recipe} currentDate={formatDate(dateNow)}/> 
           ))
         }
       </ScrollView>

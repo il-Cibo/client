@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
 import { ModalAddPlan } from './';
-import { Gravatar, GravatarApi } from 'react-native-gravatar';
+import Gravatar from 'react-native-user-avatar';
 
 function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
@@ -94,12 +94,10 @@ function RecipeCard({ navigation, recipe }) {
 			<View style={styles.cardHeader}>
 				<View style={styles.userInfo}>
 					<Gravatar
-						style={styles.userPic}
-						options={{
-              email: `${recipe.Users.map((user) => user.email)}`,
-              parameters: { "size": "200", "d": "mm" },
-              secure: true
-            }}
+            size={50}
+            name={`${recipe.Users.map((user) => user.username)}`}
+            bgColors={['#ccc', '#fafafa', '#ccaabb']}
+            style={{ height: 50, margin: 10, marginLeft: 0 }}
 					/>
 					<Text style={styles.usernameStyle}>   {recipe.Users.map((user) => user.username)}</Text>
 				</View>

@@ -77,7 +77,7 @@ const EditRecipe = ({ navigation, route }) => {
   const pickImage = async () => {
     let result;
     try {
-    result = await ImagePicker.launchCameraAsync({
+    result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });

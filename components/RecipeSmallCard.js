@@ -32,7 +32,7 @@ function RecipeSmallCard({ recipe, navigation }) {
 								style={styles.userPic}
 								source={require('../assets/woman.svg')}
 							/>
-							<Text style={styles.usernameStyle}>Usernamesdsadsa</Text>
+							<Text style={styles.usernameStyle}>{recipe.Users[0].username}</Text>
 						</View>
 						<MaterialIcons name="keyboard-arrow-down" size={20} color="#747d8c" />
 					</View>
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
 		alignItems: 'baseline'
 	},
 	usernameStyle: {
-		fontSize: 8,
-		marginLeft: 5
+		fontSize: 10,
+		marginLeft: 0
 	},
 	recipeInfo: {
 		marginTop: 5
