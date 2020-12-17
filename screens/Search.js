@@ -6,18 +6,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useQuery } from '@apollo/client';
 import { QUERY_SEARCH_RECIPE } from '../config/queries';
 import Constants from 'expo-constants'
-import { tokenVar } from '../store/makeVar'
 
-function Search() {
+function Search({ navigation }) {
 	const [search, setSearch] = useState('');
 	const { data, error } = useQuery(QUERY_SEARCH_RECIPE, {
 		variables: {
 			query: search
-		},
-		context: {
-			headers: {
-				token: tokenVar()
-			}
 		}
 	})
 
@@ -51,7 +45,7 @@ function Search() {
 			<ScrollView>
 				{error && <Text>{JSON.stringify(error.message)}</Text>}
 				{data && data.queryRecipes.map((recipe) => (
-					<RecipeSmallCard key={recipe.id} recipe={recipe} />
+					<RecipeSmallCard navigation={navigation} key={recipe.id} recipe={recipe} />
 				))}
 			</ScrollView>
 		</View>

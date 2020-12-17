@@ -1,15 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function RecipeSmallCard({ recipe, navigation }) {
-	const { image, title, description, step, serving, time, Tags } = recipe;
+	const { image, title, serving, time, Tags } = recipe;
 	
-	function goToDetailsRecipe () {
+	function goToDetailsRecipe (recipe) {
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
 			page: 'home'
@@ -17,7 +18,7 @@ function RecipeSmallCard({ recipe, navigation }) {
 	}
 	
 	return (
-		<Pressable onPress={goToDetailsRecipe}>
+		<TouchableOpacity onPress={() => goToDetailsRecipe(recipe)}>
 			<Card containerStyle={{ borderColor: '#FFF' }}  >
 			<View style={{ flexDirection: 'row' }}>
 				<Card.Image
@@ -57,7 +58,7 @@ function RecipeSmallCard({ recipe, navigation }) {
 				</View>
 			</View>
 		</Card>
-		</Pressable>
+		</TouchableOpacity>
 	)
 }
 

@@ -35,7 +35,9 @@ function Home({ navigation }) {
 	})
 
 	function goToSearch() {
-		navigation.navigate('Search')
+		navigation.navigate('Search', {
+      navigation
+    })
 	}
 
 	if (!loaded) {

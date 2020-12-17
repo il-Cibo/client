@@ -77,8 +77,8 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
             <Octicons style={styles.calendarIcon} name="clock" size={24} color="black" />
             <Text style={styles.dateNow}>{dayNow}</Text>
           </View>
-          <View style={styles.pickCalendar} onPress={showDatepicker}>
-            <Octicons name="calendar" size={40} color="black" />
+          <View style={styles.pickCalendar}>
+            <Octicons name="calendar" size={40} color="black" onPress={showDatepicker} />
             <Text style={{fontWeight: 'bold'}}>Choose Date</Text>
           </View>
         </View>

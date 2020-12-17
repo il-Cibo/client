@@ -9,8 +9,8 @@ import { useMutation, useQuery } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import ButtonUnLike from './ButtonUnLike';
 import Tags from "react-native-tags";
-import { ModalAddPlan } from './'
-import { tokenVar } from '../store/makeVar'
+import { ModalAddPlan } from './';
+import { Gravatar, GravatarApi } from 'react-native-gravatar';
 
 function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
@@ -79,7 +79,7 @@ function RecipeCard({ navigation, recipe }) {
 		})
 	}
 
-	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE)
+	const { data } = useQuery(LIST_FAV_USER_RECIPE)
 
 	useEffect(() => {
 
@@ -93,11 +93,15 @@ function RecipeCard({ navigation, recipe }) {
 		<Card containerStyle={{ borderRadius: 10, borderColor: '#dcdde1' }}>
 			<View style={styles.cardHeader}>
 				<View style={styles.userInfo}>
-					<Image
+					<Gravatar
 						style={styles.userPic}
-						source={require('../assets/woman.svg')}
+						options={{
+              email: `${recipe.Users.map((user) => user.email)}`,
+              parameters: { "size": "200", "d": "mm" },
+              secure: true
+            }}
 					/>
-					<Text style={styles.usernameStyle}>{recipe.Users.map((user) => user.username)}</Text>
+					<Text style={styles.usernameStyle}>   {recipe.Users.map((user) => user.username)}</Text>
 				</View>
 				<MaterialIcons onPress={() => setIsVisible(true)} name="keyboard-arrow-down" size={24} color="black" />
 			</View>

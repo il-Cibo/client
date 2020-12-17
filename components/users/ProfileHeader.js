@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native'
+import { Gravatar, GravatarApi } from 'react-native-gravatar';
 
 const ProfileHeader = ({data}) => {
   return (
@@ -15,9 +16,13 @@ const ProfileHeader = ({data}) => {
         style={styles.background}
       >
         <View style={styles.headerContainer}> 
-          <Image
+          <Gravatar
             style={styles.userImage}
-            source={{ uri: data.avatar }}
+            options={{ 
+              email: data.email,
+              parameters: { "size": "200", "d": "mm" },
+              secure: true
+            }}
           />
           <Text style={styles.fullName}>{data.name}</Text>
           <Text style={styles.username}>{data.username}</Text>
