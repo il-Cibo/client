@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Card } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { LIST_FAV_USER_RECIPE, DELETE_RECIPE_FAV } from '../config/queries'
-import { useMutation, useQuery } from '@apollo/client'
+import { DELETE_RECIPE_FAV } from '../config/queries'
+import { useMutation } from '@apollo/client'
 import { ModalAddPlan } from './'
 import Tags from "react-native-tags";
-import { tokenVar } from '../store/makeVar'
-import { Loading } from '../components'
 
-function FavoriteCard({ navigation, recipe, username }) {
+function FavoriteCard({ navigation, recipe, username, fetch }) {
 	const [like, setLike] = useState(true)
 	const [showModal, setShowModal] = useState(false)
-	const [tags, setTags] = useState()
 
 	const closeModal = () => {
 		setShowModal(false)
@@ -25,15 +22,6 @@ function FavoriteCard({ navigation, recipe, username }) {
 		setShowModal(true)
 	}
 
-	useEffect(() => {
-		if(recipe.Tags) {
-			const newTags = recipe.Tags.map((el) => {
-				return el.name
-			})
-
-			setTags(newTags)
-		}
-	},[])
 	function goToRecipeDetail() {
 		navigation.navigate('DetailRecipe', {
 			recipeData: recipe,
@@ -41,50 +29,18 @@ function FavoriteCard({ navigation, recipe, username }) {
 		})
 	}
 
-	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		}
-	})
-
-	if (loading) {
-		return (
-			<Loading />
-		)
-	}
-
-	if (error) {
-		return (
-			<View style={styles.container}>
-				<Text>{error.message}</Text>
-			</View>
-		)
-	}
-
 	const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		},
-
+		onCompleted: () => {
+			fetch()
+		}
 	})
 
 	const deleteThisFromFav = () => {
 		deleteFromFav({
 			variables: {
 				id: recipe.id,
-				UserRecipe: {
-					UserId: data?.user?.id,
-					RecipeId: recipe.id,
-					favorites: false,
-					plan: []
-				}
 			}
 		})
-		refetch()
 	}
 
 	return (
@@ -124,7 +80,7 @@ function FavoriteCard({ navigation, recipe, username }) {
 					<AntDesign name="tago" size={16} color="#747d8c" />
 					<Text style={styles.info}>Tags: </Text>
 					<Tags
-						initialTags={tags}
+						initialTags={recipe.Tags.map(el => el.name)}
 						readonly
 						deleteTagOnPress={false}
 					/>

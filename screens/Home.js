@@ -44,9 +44,9 @@ function Home({ navigation }) {
 		)
 	}
 
-	if (loading) {
-		return <Loading />
-	}
+	// if (loading) {
+	// 	return <Loading />
+	// }
 
 	if (error) {
 		return (
@@ -67,9 +67,15 @@ function Home({ navigation }) {
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				title="Please wait, refreshing.."
 			>
-				{data.recipes.map((recipePost, key) => (
+				{
+					loading? <Loading /> :
+					data.recipes.map((recipePost, key) => (
+						<RecipeCard key={recipePost.id} index={key} user={data.Users} recipe={recipePost} navigation={navigation} />
+					))
+				}
+				{/* {data.recipes.map((recipePost, key) => (
 					<RecipeCard key={recipePost.id} index={key} user={data.Users} recipe={recipePost} navigation={navigation} />
-				))}
+				))} */}
 			</ScrollView>
 		</View>
 	)

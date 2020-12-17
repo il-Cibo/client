@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   container: {
 		flex: 1,
 		flexDirection: 'column',
-		width: 360,
 		justifyContent: 'space-evenly',
 		alignItems: 'center',
 		backgroundColor: '#FFF'

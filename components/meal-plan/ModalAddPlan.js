@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
@@ -12,19 +11,12 @@ import moment from 'moment-timezone'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useMutation, useQuery } from '@apollo/client'
 import { ADD_TO_PLAN, GET_MEALPLAN } from '../../config/queries'
-import { tokenVar } from '../../store/makeVar'
 
 const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const [date, setDate] = useState(new Date());
   const [dayNow, setDayNow] = useState()
   
-  const { refetch } = useQuery(GET_MEALPLAN)
   const [addToPlan] = useMutation(ADD_TO_PLAN, {
-    onCompleted: (() => {
-      onClose()
-      refetch()
-    })
-  }, {
     refetchQueries: [
       { query: GET_MEALPLAN }
     ]
@@ -64,76 +56,66 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
         plan: plan
       }
     })
+    onClose()
   }
   
   return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isVisible}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isVisible}
 
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{recipe.title}</Text>
-            
-            <View style={styles.selectDate}>
-              <View>
-                <Octicons style={styles.calendarIcon} name="clock" size={24} color="black" />
-              </View>
-              <View>
-                <Text style={{fontSize: 15, fontWeight: 'bold', alignContent: 'center'}}>{dayNow}</Text>
-              </View>
-              <View>
-                <Octicons style={styles.calendarIcon} name="calendar" size={24} color="black" onPress={showDatepicker} />
-              </View>
-            </View>
+    >
+    <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+        <Text style={styles.modalText}>{recipe.title}</Text>
 
-            {show && (
-              <DateTimePicker
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-              />
-            )}
-            
-
-            <View style={styles.modalButton}>
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  onClose()
-                }}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </TouchableHighlight>
-
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  addNewPlan()
-                }}
-              >
-                <Text style={styles.textStyle}>Save</Text>
-              </TouchableHighlight>
-            </View>
+        <View style={styles.selectDate}>
+          <View>
           </View>
-        
+          <View style={styles.dateContainer}>
+            <Octicons style={styles.calendarIcon} name="clock" size={24} color="black" />
+            <Text style={styles.dateNow}>{dayNow}</Text>
+          </View>
+          <View style={styles.pickCalendar} onPress={showDatepicker}>
+            <Octicons name="calendar" size={40} color="black" />
+            <Text style={{fontWeight: 'bold'}}>Choose Date</Text>
+          </View>
         </View>
-      </Modal>
-    // <View style={styles.centeredView}>
 
-      // {/* <TouchableHighlight
-      //   style={styles.openButton}
-      //   onPress={() => {
-      //     setModalVisible(true);
-      //   }}
-      // >
-      //   <Text style={styles.textStyle}>Show Modal</Text>
-      // </TouchableHighlight> */}
-    // {/* </View> */}
+        {show && (
+          <DateTimePicker
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+          />
+        )}
+
+        <View style={styles.modalButton}>
+          <TouchableHighlight
+            style={{ ...styles.openButton, backgroundColor: "#1289A7" }}
+            onPress={() => {
+              addNewPlan()
+            }}
+          >
+            <Text style={styles.textStyle}>Save</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={{ ...styles.openButton, backgroundColor: "#f6b93b" }}
+            onPress={() => {
+              onClose()
+            }}
+          >
+            <Text style={styles.textStyle}>Cancel</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+
+    </View>
+  </Modal>
   );
 }
 
@@ -145,7 +127,7 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -163,7 +145,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    width: 100
   },
   textStyle: {
     color: "white",
@@ -178,14 +161,37 @@ const styles = StyleSheet.create({
   },
   selectDate: {
     justifyContent: 'space-between',
-    flexDirection: 'row',
   },
   calendarIcon: {
-    fontSize: 30
+    fontSize: 25,
+    color: '#f1f2f6'
   },
   modalButton: {
     justifyContent: 'space-between',
-    direction: 'inherit'
+    direction: 'inherit',
+    flexDirection: 'row',
+    width: 230
+  },
+  dateNow: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    alignContent: 'center',
+    color: '#f1f2f6',
+    letterSpacing: 0.5
+  },
+  dateContainer: {
+    backgroundColor: '#596275',
+    justifyContent: 'space-between',
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: 300
+  },
+  pickCalendar: {
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 30
   }
 });
 

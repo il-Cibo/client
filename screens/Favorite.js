@@ -10,40 +10,7 @@ import Constants from 'expo-constants'
 import { tokenVar } from '../store/makeVar'
 
 function Favorite({ navigation }) {
-	const [userFavo, setUserFavo] = useState([])
-	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		}
-	})
-
-	const isFocused = useIsFocused();
-
-	useEffect(() => {
-		if (isFocused) {
-			refetch()
-		}
-	}, [isFocused]);
-
-	useEffect(() => {
-		let isMounted = true;
-		if (data && isMounted) {
-			const allUserFav = data.findFav.Recipes.filter((el) => el.UserRecipe.favorites)
-			setUserFavo(allUserFav);
-		}
-
-		return () => {
-			isMounted = false
-		}
-	}, [data])
-
-	if (loading) {
-		return (
-			<Loading />
-		)
-	}
+	const { loading, error, data, refetch } = useQuery(LIST_FAV_USER_RECIPE)
 
 	if (error) {
 		return (
@@ -57,14 +24,17 @@ function Favorite({ navigation }) {
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<View>
-					<Text style={styles.headerText}>{data.findFav.username}'s Favorites</Text>
+					<Text style={styles.headerText}>Your Favorites</Text>
 				</View>
 			</View>
 			<Divider style={{ height: 1.5, backgroundColor: '#f5f6fa' }} />
 			<ScrollView style={styles.content}>
-				{userFavo.map((recipePost, i) => (
-					<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} navigation={navigation} />
-				))}
+				{
+					!data? <Loading/> : 
+					data?.findFav?.Recipes.map((recipePost, i) => (
+						<FavoriteCard key={i} username={data.findFav.username} userId={data.findFav.id} recipe={recipePost} fetch={refetch}/>
+					))
+				}
 			</ScrollView>
 		</View>
 	)

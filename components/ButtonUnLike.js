@@ -1,18 +1,15 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { DELETE_RECIPE_FAV} from '../config/queries'
+import { DELETE_RECIPE_FAV, LIST_FAV_USER_RECIPE} from '../config/queries'
 import {useMutation} from '@apollo/client'
 import { tokenVar } from '../store/makeVar'
 
 export default function ButtonUnLike({setLike, recipeId}) {
     const [deleteFromFav] = useMutation(DELETE_RECIPE_FAV, {
-        context: {
-			headers: {
-				token: tokenVar()
-			}
-		},
-       
+      refetchQueries: {
+        query: LIST_FAV_USER_RECIPE
+      }
     })
 
   const deleteThisFromFav = () => {

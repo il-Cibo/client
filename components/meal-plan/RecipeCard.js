@@ -7,17 +7,14 @@ import { useMutation } from '@apollo/client'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tokenVar } from '../../store/makeVar'
 
-function RecipeCard({ recipe, currentDate, refetch }) {
+function RecipeCard({ recipe, currentDate }) {
 	const [isVisible, setIsVisible] = useState(false)
 
 	const [removeFromPlan, { loading, error, data }] = useMutation(REMOVE_FROM_PLAN, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-		},
-		onCompleted: () => refetch()
-  })
+		refetchQueries: [ {
+			query: GET_MEALPLAN
+		} ]
+	})
 	
 	const list = [
 		{
