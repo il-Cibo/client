@@ -17,7 +17,7 @@ export default function DetailRecipe({ navigation, route }) {
   const { recipeData, page, user } = route.params
   const [isVisible, setIsVisible] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
+  const [deleteRecipe, { loading, error }] = useMutation(DELETE_RECIPE, {
     refetchQueries: [
       { query: GET_ALL_RECIPES }
     ]
