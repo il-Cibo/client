@@ -1,15 +1,24 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { Card } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
-function RecipeSmallCard({ recipe }) {
-  const { image, title, description, step, serving, time, Tags } = recipe;
+function RecipeSmallCard({ recipe, navigation }) {
+	const { image, title, description, step, serving, time, Tags } = recipe;
+	
+	function goToDetailsRecipe () {
+		navigation.navigate('DetailRecipe', {
+			recipeData: recipe,
+			page: 'home'
+		})
+	}
+	
 	return (
-		<Card containerStyle={{ borderColor: '#FFF' }}>
+		<Pressable onPress={goToDetailsRecipe}>
+			<Card containerStyle={{ borderColor: '#FFF' }}  >
 			<View style={{ flexDirection: 'row' }}>
 				<Card.Image
 					source={{ uri: `${image}` }}
@@ -48,6 +57,7 @@ function RecipeSmallCard({ recipe }) {
 				</View>
 			</View>
 		</Card>
+		</Pressable>
 	)
 }
 

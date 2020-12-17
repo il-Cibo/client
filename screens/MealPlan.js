@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import moment from 'moment-timezone'
 import { Octicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { tokenVar } from '../store/makeVar'
+import { formatDate } from '../helpers/formatDate'
 
 const wait = timeout => {
 	return new Promise(resolve => {
@@ -15,10 +15,8 @@ const wait = timeout => {
 };
 
 const MealPlan = () => {
-  const [dateNow, setDateNow] = useState()
+  const [dateNow, setDateNow] = useState(new Date ())
   const [dayNow, setDayNow] = useState()
-  const [todayPlan, setTodayPlan] = useState([])
-  const [formattedDate, setFormattedDate] = useState()
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
@@ -32,38 +30,18 @@ const MealPlan = () => {
   }, []);
   
   useEffect(() => {
-    const date = new Date ()
-    setDateNow(date)
-
-    const newDate = moment(date).tz('Asia/Jakarta').format('YYYY-MM-DD')
-    setFormattedDate(newDate)
-
-    const dayNow = moment(date).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
+    const dayNow = moment(dateNow).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
     setDayNow(dayNow)
 
-    if(data) {
-      const todayPlan = data.findPlan.Recipes.filter(el => {
-        return el.UserRecipe.plan.indexOf(newDate) > -1
-      })
-      
-      setTodayPlan(todayPlan)
-    }
-  }, [data])
+  }, [])
   
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-
-    const dayNow = moment(currentDate).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
+    const dayNow = moment(selectedDate ).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
     setDayNow(dayNow)
-    const formattedDate = moment(currentDate).tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-    const todayPlan = data.findPlan.Recipes.filter(el => {
-      return el.UserRecipe.plan.indexOf(formattedDate) > -1
-    })
-
-    setTodayPlan(todayPlan)
     setShow(Platform.OS === 'ios');
-    setDateNow(currentDate);
+    setDateNow(selectedDate || dateNow);
+    refetch()
   };
   
   const showMode = (currentMode) => {
@@ -74,28 +52,6 @@ const MealPlan = () => {
   const showDatepicker = () => {
     showMode('date');
   };
-
-  const renderMealPlanCard = () => {
-    if(!todayPlan || todayPlan.length === 0) {
-      return (
-        <View style={style.planBody}>
-          <Text>You have no meal planned for today.</Text>
-        </View>
-      )
-    }
-
-    return (
-      <View>
-        {
-          todayPlan.map(recipe => {
-            return (
-              <MealPlanCard key={recipe.id} recipe={recipe} currentDate={formattedDate} refetch={refetch} />
-            )
-          })
-        }
-      </View>
-    )
-  }
 
   if(loading) {
     return <Loading/>
@@ -131,7 +87,15 @@ const MealPlan = () => {
       <ScrollView style={style.planBody}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        {renderMealPlanCard()}
+        {
+          !data?  <View style={style.planBody}>
+                    <Text>You have no meal planned for today.</Text>
+                  </View> : 
+
+          data.findPlan.Recipes.filter(el =>el.UserRecipe.plan.indexOf(formatDate(dateNow)) > -1).map(recipe => (
+            <MealPlanCard key={recipe.id} recipe={recipe} currentDate={formatDate(dateNow)}/> 
+          ))
+        }
       </ScrollView>
     </SafeAreaView>
   )

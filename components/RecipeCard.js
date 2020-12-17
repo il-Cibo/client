@@ -16,19 +16,7 @@ function RecipeCard({ navigation, recipe }) {
 	const [like, setLike] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const [showModal, setShowModal] = useState(false)
-	const [tags, setTags] = useState()
 
-	useEffect(() => {
-		if(recipe.Tags) {
-			const newTags = recipe.Tags.map((el) => {
-				return el.name
-			})
-
-			setTags(newTags)
-		}
-	}, [])
-
-	
 	const closeModal = () => {
 		setShowModal(false)
 	}
@@ -77,10 +65,8 @@ function RecipeCard({ navigation, recipe }) {
 	}
 	
 	const [newFavRecipe] = useMutation(ADD_TO_FAVORITE_RECIPE, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
+		refetchQueries: {
+			query: LIST_FAV_USER_RECIPE
 		}
 	})
 
@@ -93,13 +79,7 @@ function RecipeCard({ navigation, recipe }) {
 		})
 	}
 
-	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE, {
-		context: {
-			headers: {
-				token: tokenVar()
-			}
-		}
-	})
+	const { loading, error, data } = useQuery(LIST_FAV_USER_RECIPE)
 
 	useEffect(() => {
 
@@ -154,7 +134,7 @@ function RecipeCard({ navigation, recipe }) {
 					<AntDesign name="tago" size={16} color="#747d8c" />
 					<Text style={styles.info}>Tags:</Text>
 					<Tags
-						initialTags={tags}
+						initialTags={recipe.Tags.map(el => el.name)}
 						readonly
 						deleteTagOnPress={false}
 					/>

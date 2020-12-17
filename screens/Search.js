@@ -51,7 +51,7 @@ function Search() {
 			<ScrollView>
 				{error && <Text>{JSON.stringify(error.message)}</Text>}
 				{data && data.queryRecipes.map((recipe) => (
-					<RecipeSmallCard onPress={recipe.id} key={recipe.id} recipe={recipe} />
+					<RecipeSmallCard key={recipe.id} recipe={recipe} />
 				))}
 			</ScrollView>
 		</View>

@@ -10,7 +10,6 @@ import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { SimpleLineIcons } from '@expo/vector-icons'
-import { tokenVar } from '../store/makeVar'
 import { ModalAddPlan } from '../components'
 import Constants from 'expo-constants'
 
@@ -19,17 +18,9 @@ export default function DetailRecipe({ navigation, route }) {
   const [isVisible, setIsVisible] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [deleteRecipe, { loading, error, data }] = useMutation(DELETE_RECIPE, {
-    context: {
-      headers: {
-        token: tokenVar()
-      }
-    }
-  }, {
     refetchQueries: [
       { query: GET_ALL_RECIPES }
     ]
-  }, {
-    fetchPolicy: 'network-only'
   })
 
   const closeModal = () => {
@@ -47,8 +38,6 @@ export default function DetailRecipe({ navigation, route }) {
       },
       onPress: () => {
         setShowModal(true)
-        // setIsVisible(false)
-        // navigation.navigate('EditRecipe')
       }
     },
     {

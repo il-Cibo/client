@@ -68,6 +68,7 @@ export const GET_ALL_RECIPES = gql`
 			}
 			Users {
 				username
+				avatar
 			}
 		}
 	}

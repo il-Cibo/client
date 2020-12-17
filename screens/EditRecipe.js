@@ -8,7 +8,6 @@ import { ReactNativeFile } from 'apollo-upload-client';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, TextInput } from 'react-native-paper'
 import Constants from 'expo-constants'
-import { tokenVar } from '../store/makeVar'
 import { Divider } from 'react-native-elements'
 import { Loading } from '../components'
 
