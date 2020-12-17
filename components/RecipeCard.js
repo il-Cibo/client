@@ -138,7 +138,10 @@ function RecipeCard({ navigation, recipe }) {
 					<Tags
 						initialTags={recipe.Tags.map(el => el.name)}
 						readonly
-						deleteTagOnPress={false}
+            deleteTagOnPress={false}
+            tagTextStyle={
+              { fontFamily: 'Oswald', margin: 0}
+            }
 					/>
 				</View>
 			</View>
@@ -217,7 +220,7 @@ const styles = StyleSheet.create({
 		fontSize: 9,
 		marginLeft: 5,
 		fontFamily: 'Oswald',
-		letterSpacing: 1
+		letterSpacing: 1,
 	},
 	row: {
 		flexDirection: 'row',
