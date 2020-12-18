@@ -33,9 +33,11 @@ const ModalAddPlan = ({ recipe, isVisible, onClose }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     const dayNow = moment(currentDate).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
-    setDayNow(dayNow)
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+    if (event.type === "set") {
+      setDayNow(dayNow)
+    }
   };
 
   const showMode = (currentMode) => {

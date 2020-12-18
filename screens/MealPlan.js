@@ -37,11 +37,11 @@ const MealPlan = ({ navigation }) => {
   
   const onChange = (event, selectedDate) => {
     const dayNow = moment(selectedDate ).tz('Asia/Jakarta').format('dddd Do MMMM, YYYY')
-    setDayNow(dayNow)
-
     setShow(Platform.OS === 'ios');
     setDateNow(selectedDate || dateNow);
-    refetch()
+    if (event.type === 'set') {
+      setDayNow(dayNow)
+    }
   };
   
   const showMode = (currentMode) => {
